@@ -9,7 +9,7 @@
     <h1>MOR MEMBERS</h1>
  
     <table>
-        <thead>
+        <thead> 
             <tr>
                 <th>아이디</th>
                 <th>비밀번호</th>
