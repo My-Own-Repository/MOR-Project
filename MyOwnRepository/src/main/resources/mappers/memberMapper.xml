@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.co.mapper.memberMapper">
+ 
+    <!-- 
+        mybatis-config.xml의 typeAlias에 등록해두지 않았다면 
+        
+        <select id="selectMember" resultType="com.example.dto.MemberVO" >
+            SELECT ID, PW ,NAME FROM USERS
+        </select>
+          
+        이렇게 해야 한다.
+    -->
+    
+    <select id="selectMember" resultType="MemberVO">
+        SELECT * FROM users
+    </select>
+    
+    <insert id="joinMember">
+    	INSERT INTO users (id, pw, name, nickname, phone_number, email) VALUES (#{id}, #{pw}, #{name}, #{nickname}, #{phone_number}, #{email})
+    </insert>
+    
+    <select id="loginMember" resultType="LoginDTO">
+    	SELECT * FROM users WHERE id=#{id} AND pw=#{pw}
+    </select>
+
+</mapper>
+
