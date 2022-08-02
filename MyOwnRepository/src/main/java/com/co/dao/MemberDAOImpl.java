@@ -27,10 +27,16 @@ public class MemberDAOImpl implements MemberDAO {
     }
 
 	@Override
-	public void joinMember(MemberVO member) {
+	public void joinMember(MemberVO member) throws Exception {
 		// TODO Auto-generated method stub
-		sqlSession.insert(Namespace+".joinMember");
+		sqlSession.insert(Namespace+".joinMember", member);
 		
+	}
+
+	@Override
+	public int idCheck(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".idCheck", id);
 	}
     
 

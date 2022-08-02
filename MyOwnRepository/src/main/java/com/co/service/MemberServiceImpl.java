@@ -50,6 +50,14 @@ public class MemberServiceImpl implements MemberService {
 	public LoginDTO loginMember(LoginDTO vo) throws Exception{
 		return ldao.loginMember(vo);
 	}
+
+
+
+	@Override
+	public int idCheck(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.idCheck(id);
+	}
 	  
 
 

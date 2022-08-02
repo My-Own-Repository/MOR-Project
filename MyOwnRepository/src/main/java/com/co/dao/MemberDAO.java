@@ -13,9 +13,9 @@ public interface MemberDAO {
 	
 	
     public List<MemberVO> selectMember() throws Exception;
+    public int idCheck(String id) throws Exception;
 
-
-	public void joinMember(MemberVO member);
+	public void joinMember(MemberVO member) throws Exception;
 	
 	// public MemberVO loginMember(MemberVO member);	// �α���
 	

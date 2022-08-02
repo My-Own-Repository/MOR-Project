@@ -1,0 +1,102 @@
+.main-logo {
+		display: block;
+  		width: 150px;
+  		height: 50px;
+  		background-position: center;
+ 		background-size: 100% 100%;
+  		margin:auto;
+}
+div {
+	height: 40px;
+	width: 350px;
+	border: 1px solid #1b5ac2;
+	background: #ffffff;
+	margin:auto;
+}
+input{
+	font-size: 16px;
+	width: 275px;
+	padding: 10px;
+	border: 0px;
+	outline: none;
+	float: left;
+}
+button{
+	width: 50px;
+	height: 100%;
+	border: 0px
+	background: white;
+	outline: none;
+	float: right;
+	color: blue;
+}
+*{padding:0;margin:0}
+li{list-style:none}
+a{text-decoration:none;font-size:14px}
+
+.menu {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  margin:25px auto;
+}
+
+.menu > li {
+  width: 33%; 
+  float: left;
+  text-align: center;
+  line-height: 40px;
+  background-color: #5778ff;
+}
+
+.menu a {
+  color: #fff;
+}
+
+.submenu > li {
+  line-height: 50px;
+  background-color: #94a9ff;
+}
+
+.submenu {
+  height: 0; 		/* ul의 높이를 0로 맞춰서 ui상으로 안보이게 함 */
+  overflow: hidden;
+}
+
+.menu > li:hover {			/* 마우스를 올렸을 때 */
+  background-color: #94a9ff;
+  transition-duration: 0.5s;
+  font-weight:bold;
+}
+
+.menu > li:hover .submenu {
+  height: 100px; 			/*서브메뉴 li의 총 높이 */
+  transition-duration: 1s;
+
+@media ( max-width: 480px ) {
+        .main-logo {
+          width: 100%;
+          height: auto;
+        }
+        .menu {
+          float: none;
+          width: 100%;
+          height: auto;
+        }
+        .div {
+          float: none;
+          width: 100%;
+          height: auto;
+        }
+}
+
+
+.mor-main {
+  display: block;
+  width: 116px;
+  height: 27px;
+  background: url(../img/MOR_symbol_logo.svg) no-repeat 50%;
+  background-position: center;
+  background-size: 100% 100%;
+  margin:auto;
+}

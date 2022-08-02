@@ -8,11 +8,11 @@ public class MemberVO {
     public String nickname;
     public String phone_number;
     public String email;
-    public int is_admin;
-    
+    public String is_admin;
+    public String sign_day;
 
   	public MemberVO() {}
-  	public MemberVO(String id, String pw, String name, String nickname, String phone_number, String email, int is_admin) {
+  	public MemberVO(String id, String pw, String name, String nickname, String phone_number, String email, String is_admin, String sign_day) {
   		super();
   		this.id = id;
   		this.pw = pw;
@@ -21,6 +21,7 @@ public class MemberVO {
   		this.phone_number = phone_number;
   		this.email = email;
   		this.is_admin = is_admin;
+  		this.sign_day = sign_day;
   	}
     
     public String getid() {
@@ -69,13 +70,19 @@ public class MemberVO {
     public void setemail(String email) {
         this.email = email;
     }
-    public int getis_admin() {
+    public String getis_admin() {
         return is_admin;
     }
  
-    public void setis_admin(int is_admin) {
+    public void setis_admin(String is_admin) {
         this.is_admin = is_admin;
     }
-    
+    public String getsign_day() {
+        return sign_day;
+    }
+ 
+    public void setsign_day(String sign_day) {
+        this.sign_day = sign_day;
+    }
 
 }

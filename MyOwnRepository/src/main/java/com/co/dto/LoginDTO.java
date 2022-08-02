@@ -3,22 +3,24 @@ package com.co.dto;
 public class LoginDTO {
 	 
     public String id;
-    public String name;
     public String pw;
-    public String sex;
-    public String number;
+    public String name;
+    public String nickname;
+    public String phone_number;
     public String email;
+    public int is_admin;
     
 
   	public LoginDTO() {}
-  	public LoginDTO(String id, String name, String pw, String sex, String number, String email) {
+  	public LoginDTO(String id, String pw, String name, String nickname, String phone_number, String email, int is_admin) {
   		super();
   		this.id = id;
-  		this.name = name;
   		this.pw = pw;
-  		this.sex = sex;
-  		this.number = number;
+  		this.name = name;
+  		this.nickname = nickname;
+  		this.phone_number = phone_number;
   		this.email = email;
+  		this.is_admin = is_admin;
   	}
     
     public String getid() {
@@ -45,19 +47,19 @@ public class LoginDTO {
         this.name = name;
     }
 
-    public String getsex() {
-        return sex;
+    public String getnickname() {
+        return nickname;
     }
    
-    public void setsex(String sex) {
-        this.sex = sex;
+    public void setnickname(String nickname) {
+        this.nickname = nickname;
     }
-    public String getnumber() {
-        return number;
+    public String getphone_number() {
+        return phone_number;
     }
  
-    public void setnumber(String number) {
-        this.number = number;
+    public void setphone_number(String phone_number) {
+        this.phone_number = phone_number;
     }
     
     public String getemail() {
@@ -67,4 +69,13 @@ public class LoginDTO {
     public void setemail(String email) {
         this.email = email;
     }
+    public int getis_admin() {
+        return is_admin;
+    }
+ 
+    public void setis_admin(int is_admin) {
+        this.is_admin = is_admin;
+    }
+    
+
 }
