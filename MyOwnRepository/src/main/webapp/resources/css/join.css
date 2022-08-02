@@ -1,0 +1,46 @@
+.main-logo {
+		display: block;
+  		width: 150px;
+  		height: 50px;
+  		background-position: center;
+ 		background-size: 100% 100%;
+  		margin:auto;
+}
+
+
+.tables{
+	margin:auto;
+}
+.join_button{
+	display: block;
+	width: 300px;
+	height: 40px;
+	margin:auto;
+}
+.is_same{
+	wight: 100%;
+	height: 25px;
+	margin:auto
+}
+
+@media ( max-width: 480px ) {
+        .main-logo {
+          width: 100%;
+          height: auto;
+        }
+        .tables {
+          float: none;
+          width: 100%;
+          height: auto;
+        }
+        .join_button {
+          float: none;
+          width: 100%;
+          height: auto;
+        }
+        .is_same {
+          float: none;
+          width: 100%;
+          height: auto;
+        }
+}

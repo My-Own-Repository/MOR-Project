@@ -19,6 +19,10 @@
         SELECT * FROM users
     </select>
     
+    <select id="idCheck" resultType="int">
+    	SELECT COUNT(*) FROM users WHERE id=#{id}
+    </select>
+    
     <insert id="joinMember">
     	INSERT INTO users (id, pw, name, nickname, phone_number, email) VALUES (#{id}, #{pw}, #{name}, #{nickname}, #{phone_number}, #{email})
     </insert>
@@ -26,6 +30,8 @@
     <select id="loginMember" resultType="LoginDTO">
     	SELECT * FROM users WHERE id=#{id} AND pw=#{pw}
     </select>
+
+	
 
 </mapper>
 

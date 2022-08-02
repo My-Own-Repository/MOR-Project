@@ -15,7 +15,7 @@ public interface MemberService {
    	
     public LoginDTO loginMember(LoginDTO vo) throws Exception;
     
-    
+    public int idCheck(String id) throws Exception;
     public List<MemberVO> selectMember() throws Exception;
      
           

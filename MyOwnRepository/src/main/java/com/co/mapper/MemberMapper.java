@@ -24,18 +24,26 @@ public class MemberMapper {
 		//MemberVO member = new MemberVO();
 		//LoginDTO member = new LoginDTO();
 		
-		member.setid("admin");
-		member.setpw("admin");
-		
 		
 		return membermapper.loginMember(member);
 		
 	}
 	
 	
-	private void joinMember(MemberVO member) {
+	public void joinMember(MemberVO member) throws Exception {
 		// TODO Auto-generated method stub
+		/*
+		MemberVO member = new MemberVO();
+		
+		member.setid("admin");
+		member.setpw("admin");
+		member.setname("t");
+		member.setnickname("t");
+		member.setphone_number("t");
+		member.setemail("t");
+		*/
 		membermapper.joinMember(member);
+		
 	}
 	
 /*
