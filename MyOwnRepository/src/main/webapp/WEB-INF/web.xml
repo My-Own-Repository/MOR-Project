@@ -22,6 +22,10 @@
  </filter-mapping> 
 <!--  문자 인코딩  끝 -->
 
+  <session-config>
+  	<session-timeout>30</session-timeout>
+  </session-config>
+  
   
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>

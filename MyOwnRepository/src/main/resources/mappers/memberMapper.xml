@@ -19,6 +19,10 @@
         SELECT * FROM users
     </select>
     
+    <select id="selectPerson" resultType="LoginDTO">
+    	SELECT id FROM users WHERE id=#{id}
+    </select>
+    
     <select id="idCheck" resultType="int">
     	SELECT COUNT(*) FROM users WHERE id=#{id}
     </select>

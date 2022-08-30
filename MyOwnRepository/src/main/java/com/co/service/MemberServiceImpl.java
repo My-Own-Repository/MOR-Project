@@ -58,6 +58,15 @@ public class MemberServiceImpl implements MemberService {
 		// TODO Auto-generated method stub
 		return dao.idCheck(id);
 	}
+
+
+	// 해당 회원이 존재하는지 조회
+	@Override
+	public LoginDTO selectPerson(String sessionID) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.selectPerson(sessionID);
+	}
+
 	  
 
 

@@ -47,7 +47,7 @@ public class MemberMapper {
 	}
 	
 /*
-	public MemberVO loginMember(MemberVO member) {
+	public LoginDTO loginMember(LoginDTO member) {
 		return membermapper.loginMember(member);
 	}
 	*/
