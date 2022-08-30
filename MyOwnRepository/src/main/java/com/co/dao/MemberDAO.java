@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
 
 
@@ -16,6 +17,7 @@ public interface MemberDAO {
     public int idCheck(String id) throws Exception;
 
 	public void joinMember(MemberVO member) throws Exception;
+	public LoginDTO selectPerson(String sessionID) throws Exception;
 	
 	// public MemberVO loginMember(MemberVO member);	// �α���
 	

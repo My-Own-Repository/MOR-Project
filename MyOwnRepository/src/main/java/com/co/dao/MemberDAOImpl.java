@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
 
 
@@ -37,6 +38,12 @@ public class MemberDAOImpl implements MemberDAO {
 	public int idCheck(String id) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(Namespace+".idCheck", id);
+	}
+
+	@Override
+	public LoginDTO selectPerson(String sessionID) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".selectPerson");
 	}
     
 

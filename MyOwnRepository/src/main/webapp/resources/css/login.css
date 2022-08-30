@@ -1,0 +1,186 @@
+@charset "EUC-KR";
+:root {
+  --login_btn_text-color: black;
+  --find-area-color: black;
+  --all-text-family: "Noto Sans KR", sans-serif;
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+.login_container {
+  padding: 80px 0px;
+}
+
+.inner {
+  width: 566px;
+  height: auto;
+  margin: 0 auto;
+}
+
+
+.guidetext h1 {
+  font-size: 34px;
+  line-height: 44px;
+  font-weight: 900;
+  color: #202429;
+  font-family: "Noto Sans KR", sans-serif;
+}
+ 
+.guidetext p {
+  margin-top: 14px;
+  font-size: 18px;
+  color: #808893;
+  line-height: 20px;
+}
+
+.login_contents {
+  /* margin-top: 56px; */
+  margin: 56px auto 0 auto;
+}
+
+.input_wrap {
+  margin-top: 8px;
+}
+
+.input_wrap input {
+  width: 100%;
+  height: 50px;
+  padding: 0 16px;
+  border-radius: 8px;
+  border: 1px solid #d3d7df;
+  appearance: none;
+}
+
+.login_btn_area {
+  margin-top: 20px;
+}
+
+.login_btn {
+  width: 100%;
+  background-color: black;
+  color: #fff;
+  padding: 18px 0px;
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 22px;
+  font-family: var(--all-text-family);
+}
+
+.find_area {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  vertical-align: middle;
+}
+.find_area ::before {
+  content: "|";
+  padding-right: 8px;
+}
+
+.find_area a {
+  text-decoration: none;
+  cursor: pointer;
+  color: var(--find-area-color);
+}
+
+.find_area :nth-child(1)::before {
+  content: "";
+}
+
+.social_area {
+  width: 100%;
+  margin-top: 100px;
+  text-align: center;
+}
+
+.social_line {
+  position: relative;
+  color: #808893;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: var(--all-text-family);
+}
+.social_line span {
+  position: relative;
+  display: inline-block;
+  padding: 0px 12px;
+  z-index: 2;
+  word-wrap: break-word;
+  background-color: #fff;
+}
+.social_line::before {
+  display: block;
+  position: absolute;
+  height: 1px;
+  background-color: hsla(215, 8%, 54%, 0.3);
+  top: 50%;
+  left: 0px;
+  width: 100%;
+  transform: translateY(-50%);
+  content: "";
+  z-index: 1;
+}
+
+.social_btn_area {
+  width: 100%;
+  margin-top: 35px;
+}
+
+.btn_kakao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 0px 30px;
+  background-color: #fee500;
+  border-radius: 8px;
+  color: var(--login_btn_text-color);
+  height: 58px;
+  font-size: 18px;
+  line-height: 22px;
+}
+.btn_kakao img {
+  width: 26px;
+  height: 26px;
+}
+
+.social_area :nth-child(n + 2) {
+  display: inline-block;
+}
+
+.btn_naver {
+  background-image: url(../img/icons-ic-web-naver-60-pt.svg);
+  width: 60px;
+  height: 60px;
+}
+.btn_facebook {
+  background-image: url(../img/icons-ic-web-facebook-60-pt.svg);
+  width: 60px;
+  height: 60px;
+  margin-left: 34px;
+}
+.btn_google {
+  background-image: url(../img/icons-ic-web-google-60-pt.svg);
+  width: 60px;
+  height: 60px;
+  margin-left: 34px;
+}
+.btn_apple {
+  background-image: url(../img/icons-ic-web-apple-60-pt.svg);
+  width: 60px;
+  height: 60px;
+  margin-left: 34px;
+}
+
+@media screen and (max-width: 768px) {
+  .inner {
+    padding: 42px 30px;
+  }
+}
