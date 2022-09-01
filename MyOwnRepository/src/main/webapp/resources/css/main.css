@@ -30,6 +30,19 @@ button{
 	float: right;
 	color: blue;
 }
+
+.write_button{
+	position: relative;
+	width: 70px;
+	height: 100%;
+	border: 0px
+	background: gray;
+	left: 448px;
+	margin:auto;
+	color: blue;
+}
+
+
 *{padding:0;margin:0}
 li{list-style:none}
 a{text-decoration:none;font-size:14px}
@@ -69,14 +82,25 @@ a{text-decoration:none;font-size:14px}
   font-weight:bold;
 }
 
+.board_table {
+	margin:auto;
+	width: 1024px;
+    height: auto;
+    text-align: center;
+}
+.board_head {
+	color:blue;
+}
+
 .menu > li:hover .submenu {
   height: 100px; 			/*서브메뉴 li의 총 높이 */
   transition-duration: 1s;
+}
 
-@media ( max-width: 480px ) {
+@media ( max-width: 720px ) {		/* 모바일 설정*/ /* 스크린 x축의 길이가 720px이하 일때 적용됨 */
         .main-logo {
           width: 100%;
-          height: auto;
+          height: 45px;
         }
         .menu {
           float: none;
@@ -88,6 +112,18 @@ a{text-decoration:none;font-size:14px}
           width: 100%;
           height: auto;
         }
+        .board_table {
+        	float: none;
+        	width: 100%;
+        	height: auto;
+        }
+        .write_button {
+        	position: relative;
+        	width: 20%;
+			height: auto;
+			left: 0px;	
+        }
+        
 }
 
 

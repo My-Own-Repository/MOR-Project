@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,24 +11,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/5309915bbd.js" crossorigin="anonymous" defer></script>
-    <link rel="stylesheet" type="text/css" href="../../../resources/css/main.css">
-
-	<style>
-		p {
-			text-align: center;
-			font-size:25px;
-			color:blue;
-		}
-	</style>
-
+    <link rel="stylesheet" type="text/css" href="././resources/css/main.css">
 <%
 	String userNickname = (String) session.getAttribute("userNickname");  
-%> 
+%>
 
 <title>나만의 저장소 - MOR !</title>
 </head>
 <body>
-	<a href="/user/userMain">
+		<a href="/user/userMain">
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<div>
@@ -54,28 +46,6 @@
 			<a href="/user/mypage">${userNickname}</a>
 		</li>
 	</ul>
-		<hr>
-	<p>자유게시판</p><hr><br><br>
-	<table border="1" class="board_table">
-		<thead class="board_head">
-			<tr>
-				<td>No</td>
-				<td>제목</td>
-				<td>닉네임</td>
-				<td>등록일</td>
-				<td>조회</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>1</td>
-				<td><a href="#">TEST TITLE</a> </td>
-				<td>TEST NICKNAME</td>
-				<td>TEST DAY</td>
-				<td>TEST COUNT</td>
-			</tr>
-		</tbody>
-	</table>
-	<br><input type="button" onclick="location.href='#'" class="write_button" value="글쓰기">
+	
 </body>
 </html>
