@@ -202,6 +202,9 @@ public class HomeController {
     public String userMainPage(HttpServletRequest request) {
     	HttpSession session = request.getSession(false);
     	
+    	if(session == null) {
+    		return "main";
+    	}
     	System.out.println(LOGIN_MEMBER);
     	return "user/userMain";
 	
@@ -211,7 +214,20 @@ public class HomeController {
     public String mypage(HttpServletRequest request) {
     	HttpSession session = request.getSession(false);
     	
+    	if(session == null) {
+    		return "main";
+    	}
 		return "user/mypage";	
+    }
+    
+    @RequestMapping(value = "/user/write", method = RequestMethod.GET)
+    public String write(HttpServletRequest request) {
+    	HttpSession session = request.getSession(false);
+    	
+    	if(session == null) {
+    		return "main";
+    	}
+		return "user/write";	
     }
     
     @RequestMapping(value = "/home", method = RequestMethod.GET)
