@@ -17,15 +17,19 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
+import com.co.dto.boardDTO;
+import com.co.service.BoardService;
 import com.co.service.MemberService;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -38,7 +42,13 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	public int integration_id = -1;
+	public int integration_id = -1;		// 로그인 할 때 무결성 검사용 전역변수
+	
+	public String user_id = "";		// 세션에서 회원 정보 가져오기의 임시방편으로, 로그인한 사용자의 정보를 임시로 저장하기 위한 전역변수
+	public String user_nickname = "";	// 세션에서 회원 정보 가져오기의 임시방편으로, 프로그램 이용시 자주 사용되는 사용자의 닉네임을 저장해놓는 전역변수
+	
+	public List<boardDTO> show_post;	// 사용자가 보는 게시글을 특정하여 해당 페이지로 이동할 때 사용 할 전역변수 (좋은 방법은 아닌거같음. 향후 개선요망)
+								// 컨트롤러에서 컨트롤러로 데이터를 전송할 때의 대체제로 전역변수를 사용한것임.
 	
 	private static String SESSION_ID = "session_Id";
 	
@@ -48,6 +58,8 @@ public class HomeController {
     @Inject
     private MemberService service;
     
+    @Inject
+    private BoardService b_service;
    
     
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -176,6 +188,9 @@ public class HomeController {
             
             session.setAttribute("userNickname", l_member.nickname);		// (임시) 로그인이 정상적으로 됐는지 확인하기 위해 사용자 닉네임 따로 세션저장
             
+            user_id = l_member.id;
+            user_nickname = l_member.nickname;	// 세션에서 회원 정보 가져오기의 임시방편으로, 전역변수에 닉네임 저장
+            
             System.out.println(session);
             path = "redirect:/user/userMain";
         }
@@ -199,12 +214,15 @@ public class HomeController {
     
     
     @RequestMapping(value = "/user/userMain", method = RequestMethod.GET)
-    public String userMainPage(HttpServletRequest request) {
+    public String userMainPage(HttpServletRequest request, Model model) throws Exception {
     	HttpSession session = request.getSession(false);
     	
-    	if(session == null) {
-    		return "main";
+    	if(session == null) {			// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		return "LoginPage";
     	}
+    	List<boardDTO> board_list = b_service.printBoard();
+    	model.addAttribute("BoardList", board_list);
+    	
     	System.out.println(LOGIN_MEMBER);
     	return "user/userMain";
 	
@@ -214,21 +232,91 @@ public class HomeController {
     public String mypage(HttpServletRequest request) {
     	HttpSession session = request.getSession(false);
     	
-    	if(session == null) {
-    		return "main";
+    	if(session == null) {			// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		return "redirect:/LoginPage";
     	}
 		return "user/mypage";	
     }
     
     @RequestMapping(value = "/user/write", method = RequestMethod.GET)
-    public String write(HttpServletRequest request) {
+    public String write_page(HttpServletRequest request) throws Exception {
+    	HttpSession session = request.getSession(false);
+    	if(session == null) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		return "redirect:/LoginPage";
+    	}
+		return "user/write";
+    }
+    
+    
+    @RequestMapping(value = "/user/write", method = RequestMethod.POST)
+    public String write(HttpServletRequest request, boardDTO letter) throws Exception {
     	HttpSession session = request.getSession(false);
     	
-    	if(session == null) {
-    		return "main";
+    	if(session == null) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		return "redirect:/LoginPage";
     	}
-		return "user/write";	
+    	String url = "";
+    	//boardDTO saved_board = b_service.writeBoard();
+    	
+    	if(letter.title != null && letter.content != null) {
+    		if(letter.title.length() <= 35 && letter.content.length() <= 1000) {
+    			logger.info("글작성 성공!");
+    			letter.id = user_id;			// 로그인할때 저장해놓은 사용자의 id와 nickname을 글 작성자의 개인정보로 사용 (글 작성시 사용자가 자신의 id와 nickname을 따로 작성하지 않기때문에 프로그램에서 자체적으로 저장해줌)
+    			letter.nickname = user_nickname;
+    			b_service.writeBoard(letter);
+    			
+    			url = "redirect:/user/userMain";
+    		}
+    		else if(letter.title.length() > 35 || letter.content.length() > 1000) {
+    			logger.info("글작성 실패..");
+    			url = "redirect:/user/write";
+    		}
+    	}
+    	
+		return url;	
     }
+    
+   
+    @SuppressWarnings("null")
+	@RequestMapping(value = "/user/posts/{urlnum}", method = RequestMethod.GET)
+    public String posts(HttpServletRequest request, HttpServletResponse response, Model model, @PathVariable("urlnum") String urlnum) throws Exception {
+    	HttpSession session = request.getSession(false);
+    	if(session == null) {							
+    		return "redirect:/LoginPage";
+    	}
+    	String path = "redirect:/user/posts";
+    	
+    	System.out.println("n의 값1 = " + urlnum);
+    	int number = Integer.parseInt(urlnum);
+    	System.out.println("n의 값2 = " + number);
+    	
+    	
+    	show_post = b_service.selectBoard(number);		// 전역변수에 해당 게시글 조회결과 저장
+    	if(show_post == null) {				// 열람을 위해 클릭한 다른 유저의 게시글이 이미 삭제되었을 경우 실행되는 조건문 
+    		model.addAttribute("msg", false);
+    		path = "redirect:/user/userMain";
+    	}
+    	else {
+    		b_service.addView(number);			// 조회수 증가
+    	}
+    	
+		return path;
+    	
+    }
+    
+    @RequestMapping(value = "/user/posts")
+    public String main_posts(HttpServletRequest request, Model model) throws Exception {
+    	HttpSession session = request.getSession(false);
+    	if(session == null) {							
+    		return "redirect:/LoginPage";
+    	}
+    	
+    	model.addAttribute("SelectPost", show_post);
+    	
+    	
+    	return "/user/posts";
+    }
+    
     
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String home(Locale locale, Model model) throws Exception{
