@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
@@ -10,12 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/5309915bbd.js" crossorigin="anonymous" defer></script>
-	<link rel="stylesheet" type="text/css" href="../../../resources/css/write.css">
-	
-	<%
-		String userNickname = (String) session.getAttribute("userNickname");  
-	%> 
-	
+    <link rel="stylesheet" type="text/css" href="../../../resources/css/posts.css">
+
 	<style>
 		p {
 			text-align: center;
@@ -23,17 +20,19 @@
 			color:blue;
 		}
 	</style>
-	
-	<title>나만의 저장소 - MOR</title>
-	
+
+<%
+	String userNickname = (String) session.getAttribute("userNickname");  
+%> 
+
 	<script>
  		src="https://code.jquery.com/jquery-3.4.1.js"
  		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
  		crossorigin="anonymous"></script>
  		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
+<title>나만의 저장소 - MOR !</title>
 </head>
- 
 <body>
 	<a href="/user/userMain">
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
@@ -63,27 +62,37 @@
 		</li>
 	</ul>
 		<hr>
-	<p>자유게시판 - 글쓰기</p><hr><br><br>
-	<form action="/user/write" method="post">
-		<table cellpadding="0" cellspacing="0" border="1">
+	<p>자유게시판</p><hr><br><br>
+	<table border="1">
+		<c:forEach items="${SelectPost}" var="letter">	
 			<tr>
- 				<td><b>작성자</b></td>
- 				<td style="text-align: left">&nbsp;&nbsp;${userNickname}</td>
+				<td><b>&nbsp;No.${letter.num}</b></td>
 			</tr>
-			<tr>
-				<td><b>제목</b></td>
-				<td> <input type="text" name="title" size = "65"> </td>
- 			</tr>
- 
-			<tr>
-				<td><b>내용</b></td> 
-				<td> <textarea name="content" rows="20" cols="60" ></textarea> </td>
-			</tr>
+			<table border="1" class="title_table">			
+				<tr>
+					<td align="center"><b>제목</b></td>
+					<td colspan="3">&nbsp;${letter.title}</td>
+				</tr>
+				<tr>
+					<td align="center" style="color:blue">${letter.nickname}</td>
+					<td>&nbsp;댓글 0</td>
+					<td>&nbsp;${letter.date}</td>
+					<td>&nbsp;조회수 ${letter.view}</td>
+				</tr>
+			</table>
+			<table border="1" class="content_table">
+				<tr>
+					<td colspan="4">&nbsp;${letter.content}</td>
+				</tr>
+			</table>
 
-			<tr>
-				<td colspan="2"><input type="file" name="file"><input type="submit" value="글쓰기" class="small_write_btn"></td>
-			</tr>
-		</table>
-	</form>
+		
+		</c:forEach>
+	</table>
+	<c:if test="${msg == false}">
+	<script>
+		alert('ERROR\n이미 삭제된 게시글 입니다!!');
+	</script>
+</c:if>
 </body>
 </html>

@@ -1,0 +1,176 @@
+table {
+	position: relative;
+	width: 350px;
+	height: auto;
+	margin: auto;
+	text-align: left;
+}
+.title_table{
+	position: relative;
+	width: 350px;
+	height: auto;
+	margin: auto;
+	text-align: left;
+}
+.content_table{
+	position: relative;
+	width: 350px;
+	height: 400px;
+	margin: auto;
+	text-align: left;
+}
+
+.main-logo {
+		display: block;
+  		width: 150px;
+  		height: 50px;
+  		background-position: center;
+ 		background-size: 100% 100%;
+  		margin:auto;
+}
+div {
+	height: 40px;
+	width: 350px;
+	border: 1px solid #1b5ac2;
+	background: #ffffff;
+	margin:auto;
+}
+input{
+	font-size: 16px;
+	width: 275px;
+	padding: 10px;
+	border: 0px;
+	outline: none;
+	float: left;
+}
+button{
+	width: 50px;
+	height: 100%;
+	border: 0px
+	background: white;
+	outline: none;
+	float: right;
+	color: blue;
+}
+
+.small_write_btn{
+	font-size: 18px;
+	width: 100px;
+	height: 70%;
+	border: 0px;
+	font-weight: bold;
+	float: right;
+	color:blue;
+}
+
+.write_button{
+	position: relative;
+	width: 70px;
+	height: 100%;
+	border: 0px
+	background: gray;
+	left: 448px;
+	margin:auto;
+	color: blue;
+}
+
+
+*{padding:0;margin:0}
+li{list-style:none}
+a{text-decoration:none;font-size:14px}
+
+.menu {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  margin:25px auto;
+}
+
+.menu > li {
+  width: 33%; 
+  float: left;
+  text-align: center;
+  line-height: 40px;
+  background-color: #5778ff;
+}
+
+.menu a {
+  color: #fff;
+}
+
+.submenu > li {
+  line-height: 50px;
+  background-color: #94a9ff;
+}
+
+.submenu {
+  height: 0; 		/* ul의 높이를 0로 맞춰서 ui상으로 안보이게 함 */
+  overflow: hidden;
+}
+
+.menu > li:hover {			/* 마우스를 올렸을 때 */
+  background-color: #94a9ff;
+  transition-duration: 0.5s;
+  font-weight:bold;
+}
+
+.menu > li:hover .submenu {
+  height: 100px; 			/*서브메뉴 li의 총 높이 */
+  transition-duration: 1s;
+}
+@media ( max-width: 720px ) {		/* 모바일 설정*/ /* 스크린 x축의 길이가 720px이하 일때 적용됨 */
+        .main-logo {
+          width: 100%;
+          height: 45px;
+        }
+        .menu {
+          float: none;
+          width: 100%;
+          height: auto;
+        }
+        .div {
+          float: none;
+          width: 100%;
+          height: auto;
+        }
+        .write_button {
+        	position: relative;
+        	width: 20%;
+			height: auto;
+			left: 0px;	
+        }
+        table{
+        	float: none;
+        	width: 100%;
+			height: auto;
+        }
+        .title_table{
+        	float: none;
+        	width: 100%;
+			height: auto;
+        }
+        .content_table{
+        	float: none;
+        	width: 100%;
+			height: auto;
+        }
+}
+
+@media ( min-width: 1024px ) {		/* 스크린 x축의 길이가 1024px이상 일때 적용됨 */
+        table{
+			width: 750px;
+			height: auto;
+			margin: auto;
+			text-align: left;
+        }
+        .title_table{
+        	float: none;
+        	width: 750px;
+			height: auto;
+        }
+        .content_table{
+        	float: none;
+        	width: 750px;
+			height: 400px;
+        }
+}

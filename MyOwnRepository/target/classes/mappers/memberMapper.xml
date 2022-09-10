@@ -35,6 +35,13 @@
     	SELECT * FROM users WHERE id=#{id} AND pw=#{pw}
     </select>
 
+	<select id="writeBoard" resultType="boardDTO">
+		INSERT INTO board (title, content, id) VALUES (#{title}, #{content}, #{id}) 
+	</select>
+	
+	<select id="printBoard">
+		SELECT * FROM board (num, title, nickname, date, view) VALUES (#{num}, #{title}, #{nickname}, #{date}, #{view})
+	</select>
 	
 
 </mapper>
