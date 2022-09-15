@@ -12,37 +12,33 @@
             SELECT ID, PW ,NAME FROM USERS
         </select>
           
-        이렇게 해야 한다.
+        이런식으로 해야 한다. (다음에 공부할 때 잊지 않기 위한 저장용)
     -->
     
-    <select id="selectMember" resultType="MemberVO">
+    <select id="selectMember" resultType="MemberVO">			<!-- 모든 회원 조회 -->
         SELECT * FROM users
     </select>
     
-    <select id="selectPerson" resultType="LoginDTO">
+    <select id="selectPerson" resultType="LoginDTO">			<!-- 특정 id를 가진 회원 조회 -->
     	SELECT id FROM users WHERE id=#{id}
     </select>
     
-    <select id="idCheck" resultType="int">
+    <select id="idCheck" resultType="int">						<!-- 아이디 중복체크 -->
     	SELECT COUNT(*) FROM users WHERE id=#{id}
     </select>
     
-    <insert id="joinMember">
+    <select id="nicknameCheck" resultType="int">				<!-- 닉네임 중복 체크 -->
+    	SELECT COUNT(*) FROM users WHERE nickname=#{nickname}
+    </select>
+    
+    <insert id="joinMember">			<!-- 회원가입 -->
     	INSERT INTO users (id, pw, name, nickname, phone_number, email) VALUES (#{id}, #{pw}, #{name}, #{nickname}, #{phone_number}, #{email})
     </insert>
     
-    <select id="loginMember" resultType="LoginDTO">
+    <select id="loginMember" resultType="LoginDTO">			<!-- 로그인 -->
     	SELECT * FROM users WHERE id=#{id} AND pw=#{pw}
     </select>
 
-	<select id="writeBoard" resultType="boardDTO">
-		INSERT INTO board (title, content, id) VALUES (#{title}, #{content}, #{id}) 
-	</select>
 	
-	<select id="printBoard">
-		SELECT * FROM board (num, title, nickname, date, view) VALUES (#{num}, #{title}, #{nickname}, #{date}, #{view})
-	</select>
-	
-
 </mapper>
 

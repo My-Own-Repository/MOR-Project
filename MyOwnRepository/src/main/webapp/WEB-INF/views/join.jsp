@@ -31,7 +31,7 @@
 			<th>* 아이디<br><br></th>
 			<td>
 				<input type="text" title="아이디" id="id" name="id"/>
-				<input type="button" class="is_same" id="is_same" value="중복 확인"/><br><br>
+				<input type="button" class="is_same" id="is_same" value="아이디 확인"/><br><br>
 
 			</td>
 		</tr>
@@ -57,7 +57,8 @@
 		<tr>
 			<th>* 닉네임<br><br></th>
 			<td>
-				<input type="text" title="닉네임" id="nickname" name="nickname"/><br><br>
+				<input type="text" title="닉네임" id="nickname" name="nickname"/>
+				<input type="button" class="nick_issame" value="닉네임 확인"/><br><br>
 			</td>
 		</tr>
 		<tr>
@@ -81,8 +82,11 @@
  
 <script>
 var integration_id = false;	// jsp단에서 쉽게 아이디가 중복됐는지 아닌지 유효성을 나타내는 전역변수.
-var id2 = null;				// 객체에 private 한 변수를 선언할 수 없어서 아이디 체크 함수에서
+var keep_id = null;				// 객체에 private 한 변수를 선언할 수 없어서 아이디 체크 함수에서
 							// id의 값을 전역변수인 id2에 넣는 구문이다. 
+							
+var integration_nickname = false;	// 사용 가능한 닉네임이면 true							
+var keep_nickname = null;	// 닉네임 중복검사에 사용 되는 전역변수
 							
 var is_not_error = false;	// (수정 요망) 입력 조건에 맞지 않으면 회원가입 불가능의 기능을 구현할 수 있는 대체용 전역변수 선언. 
 							
@@ -90,11 +94,9 @@ function effectiveness() {			// 사용자 회원 가입 정보 유효성 및 무
     var pw = $("#pw").val();
     var pw2 = $("#pw2").val();
     var name = $("#name").val();
-    var nickname = $("#nickname").val();
     
-    if(id2 == null){
-        alert("ERROR\n아이디 입력 및 중복을 확인해주세요.");
-        //$("#id").focus();
+    if(keep_id == null){
+        alert("ERROR\n아이디 입력 및 중복 확인을 해주세요.");
         return false;
     }
     
@@ -116,29 +118,37 @@ function effectiveness() {			// 사용자 회원 가입 정보 유효성 및 무
         return false;
     }	
     
-    else if(nickname.length == 0){
-        alert("ERROR\n닉네임을 입력해주세요.");
-        $("#nickname").focus();
+    else if(keep_nickname == null){			
+		alert("ERROR\n닉네임 입력 및 중복 확인을 해주세요.");
+		$("#name").focus();
         return false;
-    }
+	}
+    
     else if(integration_id == false){
     	alert("ERROR\n아이디 중복 확인을 해주세요.");
         return false;
+    }  
+    
+    else if(integration_nickname == false){		
+			alert("ERROR\n닉네임 중복 확인을 해주세요.");
+    		return false;  	
     }
-    else if(integration_id == true){
+
+    else if(integration_id == true && integration_nickname == true){		// (fin) 모든 양식과 무결성을 만족했을 때 실행되는 조건문
     	if(confirm("회원가입을 하시겠습니까?")){
-            if(integration_id = true) {
+            if(integration_id = true && integration_nickname == true) {
             	alert("회원가입을 축하합니다");
             	is_not_error = true;		
             	interation_id = false;
+            	integration_nickname = false;
         	}
     	}
     }
 }
-	
+
 function checkID(){			// 아이디 중복 체크함수
 	var id = $("#id").val();
-	id2 = id;
+	keep_id = id;
 	$.ajax({
 		url : 'idCheck',
 		type : 'get',
@@ -146,7 +156,7 @@ function checkID(){			// 아이디 중복 체크함수
 		data : {id,id},
 		success:function(result){
 			if((id.search(/\W|\s/g) > -1) || id == ""){			// id 문자열에 특수문자,공백,빈칸이 포함되어있는지 확인하는 조건문
-		    	alert("ERROR\n아이디는 한/영/숫자만 입력해주세요.")
+		    	alert("ERROR\n아이디는 한/영/숫자만 입력해주세요.");
 		    }
 			else if(result == 0){
 				alert("SUCCESS : " + id + "\n사용 가능한 아이디입니다.");
@@ -155,6 +165,7 @@ function checkID(){			// 아이디 중복 체크함수
 			}
 			else {
 				alert("ERROR : " + id + "\n이미 사용중인 아이디입니다.");
+				keep_id = null;
 				integration_id = false;
 			}
 		},	
@@ -164,11 +175,45 @@ function checkID(){			// 아이디 중복 체크함수
 	});
 }
 
-	
+
+function checkNICKNAME(){			// 닉네임 중복 체크함수	
+    var nickname = $("#nickname").val();    
+    keep_nickname = nickname;
+	$.ajax({
+		url : 'nickCheck',
+		type : 'get',
+		dataType : "json",
+		data : {nickname,nickname},	
+		success:function(result){
+			if((nickname.search(/\W|\s/g) > -1) || nickname == ""){			// nickname 문자열에 특수문자,공백이 포함되어있는지 확인하는 조건문
+		    	alert("ERROR\n닉네임은 한/영/숫자만 입력해주세요.");
+		    }
+			else if(result == 0){
+				alert("SUCCESS : " + nickname + "\n사용 가능한 닉네임입니다.");
+				$("#nickname").attr("readonly",true); 	// 아이디 중복 체크가 성공적으로 완료되면 악용을 방지하기위해 아이디 입력 태그를 잠금.
+				integration_nickname = true;
+			}
+			else {
+				alert("ERROR : " + nickname + "\n이미 사용중인 닉네임입니다.");
+				keep_nickname = null;
+				integration_nickname = false;
+			}
+		},	
+		error:function(){	
+			alert("프로그램 에러입니다.");
+		}
+	});
+}
+
 	$(document).ready(function(){	
 		// 아이디 중복 확인
 		$(".is_same").click(function(){
 			checkID();
+		});
+		
+		// 닉네임 중복 확인
+		$(".nick_issame").click(function(){		//nick_issame
+			checkNICKNAME();
 		});
 		
 		//회원가입 버튼(회원가입 기능 작동)

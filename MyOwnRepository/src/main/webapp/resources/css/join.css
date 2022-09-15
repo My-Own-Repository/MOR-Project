@@ -22,25 +22,34 @@
 	height: 25px;
 	margin:auto
 }
-
-@media ( max-width: 480px ) {
+.nick_issame{
+	wight: 100%;
+	height: 25px;
+	margin:auto
+}
+@media ( max-width: 720px ) {
         .main-logo {
-          width: 100%;
-          height: auto;
+			width: 100%;
+			height: auto;
         }
         .tables {
-          float: none;
-          width: 100%;
-          height: auto;
+			float: none;
+			width: 100%;
+			height: auto;
         }
         .join_button {
-          float: none;
-          width: 100%;
-          height: auto;
+			float: none;
+			width: 100%;
+			height: auto;
         }
         .is_same {
-          float: none;
-          width: 100%;
-          height: auto;
+			float: none;
+			width: 100%;
+			height: auto;
         }
+        .nick_issame{
+			wight: 100%;
+			height: 25px;
+			margin:auto
+		}
 }

@@ -20,35 +20,21 @@ public class MemberMapper {
 
 	
 	@Test
-	public LoginDTO loginMember(LoginDTO member) throws Exception{
-		//MemberVO member = new MemberVO();
-		//LoginDTO member = new LoginDTO();
-		
+	public LoginDTO loginMember(LoginDTO member) throws Exception{			// 로그인
 		
 		return membermapper.loginMember(member);
 		
 	}
 	
-	
-	public void joinMember(MemberVO member) throws Exception {
+	public void joinMember(MemberVO member) throws Exception {			// 회원가입
 		// TODO Auto-generated method stub
-		/*
-		MemberVO member = new MemberVO();
-		
-		member.setid("admin");
-		member.setpw("admin");
-		member.setname("t");
-		member.setnickname("t");
-		member.setphone_number("t");
-		member.setemail("t");
-		*/
+
 		membermapper.joinMember(member);
 		
 	}
 	
-/*
-	public LoginDTO loginMember(LoginDTO member) {
-		return membermapper.loginMember(member);
+
+	public int nicknameCheck(String nickname) throws Exception{		// 닉네임 체크
+		return membermapper.nicknameCheck(nickname);
 	}
-	*/
 }

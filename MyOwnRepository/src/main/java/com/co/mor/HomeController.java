@@ -42,7 +42,8 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
-	public int integration_id = -1;		// 로그인 할 때 무결성 검사용 전역변수
+	public int integration_id = -1;		// 회원가입 할 때 무결성 검사용 전역변수
+	public int integration_nickname = -1;	// 회원가입 할 때 무결성 검사용 전역변수
 	
 	public String user_id = "";		// 세션에서 회원 정보 가져오기의 임시방편으로, 로그인한 사용자의 정보를 임시로 저장하기 위한 전역변수
 	public String user_nickname = "";	// 세션에서 회원 정보 가져오기의 임시방편으로, 프로그램 이용시 자주 사용되는 사용자의 닉네임을 저장해놓는 전역변수
@@ -74,70 +75,60 @@ public class HomeController {
     @ResponseBody
     @RequestMapping(value="/idCheck",method=RequestMethod.GET)
     public int idCheck(HttpSession session, @RequestParam("id") String id, MemberVO member, HttpServletRequest req, RedirectAttributes rttr, Model model) throws Exception{
-    	//String id = req.getParameter("id");
+    	//String id = req.getParameter("id"); 	
     	
-    	System.out.println("입력한 id는 바로바로\t" + id);
+    	int result = service.idCheck(id);	// db에 중복된 아이디 있으면 1, 없으면 0   	
     	
-    	int result = service.idCheck(id);//중복아이디 있으면 1, 없으면 0
-    	
-    	System.out.println("result의 값은 바로바로\t" + result);
-    	
-    	if(result == 0) {
-    		System.out.println("result 0임ㅋㅋ");
-    		//model.addAttribute("msg", "CORRECT\n사용할 수 있는 아이디입니다.");
+    	if(result == 0) {			// 중복 x , 사용 가능
     		integration_id = 0;	
     	}
-    	else {
-    		System.out.println("result 1임ㅋㅋ");
-    		//model.addAttribute("msg", "ERROR\n이미 사용중인 아이디입니다.");
+    	else {			// 중복 o , 사용 불가능
     		integration_id = 1;
     	}
 
     	return integration_id;
     }
     
+    @ResponseBody
+    @RequestMapping(value="/nickCheck",method=RequestMethod.GET)
+    public int nicknameCheck(HttpSession session, @RequestParam("nickname") String nickname, MemberVO member, HttpServletRequest req, RedirectAttributes rttr, Model model) throws Exception {
+    	System.out.println("닉네임1 : " + nickname);
+    	int result = service.nicknameCheck(nickname);	// db에 중복된 닉네임이 있으면 1, 없으면 0   	
+    	
+    	System.out.println("닉네임2 : " + result);
+    	
+    	if(result == 0) {			// 중복 x , 사용 가능
+    		integration_nickname = 0;	
+    	}
+    	else {			// 중복 o , 사용 불가능
+    		integration_nickname = 1;
+    	}
+    	
+		return integration_nickname;   	
+    }
     
     @RequestMapping(value = "/join", method = RequestMethod.GET)
     public String join(HttpSession session, MemberVO member, Model model, HttpServletRequest request, HttpServletResponse response, RedirectAttributes rttr) throws Exception{
-    	System.out.println("memberVO : " + member.id);
+    	// System.out.println("memberVO : " + member.id);
     	String url="join";
     	 	
     	List<MemberVO> saved_db = service.selectMember();
     	
     	if(member.id != null) {
-    		if(integration_id == 0) {
+    		if(integration_id == 0 && integration_nickname == 0) {
     			logger.info("회원가입 성공!");
     			service.joinMember(member);
     			url = "redirect:/";
     		}
-    		else if(integration_id == 1) {
+    		else if(integration_id == 1 || integration_nickname == 1) {
     			logger.info("회원가입 실패..");
     			url = "redirect:/join";
     		}
     	}
-    	// HttpSession session = request.getSession();
-    	/*
-    	if (member.id != null) {
-    		for(int i=0; i<saved_db.size(); i++) {			// db에 동일한 id가 이미 존재할 경우 회원가입 오류가 발생함을 jsp에 알림
-        		if (saved_db.get(i).id.equals(member.id) == true) {
-        			logger.info("회원가입 실패");  	
-        			//rttr.addFlashAttribute("msg", false);
-                    break;
-        		}
-        		else if(i == saved_db.size()-1){		// db의 모든 회원을 조회해도 중복된 id가 발견 되지 않으면 실행되는 조건문
-        			logger.info("회원가입 성공!");
-        			rttr.addFlashAttribute("msg", true);
-        			service.joinMember(member);  
-        			url = "redirect:/";
-        		}
-        	}
-    	}
-    	*/
-    	
+
 
     	integration_id = -1;
     	return url;
-       
 
     }
 
