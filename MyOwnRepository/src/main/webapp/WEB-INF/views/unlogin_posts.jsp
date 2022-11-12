@@ -21,12 +21,6 @@
 		}
 	</style>
 
-<%
-	String userNickname = (String) session.getAttribute("userNickname");  
-	String page_name = (String) request.getAttribute("page_name");
-	Integer page_num = (Integer) request.getAttribute("page_num");		// 정수형 변수는 int가 안되고 오로지 Integer로 선언해야함
-%> 
-
 	<script>
  		src="https://code.jquery.com/jquery-3.4.1.js"
  		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
@@ -36,42 +30,40 @@
 <title>나만의 저장소 - MOR !</title>
 </head>
 <body>
-	<a href="/user/userMain">
+	<a href="/">
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<div>
 		<input type="text" placeholder="검색어 입력">
-		<input type="button" value="검색" class="search">
+		<button>검색</button>
 	</div>
 	
 	<ul class="menu">
 		<li>
 			<a href="#">게시판</a>
 			<ul class="submenu">
-				<li><a href="/user/userMain">자유게시판</a></li>
-				<li><a href="/user/secret_board">비밀게시판</a></li>
+				<li><a href="/">자유게시판</a></li>
+				<li><a href="/LoginPage">비밀게시판</a></li>
 			</ul>
 		</li>
 		<li>
 			<a href="#">저장소</a>
 			<ul class="submenu">
-				<li><a href="/my_repo">나만의 저장소</a></li>
-				<li><a href="/our_repo">공유 저장소</a></li>
+				<li><a href="/LoginPage">나만의 저장소</a></li>
+				<li><a href="/LoginPage">공유 저장소</a></li>
 			</ul>
 		</li>
 		<li>
-			<a href="/user/mypage">${userNickname}</a>
+			<a href="/LoginPage">내정보</a>
 		</li>
 	</ul>
 		<hr>
 	<p>자유게시판</p><hr><br><br>
-	<c:forEach items="${SelectPost}" var="letter">
-
-	<table border="1">	
+	<table border="1">
+		<c:forEach items="${SelectPost}" var="letter">	
 			<tr>
 				<td><b>&nbsp;No.${letter.num}</b></td>
 			</tr>
-			
 			<table border="1" class="title_table">			
 				<tr>
 					<td align="center"><b>제목</b></td>
@@ -84,14 +76,13 @@
 					<td>&nbsp;조회수 ${letter.view}</td>
 				</tr>
 			</table>
-			
 			<table border="1" class="content_table">
 				<tr>
 					<td colspan="4">&nbsp;${letter.content}</td>
 				</tr>
 			</table>
 	
-		
+		</c:forEach>
 	</table>
 	
 	<br>
@@ -100,63 +91,13 @@
 		<c:forEach items="${pre_post}" var="pre">	
 			<c:forEach items="${next_post}" var="next">		
 				<tr>
-					<td>이전글&nbsp;&nbsp;<a href="/user/posts/${pre.num}">${pre.title}</a></td>			
-					<td>다음글&nbsp;&nbsp;<a href="/user/posts/${next.num}">${next.title}</a></td>
+					<td>이전글&nbsp;&nbsp;<a href="/unlogin_posts/${pre.num}">${pre.title}</a></td>			
+					<td>다음글&nbsp;&nbsp;<a href="/unlogin_posts/${next.num}">${next.title}</a></td>
 				</tr>		
 			</c:forEach>	
 		</c:forEach>
 	</table>
-	
-	<br><br>
-	
-	<input type="button" onclick="location.href='/user/update_board'" value="수정" id="edit_btn" class="edit_btn">
-	
-	
-	<script>
-		// 게시글 작성자와 현재 게시글을 열람하는 사용자가 동일 인물일 경우
-		// 게시글 수정 및 삭제 버튼이 표시되고, 동일 인물이 아닐경우 버튼을 숨긴다.
-		function is_mine(){
-			const edit_btn = document.getElementById('edit_btn');
-			const delete_btn = document.getElementById('delete_btn');
-			
-			var page_id = '${page_name}';
-			var session_id = '${userNickname}';
-			
-			if(page_id != session_id){
-				edit_btn.style.display = 'none';		// 버튼 숨김
-				delete_btn.style.display = 'none';
-			}
-			else if(page_id == session_id){
-				edit_btn.style.display = 'block';		// 버튼 활성화
-				delete_btn.style.display = 'block';
-			}
-			else {
-				alert("ERROR");
-			}
-		}
-		is_mine();
-	</script>
-	
-	</c:forEach>
-	
-	<form id="delete_form" action="/user/delete_board" method="get">
-		<input type="hidden" name="num" value="<%=page_num %>">
-		<button type="submit" class="delete_btn2">삭제</button>
-	</form>
-	
-	<script>
-	/*
-		function deletePost(p_num){
-			if(confirm("게시글을 삭제하시겠습니까?")){
-				alert("SUCCESS\n정상적으로 삭제되었습니다.");
-				$("#delete_form").attr("action", "/user/delete_board")l
-				$("#delete_form").submit();
-			}
-		}
-	*/
-	</script>
 
-	
 	<c:if test="${msg == false}">
 	<script>
 		alert('ERROR\n이미 삭제된 게시글 입니다!!');

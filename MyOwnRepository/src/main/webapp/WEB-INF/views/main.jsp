@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,6 +20,12 @@
 			color:blue;
 		}
 	</style>
+	
+	<script>
+ 		src="https://code.jquery.com/jquery-3.4.1.js"
+ 		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+ 		crossorigin="anonymous"></script>
+ 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">	
 
 <title>나만의 저장소 - MOR !</title>
 </head>
@@ -53,26 +59,32 @@
 	</ul>
 	<hr>
 	<p>자유게시판</p><hr><br><br>
+	
 	<table border="1" class="board_table">
-	<thead class="board_head">
-		<tr>
-			<td>No</td>
-			<td>제목</td>
-			<td>닉네임</td>
-			<td>등록일</td>
-			<td>조회</td>
-		</tr>
-	</thead>
-	<tbody>
+		<thead class="board_head">
 			<tr>
-				<td>1</td>
-				<td><a href="#">TEST TITLE</a> </td>
-				<td>TEST NICKNAME</td>
-				<td>TEST DAY</td>
-				<td>TEST COUNT</td>
+				<td>No</td>
+				<td>제목</td>
+				<td>닉네임</td>
+				<td>등록일</td>
+				<td>조회</td>
 			</tr>
-	</tbody>
-</table>
+		</thead>
+		
+		<tbody>
+			<c:forEach items="${BoardList}" var="letter">					
+                <tr>
+                	<td>${letter.num}</td>
+                    <td><a href="/unlogin_posts/${letter.num}">${letter.title}</a></td>
+                    <td>${letter.nickname}</td>
+                    <td>${letter.date}</td>
+                    <td>${letter.view}</td>
+                </tr>       
+            </c:forEach>
+		</tbody>
+	
+	</table>
+
 	<br><input type="button" onclick="location.href='LoginPage'" class="write_button" value="글쓰기">
 </body>
 </html>

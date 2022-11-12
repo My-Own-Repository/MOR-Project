@@ -1,5 +1,6 @@
 package com.co.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -39,5 +40,32 @@ public class boardDAOImpl implements boardDAO{
 		// TODO Auto-generated method stub
 		sqlSession.update(Namespace+".addView", num);
 	}
+
+	@Override
+	public int selectMinNum() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".selectMinNum");
+	}
+
+	@Override
+	public int selectMaxNum() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".selectMaxNum");
+	}
+
+	@Override
+	public void updateBoard(boardDTO letter) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(Namespace+".updateBoard", letter);
+		
+	}
+
+	@Override
+	public void deleteBoard(int num) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.delete(Namespace+".deleteBoard", num);		
+	}
+
+
 	
 }
