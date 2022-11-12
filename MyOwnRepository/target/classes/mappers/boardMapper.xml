@@ -22,5 +22,20 @@
 		UPDATE board SET view=view+1 WHERE num=#{num}
 	</update>
 	
+	<select id="selectMinNum" resultType="int">
+		SELECT MIN(num) AS "min_num" FROM board
+	</select>
+	
+	<select id="selectMaxNum" resultType="int">
+		SELECT MAX(num) AS "max_num" FROM board
+	</select>
+	
+	<update id="updateBoard">
+		UPDATE board SET title=#{title}, content=#{content} WHERE num=#{num}
+	</update>
+	
+	<delete id="deleteBoard">
+		DELETE FROM board WHERE num=#{num}
+	</delete>
 </mapper>
 

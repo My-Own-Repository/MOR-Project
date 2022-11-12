@@ -43,7 +43,8 @@ input{
 	outline: none;
 	float: left;
 }
-button{
+
+.search{
 	width: 50px;
 	height: 100%;
 	border: 0px
@@ -71,6 +72,36 @@ button{
 	background: gray;
 	left: 448px;
 	margin:auto;
+	color: blue;
+}
+
+.edit_btn{
+	position: relative;
+	width: 80px;
+	height: 100%;
+	border: 1px
+	background: gray;
+	left: 1175px;
+	color: blue;
+}
+
+.delete_btn{
+	position: relative;
+	width: 80px;
+	height: 100%;
+	border: 1px
+	background: gray;
+	left: 1175px;
+	color: blue;
+}
+
+.delete_btn2{
+	position: relative;
+	width: 80px;
+	height: 40px;
+	border: 1px
+	background: gray;
+	left: 1175px;
 	color: blue;
 }
 
@@ -153,6 +184,24 @@ a{text-decoration:none;font-size:14px}
         	float: none;
         	width: 100%;
 			height: auto;
+        }
+        .edit_btn{
+        	position: relative;
+        	width: 20%;
+			height: auto;
+			left: 0px;	
+        }
+        .delete_btn{
+        	position: relative;
+        	width: 20%;
+			height: auto;
+			left: 0px;	
+        }
+        .delete_btn2{
+        	position: relative;
+        	width: 20%;
+			height: auto;
+			left: 0px;
         }
 }
 

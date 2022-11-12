@@ -1,5 +1,6 @@
 package com.co.mapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -35,4 +36,21 @@ public class BoardMapper {
 	public void addView(int num) throws Exception {
 		boardmapper.addView(num);
 	}
+	
+	public int selectMinNum() throws Exception {
+		return boardmapper.selectMinNum();
+	}
+	
+	public int selectMaxNum() throws Exception {
+		return boardmapper.selectMaxNum();
+	}
+	
+	public void updateBoard(boardDTO letter) throws Exception{
+		boardmapper.updateBoard(letter);
+	}
+	
+	public void deleteBoard(int num) throws Exception {
+		boardmapper.deleteBoard(num);
+	}
+
 }

@@ -48,6 +48,26 @@ button{
 	color:blue;
 }
 
+.small_write_btn2{
+	font-size: 18px;
+	width: 48%;
+	height: 100%;
+	border: 1px;
+	font-weight: bold;
+	float: left;
+	color:blue;
+}
+
+.small_write_btn3{
+	font-size: 18px;
+	width: 48%;
+	height: 100%;
+	border: 1px;
+	font-weight: bold;
+	float: right;
+	color:blue;
+}
+
 .write_button{
 	position: relative;
 	width: 70px;

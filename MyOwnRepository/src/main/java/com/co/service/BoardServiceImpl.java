@@ -1,5 +1,6 @@
 package com.co.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,6 +39,32 @@ public class BoardServiceImpl implements BoardService{
 		// TODO Auto-generated method stub
 		dao.addView(num);
 	}
+
+	@Override
+	public int selectMinNum() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.selectMinNum();
+	}
+
+	@Override
+	public int selectMaxNum() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.selectMaxNum();
+	}
+
+	@Override
+	public void updateBoard(boardDTO letter) throws Exception {
+		// TODO Auto-generated method stub
+		dao.updateBoard(letter);
+	}
+
+	@Override
+	public void deleteBoard(int num) throws Exception {
+		// TODO Auto-generated method stub
+		dao.deleteBoard(num);
+	}
+
+
 
    
 }
