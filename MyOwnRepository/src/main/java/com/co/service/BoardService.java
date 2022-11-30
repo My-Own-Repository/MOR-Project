@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.co.dto.boardDTO;
+import com.co.dto.commentDTO;
 
 public interface BoardService {
 	public void writeBoard(boardDTO letter) throws Exception;
@@ -13,6 +14,7 @@ public interface BoardService {
 	public void addView(int num) throws Exception;
 	public void updateBoard(boardDTO letter) throws Exception;
 	public void deleteBoard(int num) throws Exception;
+	public void writeComment(commentDTO letter) throws Exception;
 	
 	public int selectMinNum() throws Exception;	
 	public int selectMaxNum() throws Exception;

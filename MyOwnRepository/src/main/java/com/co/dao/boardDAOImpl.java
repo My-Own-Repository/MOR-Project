@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.co.dto.boardDTO;
+import com.co.dto.commentDTO;
 
 @Repository
 public class boardDAOImpl implements boardDAO{
@@ -64,6 +65,12 @@ public class boardDAOImpl implements boardDAO{
 	public void deleteBoard(int num) throws Exception {
 		// TODO Auto-generated method stub
 		sqlSession.delete(Namespace+".deleteBoard", num);		
+	}
+
+	@Override
+	public void writeComment(commentDTO letter) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert(Namespace+".writeComment", letter);
 	}
 
 

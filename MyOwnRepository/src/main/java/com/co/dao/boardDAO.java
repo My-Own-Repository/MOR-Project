@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.co.dto.boardDTO;
+import com.co.dto.commentDTO;
 
 @Repository
 public interface boardDAO {
@@ -15,6 +16,7 @@ public interface boardDAO {
 	public void addView(int num) throws Exception;		// 조회수 증가
 	public void updateBoard(boardDTO letter) throws Exception;		// 글 수정
 	public void deleteBoard(int num) throws Exception;		// 글 삭제
+	public void writeComment(commentDTO letter) throws Exception;	// 댓글 작성
 	
 	// 첫 글과 마지막 글의 고유번호 조회(이전,다음 글 조회할때 사용)
 	public int selectMinNum() throws Exception;	

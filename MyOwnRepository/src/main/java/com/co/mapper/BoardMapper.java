@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.co.dto.boardDTO;
+import com.co.dto.commentDTO;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -53,4 +54,7 @@ public class BoardMapper {
 		boardmapper.deleteBoard(num);
 	}
 
+	public void writeComment(commentDTO letter) throws Exception{
+		boardmapper.writeComment(letter);
+	}
 }

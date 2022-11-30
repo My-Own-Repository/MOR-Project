@@ -110,9 +110,10 @@
 	<br><br>
 	
 	<input type="button" onclick="location.href='/user/update_board'" value="수정" id="edit_btn" class="edit_btn">
+	<input type="button" onclick="delete_board(${page_num})" id="delete_btn" class="delete_btn" value="삭제">
+
 	
-	
-	<script>
+	<script>	
 		// 게시글 작성자와 현재 게시글을 열람하는 사용자가 동일 인물일 경우
 		// 게시글 수정 및 삭제 버튼이 표시되고, 동일 인물이 아닐경우 버튼을 숨긴다.
 		function is_mine(){
@@ -135,26 +136,18 @@
 			}
 		}
 		is_mine();
+		
+		function delete_board(num) {
+			if(confirm("게시글을 삭제하시겠습니까?")){
+				alert("SUCCESS\n정상적으로 삭제되었습니다.");
+				location.href='/user/delete_board?num='+num;		// 컨트롤러에 삭제할 게시글 번호를 전송
+			}
+		}		
 	</script>
+	
 	
 	</c:forEach>
 	
-	<form id="delete_form" action="/user/delete_board" method="get">
-		<input type="hidden" name="num" value="<%=page_num %>">
-		<button type="submit" class="delete_btn2">삭제</button>
-	</form>
-	
-	<script>
-	/*
-		function deletePost(p_num){
-			if(confirm("게시글을 삭제하시겠습니까?")){
-				alert("SUCCESS\n정상적으로 삭제되었습니다.");
-				$("#delete_form").attr("action", "/user/delete_board")l
-				$("#delete_form").submit();
-			}
-		}
-	*/
-	</script>
 
 	
 	<c:if test="${msg == false}">

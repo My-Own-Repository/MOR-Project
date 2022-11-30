@@ -37,5 +37,9 @@
 	<delete id="deleteBoard">
 		DELETE FROM board WHERE num=#{num}
 	</delete>
+	
+	<select id="writeComment">
+		INSERT INTO comment (b_num, c_num, nickname, content) VALUES (#{b_num}, #{c_num}, #{nickname}, #{content})
+	</select>
 </mapper>
 

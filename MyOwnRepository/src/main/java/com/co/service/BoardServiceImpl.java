@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.co.dao.boardDAO;
 import com.co.dto.boardDTO;
+import com.co.dto.commentDTO;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -62,6 +63,12 @@ public class BoardServiceImpl implements BoardService{
 	public void deleteBoard(int num) throws Exception {
 		// TODO Auto-generated method stub
 		dao.deleteBoard(num);
+	}
+
+	@Override
+	public void writeComment(commentDTO letter) throws Exception {
+		// TODO Auto-generated method stub
+		dao.writeComment(letter);
 	}
 
 
