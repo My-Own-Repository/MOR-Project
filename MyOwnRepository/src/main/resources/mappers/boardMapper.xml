@@ -11,11 +11,11 @@
 	</select>
 	
 	<select id="printBoard" resultType="boardDTO">
-		SELECT num, title, nickname, date, view FROM board
+		SELECT num, title, nickname, comment, date, view FROM board
 	</select>
 	
 	<select id="selectBoard" resultType="boardDTO">
-		SELECT num, title, nickname, date, view, content FROM board WHERE num=#{num}
+		SELECT num, title, nickname, comment, date, view, content FROM board WHERE num=#{num}
 	</select>
 
 	<update id="addView">
@@ -41,5 +41,18 @@
 	<select id="writeComment">
 		INSERT INTO comment (b_num, c_num, nickname, content) VALUES (#{b_num}, #{c_num}, #{nickname}, #{content})
 	</select>
+	
+	<select id="printComment" resultType="commentDTO">
+		SELECT * FROM comment WHERE b_num=#{b_num}
+	</select>
+	
+	<update id="upComment">
+		UPDATE board SET comment=comment+1 WHERE num=#{num}
+	</update>
+	
+	<update id="downComment">
+		UPDATE board SET comment=comment-1 WHERE num=#{num}
+	</update>
+	
 </mapper>
 

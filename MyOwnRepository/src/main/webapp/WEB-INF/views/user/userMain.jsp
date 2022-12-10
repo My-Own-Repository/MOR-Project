@@ -81,7 +81,7 @@
 			<c:forEach items="${BoardList}" var="letter">					
                 <tr>
                 	<td>${letter.num}</td>
-                    <td><a href="/user/posts/${letter.num}">${letter.title}</a></td>
+                    <td><a href="/user/posts/${letter.num}">${letter.title}</a><font size="2px" color="red">&nbsp;&nbsp;[${letter.comment}]</font></td>
                     <td>${letter.nickname}</td>
                     <td>${letter.date}</td>
                     <td>${letter.view}</td>
@@ -91,7 +91,7 @@
 	
 	</table>
 	
-	<br><input type="button" onclick="location.href='/user/write'" class="write_button" value="글쓰기">
+	<br><br><input type="button" onclick="location.href='/user/write'" class="write_button" value="글쓰기">
 	
 
 

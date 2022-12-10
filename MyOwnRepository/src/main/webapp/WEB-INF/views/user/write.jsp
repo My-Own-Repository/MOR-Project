@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -85,5 +86,12 @@
 			</tr>
 		</table>
 	</form>
+	
+	<c:if test="${b_msg == false}">
+		<script>
+			alert('ERROR\n1~1000자 이내의 내용을 입력해주세요!!');
+		</script>
+	</c:if>
+	
 </body>
 </html>

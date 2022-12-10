@@ -8,6 +8,7 @@
             <typeAlias type="com.co.dto.MemberVO" alias="MemberVO"/>
             <typeAlias type="com.co.dto.LoginDTO" alias="LoginDTO"/>
             <typeAlias type="com.co.dto.boardDTO" alias="boardDTO"/>
+            <typeAlias type="com.co.dto.commentDTO" alias="commentDTO"/>
         </typeAliases>
          
        
