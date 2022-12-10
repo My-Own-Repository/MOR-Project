@@ -30,6 +30,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
 import com.co.dto.boardDTO;
+import com.co.dto.commentDTO;
 import com.co.service.BoardService;
 import com.co.service.MemberService;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -237,7 +238,7 @@ public class HomeController {
     
     
     @RequestMapping(value = "/user/write", method = RequestMethod.POST)
-    public String write(HttpServletRequest request, boardDTO letter) throws Exception {
+    public String write(HttpServletRequest request, boardDTO letter, Model model) throws Exception {
     	HttpSession session = request.getSession(false);
     	
     	if(session == null) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
@@ -247,7 +248,7 @@ public class HomeController {
     	//boardDTO saved_board = b_service.writeBoard();
     	
     	if(letter.title != null && letter.content != null) {
-    		if(letter.title.length() <= 35 && letter.content.length() <= 1000) {
+    		if(letter.title.length() > 0 && letter.content.length() <= 1000) {
     			logger.info("글작성 성공!");
     			letter.id = user_id;			// 로그인할때 저장해놓은 사용자의 id와 nickname을 글 작성자의 개인정보로 사용 (글 작성시 사용자가 자신의 id와 nickname을 따로 작성하지 않기때문에 프로그램에서 자체적으로 저장해줌)
     			letter.nickname = user_nickname;
@@ -255,8 +256,9 @@ public class HomeController {
     			
     			url = "redirect:/user/userMain";
     		}
-    		else if(letter.title.length() > 35 || letter.content.length() > 1000) {
+    		else if(letter.title.length() == 0 || letter.content.length() > 1000) {
     			logger.info("글작성 실패..");
+    			model.addAttribute("b_msg", false);
     			url = "redirect:/user/write";
     		}
     	}
@@ -309,9 +311,18 @@ public class HomeController {
     
     // posts, main_posts는 로그인한 사용자의 게시글 조회에 관한 함수이다. (게시글 선택시 해당 게시글 보여주기, 조회수 증가 등)
     
+    /*
     @SuppressWarnings("null")
-	@RequestMapping(value = "/user/posts/{urlnum}", method = RequestMethod.GET)
-    public String posts(HttpServletRequest request, HttpServletResponse response, Model model, @PathVariable("urlnum") String urlnum) throws Exception {
+	@RequestMapping(value = "/user/posts/{urlnum}")		// 게시글에 대한 내용을 jsp에서 받아오고 연산하는곳
+    public void post(HttpServletRequest request, @PathVariable("urlnum") String urlnum) throws Exception{
+    	HttpSession session = request.getSession(false);
+    }
+    */
+    
+    
+    @SuppressWarnings("null")
+	@RequestMapping(value = "/user/posts/{urlnum}", method = RequestMethod.GET)		// 게시글에 대한 내용을 jsp에서 받아오고 연산하는곳
+    public String posts(HttpServletRequest request, HttpServletResponse response, Model model, @PathVariable("urlnum") String urlnum, commentDTO letter) throws Exception {
     	HttpSession session = request.getSession(false);
     	if(session == null) {							
     		return "redirect:/LoginPage";
@@ -340,8 +351,7 @@ public class HomeController {
          	    	
      	}
      	
-     	
-     	
+     		
      	// 열람중인 해당 게시글이 마지막 글이 아닐 경우 실행되는 조건문
      	if(number != last_num) {
      		// 다음글을 찾는 반복문
@@ -352,9 +362,7 @@ public class HomeController {
          	next_posts = b_service.selectBoard(number+next_num);		// 다음글 저장
          		
      	}   
-    	
-    	
-    	
+	
     	
     	show_post = b_service.selectBoard(number);		// 전역변수에 해당 게시글 조회결과 저장
     	if(show_post == null) {				// 열람을 위해 클릭한 다른 유저의 게시글이 이미 삭제되었을 경우 실행되는 조건문 
@@ -364,14 +372,31 @@ public class HomeController {
     	else {
     		b_service.addView(number);			// 조회수 증가
     	}
-
+    	
+    	/*
+    	if(letter.content != null) {		// 댓글 작성하는 구문
+    		if(letter.content.length() > 0 && letter.content.length() <= 300) {
+    			logger.info("댓글작성 성공!");
+   			// 로그인할때 저장해놓은 사용자의 nickname을 댓글 작성자의 개인정보로 사용 (댓글 작성시 사용자가 자신의 nickname을 따로 작성하지 않기때문에 프로그램에서 자체적으로 저장해줌)
+    			
+        	//	letter.b_num = number;		// 게시글 고유번호 저장
+    		//	letter.nickname = user_nickname; 	// 댓글 작성자 닉네임 저장
+    			
+    			b_service.writeComment(letter);   		
+    		}
+    		else {
+    			logger.info("댓글작성 실패..");
+    			model.addAttribute("c_msg", false);
+    		}
+    	}
+    	*/
 		return path;
     	
     }
     
     
     @RequestMapping(value = "/user/posts")
-    public String main_posts(HttpServletRequest request, Model model) throws Exception {
+    public String main_posts(HttpServletRequest request, Model model) throws Exception {		// 연산(실행)이 끝난 결과값을 다시 jsp로 보내주는 역할 
     	HttpSession session = request.getSession(false);
     	if(session == null) {							
     		return "redirect:/LoginPage";
@@ -382,13 +407,43 @@ public class HomeController {
     	
     	model.addAttribute("page_num", show_post.get(0).num);		// 게시글 삭제에 필요한 게시글의 고유번호를 JSP에 보내는 구문이다.
     	
-    	model.addAttribute("SelectPost", show_post);
+    	model.addAttribute("SelectPost", show_post);		// 해당 게시글의 모든 정보(댓글 제외)를 JSP에 보내는 구문.    
     	
     	// 이전글과 다음글의 정보를 jsp로 보내기
     	model.addAttribute("pre_post", pre_posts);
     	model.addAttribute("next_post", next_posts);
     	
+    	List<commentDTO> cmt = b_service.printComment(show_post.get(0).num);
+    	
+    	
+    	model.addAttribute("printComment", cmt);		// 해당 고유번호를 가진 게시글의 모든 댓글의 정보를 jsp에 보내는 구문
+    	
     	return "/user/posts";
+    }
+    
+    // 게시글에 댓글 작성을 위해 jsp에서 정보를 받아오고 연산하기위해 만들어진 부분
+    @RequestMapping(value = "/user/posts/comment", method = RequestMethod.POST)		
+    public String comment(HttpServletRequest request, HttpServletResponse response, Model model, commentDTO letter) throws Exception {
+    	HttpSession session = request.getSession(false);
+		
+    	if(letter.content != null) {		// 댓글 작성하는 구문
+    		if(letter.content.length() > 0 && letter.content.length() <= 300) {
+    			logger.info("댓글작성 성공!");
+   			// 로그인할때 저장해놓은 사용자의 nickname을 댓글 작성자의 개인정보로 사용 (댓글 작성시 사용자가 자신의 nickname을 따로 작성하지 않기때문에 프로그램에서 자체적으로 저장해줌)
+    			
+        	//	letter.b_num = number;		// 게시글 고유번호 저장
+    		//	letter.nickname = user_nickname; 	// 댓글 작성자 닉네임 저장
+    			
+    			b_service.writeComment(letter);
+    			b_service.upComment(letter.b_num);
+    		}
+    		else {
+    			logger.info("댓글작성 실패..");
+    			model.addAttribute("c_msg", false);
+    		}
+    	}
+    	String urlnum = Integer.toString(show_post.get(0).num);
+    	return "redirect:/user/posts/"+urlnum;
     }
     
     @RequestMapping(value = "/user/delete_board")

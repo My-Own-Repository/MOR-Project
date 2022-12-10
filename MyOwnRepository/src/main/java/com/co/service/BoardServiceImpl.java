@@ -71,6 +71,24 @@ public class BoardServiceImpl implements BoardService{
 		dao.writeComment(letter);
 	}
 
+	@Override
+	public List<commentDTO> printComment(int b_num) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.printComment(b_num);
+	}
+
+	@Override
+	public void upComment(int num) throws Exception {
+		// TODO Auto-generated method stub
+		dao.upComment(num);
+	}
+
+	@Override
+	public void downComment(int num) throws Exception {
+		// TODO Auto-generated method stub
+		dao.downComment(num);
+	}
+
 
 
    

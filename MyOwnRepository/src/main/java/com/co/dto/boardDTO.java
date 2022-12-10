@@ -7,17 +7,19 @@ public class boardDTO {
 	public String content;
     public String id;
     public String nickname;
+    public int comment;
     public String date;
     public int view;
 
   	public boardDTO() {}
-  	public boardDTO(int num, String title, String content, String id, String nickname, String date, int view) {
+  	public boardDTO(int num, String title, String content, String id, String nickname, int comment, String date, int view) {
   		super();
   		this.num = num;
   		this.title = title;
   		this.content = content;
   		this.id = id;
   		this.nickname = nickname;
+  		this.comment = comment;
   		this.date = date;
   		this.view = view;
   	}
@@ -61,6 +63,14 @@ public class boardDTO {
         this.nickname = nickname;
     }
 
+    public int getcomment() {
+    	return comment;
+    }
+    
+    public void setcomment(int comment) {
+    	this.comment = comment;
+    }
+    
     public String getdate() {
         return date;
     }

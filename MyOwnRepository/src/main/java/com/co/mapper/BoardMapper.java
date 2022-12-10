@@ -57,4 +57,16 @@ public class BoardMapper {
 	public void writeComment(commentDTO letter) throws Exception{
 		boardmapper.writeComment(letter);
 	}
+	
+	public List<commentDTO> printComment(int b_num) throws Exception{
+		return boardmapper.printComment(b_num);
+	}
+	
+	public void upComment(int num) throws Exception{
+		boardmapper.upComment(num);
+	}
+	
+	public void downComment(int num) throws Exception{
+		boardmapper.downComment(num);
+	}
 }

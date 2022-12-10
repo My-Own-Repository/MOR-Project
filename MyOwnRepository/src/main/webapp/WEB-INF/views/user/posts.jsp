@@ -22,8 +22,8 @@
 	</style>
 
 <%
-	String userNickname = (String) session.getAttribute("userNickname");  
-	String page_name = (String) request.getAttribute("page_name");
+	String userNickname = (String) session.getAttribute("userNickname");  	// 로그인한 유저의 nickname
+	String page_name = (String) request.getAttribute("page_name");		// 글 작성자의 nickname
 	Integer page_num = (Integer) request.getAttribute("page_num");		// 정수형 변수는 int가 안되고 오로지 Integer로 선언해야함
 %> 
 
@@ -79,12 +79,11 @@
 				</tr>
 				<tr>
 					<td align="center" style="color:blue">${letter.nickname}</td>
-					<td>&nbsp;댓글 0</td>
+					<td>&nbsp;댓글 <font color="red">${letter.comment}</font></td>
 					<td>&nbsp;${letter.date}</td>
 					<td>&nbsp;조회수 ${letter.view}</td>
 				</tr>
 			</table>
-			
 			<table border="1" class="content_table">
 				<tr>
 					<td colspan="4">&nbsp;${letter.content}</td>
@@ -144,16 +143,64 @@
 			}
 		}		
 	</script>
+		<br><br><br><hr><br><br>
 	
+			
+		<table class="title_table">	
+			<tr>
+				<td colspan="4">&nbsp;<b>댓글&nbsp;</b><font size="3px", color="red">${letter.comment}</font></td>
+			</tr>
+		</table>
 	
 	</c:forEach>
 	
-
+	<br>
+	<c:forEach items="${printComment}" var="cmt">
+		<table class="comment_table">
+			<tr>
+				<th>&nbsp;&nbsp;${cmt.nickname}</th>
+				<td>&nbsp;&nbsp;${cmt.date}</td>					
+			</tr>
+		</table>
+		<table class="comment_main">
+			<tr>
+				<td colspan="4"><br>&nbsp;${cmt.content}<br></td>
+			</tr>
+		</table>
+		<br><br><br>
+	</c:forEach>
 	
+	<hr><br>
+	
+	
+	<form action="/user/posts/comment" method="post">
+		<input type="hidden" name="b_num" value="<%=page_num %>">
+		<input type="hidden" name="nickname" value="<%=userNickname %>">
+		<table border="1" class="comment_table">			
+			<tr>
+				<td colspan="4"><textarea name="content"></textarea></td>
+			</tr>
+			<tr>
+				<td colspan="4"><input type="file" name="file"></td>
+			</tr>		
+		</table>
+		<br>
+		<input type="button" onClick="window.location.reload()" value="새로고침" class="reload_btn">
+		<input type="submit" value="작성" class="comment_btn">
+	</form>
+	
+	
+	
+	<c:if test="${c_msg == false}">
+		<script>
+			alert('ERROR\n1~300자 이내의 내용을 입력해주세요!!');
+		</script>
+	</c:if>
+
 	<c:if test="${msg == false}">
-	<script>
-		alert('ERROR\n이미 삭제된 게시글 입니다!!');
-	</script>
-</c:if>
+		<script>
+			alert('ERROR\n이미 삭제된 게시글입니다!!');
+		</script>
+	</c:if>
 </body>
 </html>

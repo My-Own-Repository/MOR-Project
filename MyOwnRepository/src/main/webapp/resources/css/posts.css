@@ -7,17 +7,74 @@ table {
 }
 .title_table{
 	position: relative;
+	background-color: #F6F6F6;
 	width: 350px;
 	height: auto;
 	margin: auto;
 	text-align: left;
 }
+
 .content_table{
 	position: relative;
 	width: 350px;
 	height: 400px;
 	margin: auto;
 	text-align: left;
+}
+.comment_table{
+	position: relative;
+	background-color: #FAFAFA;
+	color: blue;
+	width: 740px;
+	height: 50px;
+	margin: auto;
+	text-align: left;
+}
+.comment_table th{
+	position: relative;
+	background-color: #FAFAFA;
+	border: 1px dotted #bbb;
+	color: blue;
+	font-weight: bold;
+	padding: 10px;
+	width: 540px;
+	height: 25px;
+	margin: auto;
+	text-align: left;
+}
+.comment_main{
+	position: relative;
+	background-color: #FAFAFA;
+	width: 740px;
+	height: 200px;
+	margin: auto;
+	padding: 10px;
+	text-align: left;
+}
+textarea{
+	position: relative;
+	width: 740px; 
+	height: 200px;
+	margin: auto;
+	text-align: left;
+}
+.comment_btn{
+	position: absolute;		/* 절대위치로 지정 (그냥 써봄) */
+	background: green;
+	color: white;
+	width: 350px;
+	height: 30px;
+	left: 975px;
+	margin: auto;
+}
+.reload_btn{
+	position: absolute;
+	background: lightgray;
+	color: white;
+	width: 350px;
+	height: 30px;
+	left: 580px;
+	margin: auto;
 }
 
 .main-logo {
@@ -42,6 +99,12 @@ input{
 	border: 0px;
 	outline: none;
 	float: left;
+}
+hr {
+	border-top: 1px dotted #bbb;
+	height: auto;
+	width: 50%;
+	margin:auto;
 }
 
 .search{
@@ -183,8 +246,8 @@ a{text-decoration:none;font-size:14px}
         .content_table{
         	float: none;
         	width: 100%;
-			height: auto;
         }
+        
         .edit_btn{
         	position: relative;
         	width: 20%;
@@ -203,6 +266,31 @@ a{text-decoration:none;font-size:14px}
 			height: auto;
 			left: 0px;
         }
+        .comment_table{
+        	float: none;
+        	width: 100%;
+			height: auto;
+        }
+		textarea{
+			position: none;
+			width: 100%; 
+			height: 50px;
+		}
+        .comment_btn{
+        	position: relative;
+        	width: 20%;
+			height: auto;
+			left: 0px;
+        }    
+        .reload_btn{
+        	position: relative;
+        	width: 20%;
+			height: auto;
+			left: 0px;
+        }
+        hr{
+        	width: 100%;
+        }     
 }
 
 @media ( min-width: 1024px ) {		/* 스크린 x축의 길이가 1024px이상 일때 적용됨 */

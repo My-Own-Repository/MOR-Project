@@ -83,12 +83,14 @@ a{text-decoration:none;font-size:14px}
 }
 
 .board_table {
+	border: 1px;
 	margin:auto;
 	width: 1024px;
     height: auto;
     text-align: center;
 }
 .board_head {
+	background-color: lightgray;
 	color:blue;
 }
 
@@ -113,17 +115,24 @@ a{text-decoration:none;font-size:14px}
           height: auto;
         }
         .board_table {
+        	border: 1px;
         	float: none;
         	width: 100%;
         	height: auto;
         }
+        .board_head {  	
+			background-color: lightgray;
+			color:blue;
+		}
         .write_button {
         	position: relative;
         	width: 20%;
 			height: auto;
 			left: 0px;	
         }
-        
+        hr{
+        	width: 100%;
+        } 
 }
 
 

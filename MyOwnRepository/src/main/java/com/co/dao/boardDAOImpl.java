@@ -73,6 +73,25 @@ public class boardDAOImpl implements boardDAO{
 		sqlSession.insert(Namespace+".writeComment", letter);
 	}
 
+	@Override
+	public List<commentDTO> printComment(int b_num) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".printComment", b_num);
+		
+	}
+
+	@Override
+	public void upComment(int num) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(Namespace+".upComment", num);
+	}
+
+	@Override
+	public void downComment(int num) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(Namespace+".downComment", num);
+	}
+
 
 	
 }
