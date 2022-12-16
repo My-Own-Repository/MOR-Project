@@ -526,6 +526,10 @@ public class HomeController {
     	model.addAttribute("pre_post", pre_posts);
     	model.addAttribute("next_post", next_posts);
     	
+    	List<commentDTO> cmt = b_service.printComment(show_post.get(0).num);
+    	  	
+    	model.addAttribute("printComment", cmt);		// 해당 고유번호를 가진 게시글의 모든 댓글의 정보를 jsp에 보내는 구문
+    	
     	return "/unlogin_posts";
     }
     
