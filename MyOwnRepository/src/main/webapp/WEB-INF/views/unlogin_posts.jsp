@@ -71,7 +71,7 @@
 				</tr>
 				<tr>
 					<td align="center" style="color:blue">${letter.nickname}</td>
-					<td>&nbsp;댓글 0</td>
+					<td>&nbsp;댓글 <font color="red">${letter.comment}</font></td>
 					<td>&nbsp;${letter.date}</td>
 					<td>&nbsp;조회수 ${letter.view}</td>
 				</tr>
@@ -97,11 +97,54 @@
 			</c:forEach>	
 		</c:forEach>
 	</table>
+		<br><br><br><hr><br><br>
+	
+	<c:forEach items="${SelectPost}" var="letter">	
+		<table class="title_table">	
+			<tr>
+				<td colspan="4">&nbsp;<b>댓글&nbsp;</b><font size="3px", color="red">${letter.comment}</font></td>
+			</tr>
+		</table>
+	
+	</c:forEach>
+	
+	<br>
+	<c:forEach items="${printComment}" var="cmt">
+		<table class="comment_table">
+			<tr>
+				<th>&nbsp;&nbsp;${cmt.nickname}</th>
+				<td>&nbsp;&nbsp;${cmt.date}</td>					
+			</tr>
+		</table>
+		<table class="comment_main">
+			<tr>
+				<td colspan="4"><br>&nbsp;${cmt.content}<br></td>
+			</tr>
+		</table>
+		<br><br><br>
+	</c:forEach>
+	
+	<hr><br>
+	
+	
+	<table border="1" class="comment_table">			
+		<tr>
+			<td colspan="4"><a href="/LoginPage"><textarea name="content">로그인이 필요한 서비스입니다.</textarea></a></td>
+		</tr>
+		<tr>
+			<td colspan="4"><a href="/LoginPage"><input type="file" name="file"></a></td>
+		</tr>		
+	</table>
+	<br>
+	<input type="button" onClick="window.location.reload()" value="새로고침" class="reload_btn">
+	<input type="button" onClick="location.href='/LoginPage'" value="작성" class="comment_btn">
+
+	
 
 	<c:if test="${msg == false}">
-	<script>
-		alert('ERROR\n이미 삭제된 게시글 입니다!!');
-	</script>
-</c:if>
+		<script>
+			alert('ERROR\n이미 삭제된 게시글입니다!!');
+		</script>
+	</c:if>
 </body>
 </html>
