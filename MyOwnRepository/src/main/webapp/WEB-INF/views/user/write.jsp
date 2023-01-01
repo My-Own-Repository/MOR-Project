@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!-- 
+cellpadding="0" cellspacing="0"을 쓰기위한 설정
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 5.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+-->
+
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
@@ -64,9 +69,11 @@
 		</li>
 	</ul>
 		<hr>
+		<!-- <table cellpadding="0" cellspacing="0" border="1"> -->
+		
 	<p>자유게시판 - 글쓰기</p><hr><br><br>
-	<form action="/user/write" method="post">
-		<table cellpadding="0" cellspacing="0" border="1">
+	<form action="/user/write" method="post" enctype="multipart/form-data">
+		<table border="1">
 			<tr>
  				<td><b>작성자</b></td>
  				<td style="text-align: left">&nbsp;&nbsp;${userNickname}</td>
@@ -82,7 +89,7 @@
 			</tr>
 
 			<tr>
-				<td colspan="2"><input type="file" name="file"><input type="submit" value="글쓰기" class="small_write_btn"></td>
+				<td colspan="2"><input type="file" name="files" multiple="multiple"><input type="submit" value="글쓰기" class="small_write_btn"></td>
 			</tr>
 		</table>
 	</form>
@@ -90,6 +97,12 @@
 	<c:if test="${b_msg == false}">
 		<script>
 			alert('ERROR\n1~1000자 이내의 내용을 입력해주세요!!');
+		</script>
+	</c:if>
+	
+	<c:if test="${session_msg == false}">
+		<script>
+			alert('ERROR\n세션이 만료되었습니다.\n다시 로그인 해주세요!!');
 		</script>
 	</c:if>
 	

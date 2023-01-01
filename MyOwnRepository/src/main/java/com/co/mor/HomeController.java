@@ -1,11 +1,17 @@
 package com.co.mor;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +19,10 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,15 +34,22 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.co.dto.FileDTO;
 import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
 import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
 import com.co.service.BoardService;
 import com.co.service.MemberService;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.tika.Tika;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 /**
@@ -193,7 +210,7 @@ public class HomeController {
     public String logout(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
   
-        if(session != null) {
+        if(session != null) {	// 사실상 표면적으로 로그인이 되어있기만 하다면 실행 되는 조건문이다. (세션이 만료가 되어도 session이 완전히 비워지진 않기때문)
         	model.addAttribute("logout_msg", true);
         	session.invalidate();
         }
@@ -205,10 +222,19 @@ public class HomeController {
     @RequestMapping(value = "/user/userMain", method = RequestMethod.GET)
     public String userMainPage(HttpServletRequest request, Model model) throws Exception {
     	HttpSession session = request.getSession(false);
+    	System.out.println("사용자 닉네임 >> " + user_nickname);
     	
-    	if(session == null) {			// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
-    		return "LoginPage";
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		model.addAttribute("session_msg", false);
+    		return "redirect:/LoginPage";
     	}
+    	
+    	if(user_nickname.isBlank() == true) {
+    		model.addAttribute("session_msg", false);
+    		session.invalidate();
+    		return "redirect:/";
+    	}
+    	
     	List<boardDTO> board_list = b_service.printBoard();
     	model.addAttribute("BoardList", board_list);
     	
@@ -218,41 +244,110 @@ public class HomeController {
     }
     
     @RequestMapping(value = "/user/mypage", method = RequestMethod.GET)
-    public String mypage(HttpServletRequest request) {
+    public String mypage(HttpServletRequest request, Model model) {
     	HttpSession session = request.getSession(false);
     	
-    	if(session == null) {			// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		model.addAttribute("session_msg", false);
     		return "redirect:/LoginPage";
+    	}
+    	else if(user_nickname.isBlank() == true) {
+    		model.addAttribute("session_msg", true);
+        	session.invalidate();
+        	return "redirect:/LoginPage";
     	}
 		return "user/mypage";	
     }
     
     @RequestMapping(value = "/user/write", method = RequestMethod.GET)
-    public String write_page(HttpServletRequest request) throws Exception {
+    public String write_page(HttpServletRequest request, Model model) throws Exception {
     	HttpSession session = request.getSession(false);
-    	if(session == null) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    	
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		model.addAttribute("session_msg", false);
     		return "redirect:/LoginPage";
+    	}
+    	else if(user_nickname.isBlank() == true) {
+    		model.addAttribute("session_msg", true);
+        	session.invalidate();
+        	return "redirect:/LoginPage";
     	}
 		return "user/write";
     }
     
     
-    @RequestMapping(value = "/user/write", method = RequestMethod.POST)
-    public String write(HttpServletRequest request, boardDTO letter, Model model) throws Exception {
+    @SuppressWarnings("null")
+	@RequestMapping(value = "/user/write", method = RequestMethod.POST)
+    public String write(HttpServletRequest request, boardDTO letter, Model model, FileDTO uploadfile, @RequestParam(value = "files", required = false) MultipartFile[] files) throws Exception {
+    	// HttpServletRequest request, boardDTO letter, Model model, @RequestParam(value = "file", required = false) MultipartHttpServletRequest frequest
     	HttpSession session = request.getSession(false);
     	
-    	if(session == null) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		model.addAttribute("session_msg", false);
     		return "redirect:/LoginPage";
+    	}
+    	else if(user_nickname.isBlank() == true) {
+    		model.addAttribute("session_msg", true);
+        	session.invalidate();
+        	return "redirect:/LoginPage";
     	}
     	String url = "";
     	//boardDTO saved_board = b_service.writeBoard();
+    	
     	
     	if(letter.title != null && letter.content != null) {
     		if(letter.title.length() > 0 && letter.content.length() <= 1000) {
     			logger.info("글작성 성공!");
     			letter.id = user_id;			// 로그인할때 저장해놓은 사용자의 id와 nickname을 글 작성자의 개인정보로 사용 (글 작성시 사용자가 자신의 id와 nickname을 따로 작성하지 않기때문에 프로그램에서 자체적으로 저장해줌)
     			letter.nickname = user_nickname;
-    			b_service.writeBoard(letter);
+    			
+    			if(letter.nickname == null) {	// 글 작성시 세션이 만료될 경우 실행 (익명으로 글이 작성되는 오류 방지)
+    				session.invalidate();
+    	    		return "redirect:/LoginPage";
+    			}
+    			
+    			
+    			// 파일 업로드 구문
+    			
+    			if(!files[0].isEmpty()) {		// 첫 번째 인덱스가 비었을 경우 실행이 되지않음(첫 번째 인덱스가 비었다 = 파일이 등록된게 하나도 없다)
+    				
+    				int b_num = b_service.maxNum()+1;		// 파일의 정보에 게시글 고유번호를 넣어야한다.
+															// 게시글이 먼저 올라오고 파일이 올라가므로 마지막 게시글의 고유번호를 가져오는 방법을 썼다.
+															// 그다지 좋은 방법은 아니니 대안책을 고려해야할듯.
+															// (다른 사용자의 게시글이 거의 동시에 올라올경우 정보가 꼬일 가능성이 있어서 파일을 먼저 db에 등록하는 방법을 사용)
+    				
+    				for(int i=0; i<files.length; i++) {
+    					String fileName = null;
+	    	   	    	
+    					// jsp에서 가져온 파일의 이름을 가져와 용도에 맞게 처리한다.
+            	    	String originalFileName = files[i].getOriginalFilename();
+            	    	String ext = FilenameUtils.getExtension(originalFileName);
+            	    	UUID uuid = UUID.randomUUID();
+            	    	fileName = uuid + "." + ext;
+            	    		      	    		
+            	    	// 파일을 해당 경로에 저장시키는 실질적인 구문.
+            	    	files[i].transferTo(new File("D:\\MyOwnRepository_DATA\\upload\\" + fileName));
+            	    		
+            	    	// 파일 업로드용 vo(dto)에 데이터를 저장 시킨 후 파일업로드 쿼리를 실행시킨다.             	    	
+            	    	uploadfile.setb_num(b_num);
+            	    	uploadfile.setuser_id(letter.id);
+            	    	uploadfile.setoriginal_file_name(originalFileName);
+            	    	uploadfile.setstored_file_name(fileName);
+            	    	uploadfile.setstored_path("D:\\MyOwnRepository_DATA\\upload\\"+fileName);
+            	    	uploadfile.setfile_size(files[i].getSize());
+            	    	
+            	    	// 파일 업로드시 파일 타입도 같이 저장하기 위해 추가했다.
+            	    	File file = new File("D:\\MyOwnRepository_DATA\\upload\\"+fileName);
+            	    	String mimeType	= new Tika().detect(file);		// 파일 다운로드 방식에 대해 알아보다가 
+																		// Apache Tika 라는 컨텐츠 분석 라이브러리를 발견하여 사용했다. 
+            	    	uploadfile.settype(mimeType);				
+            	    	
+            	    	b_service.fileUpload(uploadfile);
+    				}
+  				
+    	    	}
+    			b_service.writeBoard(letter);		// 게시글 작성 완료
+    			
     			
     			url = "redirect:/user/userMain";
     		}
@@ -263,16 +358,26 @@ public class HomeController {
     		}
     	}
     	
+    	
+    	
 		return url;	
     }
     
     @RequestMapping(value = "/user/update_board", method = RequestMethod.GET)
     public String update_boardpage(HttpServletRequest request, Model model) throws Exception {
     	HttpSession session = request.getSession(false);
-    	if(session == null) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		model.addAttribute("session_msg", false);
     		return "redirect:/LoginPage";
     	}
+    	else if(user_nickname.isBlank() == true) {
+    		model.addAttribute("session_msg", true);
+        	session.invalidate();
+        	return "redirect:/LoginPage";
+    	}
     	boardDTO before_post = show_post.get(0);		// 현재 보고있는 게시글을 수정하기 전 게시글의 정보로 저장하기 위한 변수
+    	
+    	before_post.setcontent(before_post.getcontent().replace("<br>", "\r\n")); 	// 게시글 수정 시 사용한 Enter(줄바꿈)이 적용 되도록 재저장. (구글링을 통해 해당 정보 습득)
     	
     	// 수정하기 전 게시글의 정보를 JSP로 보냄(고유번호, 작성자, 제목, 내용)
     	model.addAttribute("post_num", before_post.num);
@@ -288,14 +393,21 @@ public class HomeController {
     public String update_board(Model model, HttpServletRequest request, boardDTO letter) throws Exception {
     	HttpSession session = request.getSession(false);
     	
-    	if(session == null) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		model.addAttribute("session_msg", false);
     		return "redirect:/LoginPage";
+    	}
+    	else if(user_nickname.isBlank() == true) {
+    		model.addAttribute("session_msg", true);
+        	session.invalidate();
+        	return "redirect:/LoginPage";
     	}
     	String url = "redirect:/user/posts/";
 
     	if(letter.title != null && letter.content != null) {
     		if(letter.title.length() <= 35 && letter.content.length() <= 1000) {
     			logger.info("글수정 성공!");
+    			
     			b_service.updateBoard(letter);
     			
     			url += letter.num;
@@ -324,8 +436,14 @@ public class HomeController {
 	@RequestMapping(value = "/user/posts/{urlnum}", method = RequestMethod.GET)		// 게시글에 대한 내용을 jsp에서 받아오고 연산하는곳
     public String posts(HttpServletRequest request, HttpServletResponse response, Model model, @PathVariable("urlnum") String urlnum, commentDTO letter) throws Exception {
     	HttpSession session = request.getSession(false);
-    	if(session == null) {							
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		model.addAttribute("session_msg", false);
     		return "redirect:/LoginPage";
+    	}
+    	else if(user_nickname.isBlank() == true) {
+    		model.addAttribute("session_msg", true);
+        	session.invalidate();
+        	return "redirect:/LoginPage";
     	}
     	String path = "redirect:/user/posts";
     	
@@ -344,28 +462,42 @@ public class HomeController {
      	if(number != first_num) {		
      		// 이전글을 찾는 반복문
      		// 해당 글의 고유번호의 바로 이전 고유번호가 삭제된 글(번호)일때 실행된다.
-         	while(b_service.selectBoard(number-pre_num).isEmpty() == true) {		       		
+         	while(b_service.selectBoard(number-pre_num).isEmpty() == true || b_service.selectBoard(number-pre_num).get(0).is_exist == 0) {
+         		if((number-pre_num) == first_num) {		// 해당 글이 첫 게시글이면 멈춤
+             		break;
+             	}
              	pre_num++;		// 보다 더 이전의 게시글의 고유번호를 찾기 위한 연산이다. (이전글중 삭제되지 않은 고유번호를 찾기위함)           	
      		}
          	pre_posts = b_service.selectBoard(number-pre_num);		// 이전글 저장
          	    	
      	}
-     	
+     	else if(number == first_num) {		// 처음 선택한 게시글이 첫 글 일경우 이전글에 해당 글이 나오도록 함. 
+     		pre_posts = b_service.selectBoard(first_num);
+     	}
      		
      	// 열람중인 해당 게시글이 마지막 글이 아닐 경우 실행되는 조건문
      	if(number != last_num) {
      		// 다음글을 찾는 반복문
      		// 해당 글의 고유번호의 바로 다음 고유번호가 삭제된 글(번호)일때 실행된다.
-         	while(b_service.selectBoard(number+next_num).isEmpty() == true) {		       		
+         	while(b_service.selectBoard(number+next_num).isEmpty() == true || b_service.selectBoard(number+next_num).get(0).is_exist == 0 ) {
+         		if((number+next_num) == last_num) {		// 해당 글이 마지막 게시글이면 멈춤
+             		break;
+             	}
              	next_num++;		// 다음 게시글의 고유번호를 찾기 위한 연산이다. (다음글중 삭제되지 않은 고유번호를 찾기위함)           	
      		}
          	next_posts = b_service.selectBoard(number+next_num);		// 다음글 저장
          		
      	}   
-	
+     	else if(number == last_num) {		// 처음 선택한 게시글이 마지막 글 일경우 이전글에 해당 글이 나오도록 함. 
+     		next_posts = b_service.selectBoard(last_num);
+     	}
+
     	
     	show_post = b_service.selectBoard(number);		// 전역변수에 해당 게시글 조회결과 저장
-    	if(show_post == null) {				// 열람을 위해 클릭한 다른 유저의 게시글이 이미 삭제되었을 경우 실행되는 조건문 
+    	
+    	show_post.get(0).setcontent(show_post.get(0).getcontent().replace("\r\n", "<br>")); 	// 게시글 작성 시 사용한 Enter(줄바꿈)이 적용 되도록 재저장. (구글링을 통해 해당 정보 습득)
+    	
+    	if(show_post == null || b_service.selectBoard(number).get(0).is_exist == 0) {				// 열람을 위해 클릭한 다른 유저의 게시글이 이미 삭제되었을 경우 실행되는 조건문 
     		model.addAttribute("msg", false);
     		path = "redirect:/user/userMain";
     	}
@@ -373,33 +505,25 @@ public class HomeController {
     		b_service.addView(number);			// 조회수 증가
     	}
     	
-    	/*
-    	if(letter.content != null) {		// 댓글 작성하는 구문
-    		if(letter.content.length() > 0 && letter.content.length() <= 300) {
-    			logger.info("댓글작성 성공!");
-   			// 로그인할때 저장해놓은 사용자의 nickname을 댓글 작성자의 개인정보로 사용 (댓글 작성시 사용자가 자신의 nickname을 따로 작성하지 않기때문에 프로그램에서 자체적으로 저장해줌)
-    			
-        	//	letter.b_num = number;		// 게시글 고유번호 저장
-    		//	letter.nickname = user_nickname; 	// 댓글 작성자 닉네임 저장
-    			
-    			b_service.writeComment(letter);   		
-    		}
-    		else {
-    			logger.info("댓글작성 실패..");
-    			model.addAttribute("c_msg", false);
-    		}
-    	}
-    	*/
+    	
+    	
 		return path;
     	
     }
     
     
-    @RequestMapping(value = "/user/posts")
+    @SuppressWarnings("null")
+	@RequestMapping(value = "/user/posts")
     public String main_posts(HttpServletRequest request, Model model) throws Exception {		// 연산(실행)이 끝난 결과값을 다시 jsp로 보내주는 역할 
     	HttpSession session = request.getSession(false);
-    	if(session == null) {							
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		model.addAttribute("session_msg", false);
     		return "redirect:/LoginPage";
+    	}
+    	else if(user_nickname.isBlank() == true) {
+    		model.addAttribute("session_msg", true);
+        	session.invalidate();
+        	return "redirect:/LoginPage";
     	}
     	
     	model.addAttribute("page_name", show_post.get(0).nickname);		// JSP의 script에서 게시글 작성자와 게시글 열람하는 사용자가 동일 회원인지 아닌지 구분하기 위해
@@ -415,8 +539,30 @@ public class HomeController {
     	
     	List<commentDTO> cmt = b_service.printComment(show_post.get(0).num);
     	
-    	
+    	for(int i=0; i<cmt.size(); i++) {	// 댓글의 모든 줄바꿈문자 <br>형식으로 변경하여 저장
+    		cmt.get(i).setcontent(cmt.get(i).getcontent().replace("\r\n", "<br>")); 	// 댓글 작성 시 사용한 Enter(줄바꿈)이 적용 되도록 재저장. (구글링을 통해 해당 정보 습득)	
+    	}
+  	
     	model.addAttribute("printComment", cmt);		// 해당 고유번호를 가진 게시글의 모든 댓글의 정보를 jsp에 보내는 구문
+    	   	
+    	List<FileDTO> fileList = b_service.fileViewer(show_post.get(0).num);
+    	
+    	
+ 	
+    	// 이미지와 동영상 파일만 가져오는 쿼리문을 통해 가져와서 JSP로 보낸다.
+    	List<FileDTO> fileViewer = b_service.viewFile(show_post.get(0).num);
+    	model.addAttribute("fileViewer", fileViewer);
+    	
+    	
+    	//model.addAttribute("fileDown", fileList);	// 해당 게시글의 파일 전체 리스트이다. (다운로드 기능 구현때 사용할 예정) 
+    	
+    	
+    	String[] files_type = new String[fileList.size()];
+    	for(int i=0; i<fileList.size(); i++) {
+    		files_type[i] = fileList.get(i).type;
+    	}
+    	model.addAttribute("files_type", files_type);
+    	
     	
     	return "/user/posts";
     }
@@ -425,7 +571,8 @@ public class HomeController {
     @RequestMapping(value = "/user/posts/comment", method = RequestMethod.POST)		
     public String comment(HttpServletRequest request, HttpServletResponse response, Model model, commentDTO letter) throws Exception {
     	HttpSession session = request.getSession(false);
-		
+    	// 이 부분은 기능을 수행할 때 세션과 연관된 부분이 아니기에, 세션 만료시 로그인 페이지로 넘기는 작업을 할 필요없어서 생략했다.
+    	
     	if(letter.content != null) {		// 댓글 작성하는 구문
     		if(letter.content.length() > 0 && letter.content.length() <= 300) {
     			logger.info("댓글작성 성공!");
@@ -434,6 +581,7 @@ public class HomeController {
         	//	letter.b_num = number;		// 게시글 고유번호 저장
     		//	letter.nickname = user_nickname; 	// 댓글 작성자 닉네임 저장
     			
+    		   			
     			b_service.writeComment(letter);
     			b_service.upComment(letter.b_num);
     		}
@@ -446,15 +594,41 @@ public class HomeController {
     	return "redirect:/user/posts/"+urlnum;
     }
     
+    // 게시글의 첨부 파일들을 사용자들에게 보여주기 위한 메소드
+    
+    @RequestMapping(value = "/loadfiles.do/{files_num}" , method = RequestMethod.GET)
+    public void displayFiles(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable("files_num") int files_num) throws Exception{
+    	System.out.println("일단 실행은 됐고 files_number 값은? >>>> " + files_num);
+    	
+    	FileDTO fileOne = b_service.fileView(files_num);
+    	
+    	File file = new File(fileOne.stored_path);
+    	String mimeType	= new Tika().detect(file);		// 파일 다운로드 방식에 대해 알아보다가 
+    														// Apache Tika 라는 컨텐츠 분석 라이브러리를 발견하여 사용했다.
+    	byte[] fileData = (byte[]) FileUtils.readFileToByteArray(file);
+    		
+    	response.setContentType(mimeType);
+    	response.getOutputStream().write(fileData);
+    		   		
+
+    }
+    
+    
+    // 게시글 삭제
     @RequestMapping(value = "/user/delete_board")
     public String delete_board(HttpServletRequest request, @RequestParam("num") int num) throws Exception {
     	HttpSession session = request.getSession(false);
-    	if(session == null) {							
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
     		return "redirect:/LoginPage";
     	}
+    	else if(user_nickname.isBlank() == true) {
+        	session.invalidate();
+        	return "redirect:/LoginPage";
+    	}
+    	
     	String path = "";
     	  	
-    	if(b_service.selectBoard(num) != null) {
+    	if(b_service.selectBoard(num) != null || b_service.selectBoard(num).get(0).is_exist == 0) {
     		b_service.deleteBoard(num);
     		path = "redirect:/user/userMain";
     	}
@@ -490,11 +664,18 @@ public class HomeController {
      	if(number != first_num) {		
      		// 이전글을 찾는 반복문
      		// 해당 글의 고유번호의 바로 이전 고유번호가 삭제된 글(번호)일때 실행된다.
-         	while(b_service.selectBoard(number-pre_num).isEmpty() == true) {		       		
-             	pre_num++;		// 보다 더 이전의 게시글의 고유번호를 찾기 위한 연산이다. (이전글중 삭제되지 않은 고유번호를 찾기위함)           	
+         	while(b_service.selectBoard(number-pre_num).isEmpty() == true || b_service.selectBoard(number-pre_num).get(0).is_exist == 0) {	
+         		if((number-pre_num) == first_num) {		// 해당 글이 첫 게시글이면 멈춤
+             		break;
+             	}
+             	pre_num++;		// 보다 더 이전의 게시글의 고유번호를 찾기 위한 연산이다. (이전글중 삭제되지 않은 고유번호를 찾기위함) 
+             	           
      		}
          	pre_posts = b_service.selectBoard(number-pre_num);		// 이전글 저장
-         	    	
+         	    	       	
+     	}
+     	else if(number == first_num) {		// 처음 선택한 게시글이 첫 글 일경우 이전글에 해당 글이 나오도록 함. 
+     		pre_posts = b_service.selectBoard(first_num);
      	}
      	
      	
@@ -503,14 +684,25 @@ public class HomeController {
      	if(number != last_num) {
      		// 다음글을 찾는 반복문
      		// 해당 글의 고유번호의 바로 다음 고유번호가 삭제된 글(번호)일때 실행된다.
-         	while(b_service.selectBoard(number+next_num).isEmpty() == true) {		       		
-             	next_num++;		// 다음 게시글의 고유번호를 찾기 위한 연산이다. (다음글중 삭제되지 않은 고유번호를 찾기위함)           	
+         	while(b_service.selectBoard(number+next_num).isEmpty() == true || b_service.selectBoard(number+next_num).get(0).is_exist == 0) {
+             	if((number+next_num) == last_num) {		// 해당 글이 마지막 게시글이면 멈춤
+             		break;
+             	}
+             	next_num++;		// 다음 게시글의 고유번호를 찾기 위한 연산이다. (다음글중 삭제되지 않은 고유번호를 찾기위함) 
+             	
      		}
          	next_posts = b_service.selectBoard(number+next_num);		// 다음글 저장
-         		
-     	}    	
+         	        	
+     	}
+     	else if(number == last_num) {		// 처음 선택한 게시글이 마지막 글 일경우 이전글에 해당 글이 나오도록 함. 
+     		next_posts = b_service.selectBoard(last_num);
+     	}
      	
      	show_post = b_service.selectBoard(number);		// 전역변수에 해당 게시글 조회결과 저장
+     	
+     	show_post.get(0).setcontent(show_post.get(0).getcontent().replace("\r\n", "<br>"));
+     	
+     	
      	
  		return path;
      	
@@ -527,7 +719,12 @@ public class HomeController {
     	model.addAttribute("next_post", next_posts);
     	
     	List<commentDTO> cmt = b_service.printComment(show_post.get(0).num);
-    	  	
+    	
+    	for(int i=0; i<cmt.size(); i++) {	// 댓글의 모든 줄바꿈문자 <br>형식으로 변경하여 저장
+    		cmt.get(i).setcontent(cmt.get(i).getcontent().replace("\r\n", "<br>")); 	// 댓글 작성 시 사용한 Enter(줄바꿈)이 적용 되도록 재저장. (구글링을 통해 해당 정보 습득)	
+    	}
+    
+    	
     	model.addAttribute("printComment", cmt);		// 해당 고유번호를 가진 게시글의 모든 댓글의 정보를 jsp에 보내는 구문
     	
     	return "/unlogin_posts";

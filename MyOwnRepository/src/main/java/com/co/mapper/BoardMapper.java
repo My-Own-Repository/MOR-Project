@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.co.dto.FileDTO;
 import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
 
@@ -68,5 +69,29 @@ public class BoardMapper {
 	
 	public void downComment(int num) throws Exception{
 		boardmapper.downComment(num);
+	}
+	
+	public void fileUpload(FileDTO fs) throws Exception{
+		boardmapper.fileUpload(fs);
+	}
+	
+	public List<FileDTO> fileDownload(int b_num) throws Exception{
+		return boardmapper.fileDownload(b_num);
+	}
+	
+	public FileDTO fileView(int file_num) throws Exception{
+		return boardmapper.fileView(file_num);
+	}
+	
+	public List<FileDTO> fileViewer(int b_num) throws Exception{
+		return boardmapper.fileViewer(b_num);
+	}
+	
+	public List<FileDTO> viewFile(int b_num) throws Exception{
+		return boardmapper.viewFile(b_num);
+	}
+	
+	public int maxNum() throws Exception{
+		return boardmapper.maxNum();
 	}
 }

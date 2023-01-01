@@ -33,9 +33,9 @@
 	<a href="/">
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
 	</a>
-	<div>
+	<div class="search_div">
 		<input type="text" placeholder="검색어 입력">
-		<button>검색</button>
+		<input type="button" value="검색" class="search">
 	</div>
 	
 	<ul class="menu">
@@ -78,7 +78,7 @@
 			</table>
 			<table border="1" class="content_table">
 				<tr>
-					<td colspan="4">&nbsp;${letter.content}</td>
+					<td colspan="4" class="content_td">&nbsp;${letter.content}</td>
 				</tr>
 			</table>
 	
@@ -126,7 +126,7 @@
 	
 	<hr><br>
 	
-	
+	<div class="write_comment_div">
 	<table border="1" class="comment_table">			
 		<tr>
 			<td colspan="4"><a href="/LoginPage"><textarea name="content">로그인이 필요한 서비스입니다.</textarea></a></td>
@@ -138,7 +138,7 @@
 	<br>
 	<input type="button" onClick="window.location.reload()" value="새로고침" class="reload_btn">
 	<input type="button" onClick="location.href='/LoginPage'" value="작성" class="comment_btn">
-
+	</div>
 	
 
 	<c:if test="${msg == false}">

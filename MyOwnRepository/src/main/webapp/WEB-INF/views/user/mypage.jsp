@@ -24,5 +24,11 @@
 			alert('정상적으로 로그아웃 되었습니다!');
 		</script>
 	</c:if>
+	
+	<c:if test="${session_msg == false}">
+		<script>
+			alert('ERROR\n세션이 만료되었습니다.\n다시 로그인 해주세요!!');
+		</script>
+	</c:if>
 </body>
 </html>

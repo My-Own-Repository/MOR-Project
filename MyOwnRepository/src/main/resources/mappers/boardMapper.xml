@@ -2,20 +2,19 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
- 
+  
 <mapper namespace="com.co.mapper.boardMapper">
  
-    
 	<select id="writeBoard">
 		INSERT INTO board (title, content, id, nickname) VALUES (#{title}, #{content}, #{id}, #{nickname}) 
 	</select>
 	
 	<select id="printBoard" resultType="boardDTO">
-		SELECT num, title, nickname, comment, date, view FROM board
+		SELECT num, title, nickname, comment, date, view FROM board WHERE is_exist=1
 	</select>
 	
 	<select id="selectBoard" resultType="boardDTO">
-		SELECT num, title, nickname, comment, date, view, content FROM board WHERE num=#{num}
+		SELECT num, title, nickname, comment, date, view, content, is_exist FROM board WHERE num=#{num} AND is_exist=1
 	</select>
 
 	<update id="addView">
@@ -23,20 +22,20 @@
 	</update>
 	
 	<select id="selectMinNum" resultType="int">
-		SELECT MIN(num) AS "min_num" FROM board
+		SELECT MIN(num) AS "min_num" FROM board	WHERE is_exist=1
 	</select>
 	
 	<select id="selectMaxNum" resultType="int">
-		SELECT MAX(num) AS "max_num" FROM board
+		SELECT MAX(num) AS "max_num" FROM board	WHERE is_exist=1
 	</select>
 	
 	<update id="updateBoard">
 		UPDATE board SET title=#{title}, content=#{content} WHERE num=#{num}
 	</update>
 	
-	<delete id="deleteBoard">
-		DELETE FROM board WHERE num=#{num}
-	</delete>
+	<update id="deleteBoard">
+		UPDATE board SET is_exist=0 WHERE num=#{num}
+	</update>
 	
 	<select id="writeComment">
 		INSERT INTO comment (b_num, c_num, nickname, content) VALUES (#{b_num}, #{c_num}, #{nickname}, #{content})
@@ -54,5 +53,28 @@
 		UPDATE board SET comment=comment-1 WHERE num=#{num}
 	</update>
 	
+	<select id="fileUpload">
+		INSERT INTO file (b_num, user_id, original_file_name, stored_file_name, stored_path, type, file_size) VALUES (#{b_num}, #{user_id}, #{original_file_name}, #{stored_file_name}, #{stored_path}, #{type}, #{file_size})
+	</select>
+	
+	<select id="maxNum"	resultType="int">
+		SELECT MAX(num) FROM board
+	</select>
+	
+	<select id="fileDownload" resultType="FileDTO">
+		SELECT b_num, file_num, original_file_name, stored_file_name, stored_path, type, file_size FROM file WHERE b_num=#{b_num}
+	</select>
+	
+	<select id="fileView" resultType="FileDTO">
+		SELECT b_num, original_file_name, stored_file_name, stored_path, file_size FROM file WHERE file_num=#{file_num}
+	</select>
+	
+	<select id="fileViewer" resultType="FileDTO">
+		SELECT b_num, file_num, original_file_name, stored_file_name, stored_path, type, file_size FROM file WHERE b_num=#{b_num}
+	</select>
+	
+	<select id="viewFile" resultType="FileDTO">
+		SELECT b_num, file_num, original_file_name, stored_file_name, stored_path, type, file_size FROM file WHERE (type LIKE 'image%' OR type LIKE 'video%') AND b_num=#{b_num}
+	</select>
+	
 </mapper>
-

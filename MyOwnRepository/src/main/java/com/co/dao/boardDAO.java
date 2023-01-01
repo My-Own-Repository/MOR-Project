@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.co.dto.FileDTO;
 import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
 
@@ -23,6 +24,16 @@ public interface boardDAO {
 	
 	public void upComment(int num) throws Exception;		// 댓글 수 증가
 	public void downComment(int num) throws Exception;		// 댓글 수 감소
+	
+	public void fileUpload(FileDTO fs) throws Exception;		// 파일 업로드
+	public List<FileDTO> fileDownload(int b_num) throws Exception;		// 파일 다운로드
+	public FileDTO fileView(int file_num) throws Exception; 	// 파일 보여주기
+	public List<FileDTO> fileViewer(int b_num) throws Exception;	// 파일 보여주기2 
+	
+	public List<FileDTO> viewFile(int b_num) throws Exception;	// 이미지, 영상 파일만 추출해서 가져온 후 보여주기
+	
+	
+	public int maxNum() throws Exception;		// 마지막으로 게시 된 게시글의 고유번호 검색 (파일 업로드시 파일을 업로드한 게시글을 특정하기 위함.)
 	
 	// 첫 글과 마지막 글의 고유번호 조회(이전,다음 글 조회할때 사용)
 	public int selectMinNum() throws Exception;	

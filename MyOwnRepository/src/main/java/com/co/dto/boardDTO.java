@@ -10,9 +10,10 @@ public class boardDTO {
     public int comment;
     public String date;
     public int view;
+    public int is_exist;
 
   	public boardDTO() {}
-  	public boardDTO(int num, String title, String content, String id, String nickname, int comment, String date, int view) {
+  	public boardDTO(int num, String title, String content, String id, String nickname, int comment, String date, int view, int is_exist) {
   		super();
   		this.num = num;
   		this.title = title;
@@ -22,6 +23,7 @@ public class boardDTO {
   		this.comment = comment;
   		this.date = date;
   		this.view = view;
+  		this.is_exist = is_exist;
   	}
     
     public int getnum() {
@@ -84,5 +86,13 @@ public class boardDTO {
  
     public void setview(int view) {
         this.view = view;
+    }
+    
+    public int getis_exist() {
+        return is_exist;
+    }
+ 
+    public void setis_exist(int is_exist) {
+        this.is_exist = is_exist;
     }
 }

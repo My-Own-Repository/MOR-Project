@@ -13,6 +13,18 @@ table {
 	margin:auto;
 }
 
+.write_comment_div{
+	height: auto;
+	width: 740px;
+	margin: auto;
+}
+
+.btn_div{
+	height: auto;
+	width: 740px;
+	margin: auto;
+}
+
 .imgs {
 	position: relative;
 	width: 10px;
@@ -21,6 +33,11 @@ table {
 	float: right;
 }
 
+.upload_videos {
+	position: relative;
+	width: 600px;		/* 350 */
+	height: 600px;
+}
 
 .title_table{
 	position: relative;
@@ -33,11 +50,22 @@ table {
 
 .content_table{
 	position: relative;
-	width: 350px;
+	width: 740px;		/* 350 */
 	height: 400px;
 	margin: auto;
 	text-align: left;
 }
+
+
+.content_td{
+	position: relative;
+	width: 740px;		/* 350 */
+	height: 400px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+}
+
 .comment_table{
 	position: relative;
 	background-color: #FAFAFA;
@@ -76,21 +104,21 @@ textarea{
 	text-align: left;
 }
 .comment_btn{
-	position: absolute;		/* 절대위치로 지정 (그냥 써봄) */
+	position: relative;		
 	background: green;
 	color: white;
 	width: 350px;
 	height: 30px;
-	left: 975px;
+	float: right;
 	margin: auto;
 }
 .reload_btn{
-	position: absolute;
+	position: relative;
 	background: lightgray;
 	color: white;
 	width: 350px;
 	height: 30px;
-	left: 580px;
+	float: left;
 	margin: auto;
 }
 
@@ -127,7 +155,7 @@ hr {
 	float: right;
 	color: blue;
 }
-
+/*
 .small_write_btn{
 	font-size: 18px;
 	width: 100px;
@@ -148,14 +176,15 @@ hr {
 	margin:auto;
 	color: blue;
 }
+*/
 
 .edit_btn{
 	position: relative;
 	width: 80px;
 	height: 100%;
 	border: 1px
-	background: gray;
-	left: 1175px;
+	background: lightgray;
+	float: right;
 	color: blue;
 }
 
@@ -164,18 +193,8 @@ hr {
 	width: 80px;
 	height: 100%;
 	border: 1px
-	background: gray;
-	left: 1175px;
-	color: blue;
-}
-
-.delete_btn2{
-	position: relative;
-	width: 80px;
-	height: 40px;
-	border: 1px
-	background: gray;
-	left: 1175px;
+	background: lightgray;
+	float: right;
 	color: blue;
 }
 
@@ -259,6 +278,7 @@ a{text-decoration:none;font-size:14px}
         	width: 100%;
         }
         
+        
         .edit_btn{
         	position: relative;
         	width: 20%;
@@ -282,26 +302,50 @@ a{text-decoration:none;font-size:14px}
         	width: 100%;
 			height: auto;
         }
+        .comment_main{
+        	float: none;
+        	width: 100%;
+			height: auto;
+        }
 		textarea{
 			position: none;
 			width: 100%; 
 			height: 50px;
 		}
+		.write_comment_div{
+			float: none;
+        	width: 100%;
+			height: auto;
+		}
         .comment_btn{
         	position: relative;
-        	width: 20%;
+        	width: 40%;
 			height: auto;
 			left: 0px;
         }    
         .reload_btn{
         	position: relative;
-        	width: 20%;
+        	width: 40%;
 			height: auto;
 			left: 0px;
         }
-        hr{
-        	width: 100%;
-        }     
+        hr {
+			border-top: 1px dotted #bbb;
+			height: auto;
+			width: 100%;
+		}
+        
+        .upload_videos {
+			position: relative;
+			width: 100%;		/* 350 */
+			height: auto;
+		}   
+		
+		.upload_imgs {
+			position: relative;
+			width: 100%;		/* 350 */
+			height: auto;
+		} 
 }
 
 @media ( min-width: 1024px ) {		/* 스크린 x축의 길이가 1024px이상 일때 적용됨 */
@@ -319,6 +363,7 @@ a{text-decoration:none;font-size:14px}
         .content_table{
         	float: none;
         	width: 750px;
-			height: 400px;
+			height: auto;
         }
+        
 }

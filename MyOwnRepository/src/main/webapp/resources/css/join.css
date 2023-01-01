@@ -27,7 +27,7 @@
 	height: 25px;
 	margin:auto
 }
-@media ( max-width: 720px ) {
+@media ( max-width: 1024px ) {
         .main-logo {
 			width: 100%;
 			height: auto;
