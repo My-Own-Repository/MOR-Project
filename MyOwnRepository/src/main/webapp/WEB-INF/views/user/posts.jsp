@@ -25,6 +25,7 @@
 	String userNickname = (String) session.getAttribute("userNickname");  	// 로그인한 유저의 nickname
 	String page_name = (String) request.getAttribute("page_name");		// 글 작성자의 nickname
 	Integer page_num = (Integer) request.getAttribute("page_num");		// 정수형 변수는 int가 안되고 오로지 Integer로 선언해야함
+	
 %> 
 
 	<script>
@@ -85,12 +86,81 @@
 					<td>&nbsp;조회수 ${letter.view}</td>
 				</tr>
 			</table>
-			<table border="1" class="content_table">
-				<tr>
-					<td colspan="4">&nbsp;${letter.content}</td>
-				</tr>
-			</table>
-	
+			
+				<table border="1" class="content_table">
+					<tr>
+						<td colspan="4" class="content_td">
+							
+								<c:forEach items="${fileViewer}" var="files">
+									<img src="/loadfiles.do/${files.file_num}" class="upload_imgs" id="${files.file_num}" alt="">
+									<br>
+									<video src="/loadfiles.do/${files.file_num}" class="upload_videos" id="${files.stored_file_name}" controls></video>
+									
+									<br>
+									
+									<script>								
+										function is_exist_file(){	
+											// img src와 video src의 각각 고유의 id를 가지기 위해 
+											// 이미지는 파일 번호, 동영상은 파일 이름을 아이디 값으로 주었다.
+											
+											// 각각 고유 id를 가지게 한 이유는 각 파일마다 숨길지 혹은 보이게 할지 판별할때 보다 용이하기 때문이다.
+											
+											const img_id = '${files.file_num}';
+											const video_id = '${files.stored_file_name}';
+																	
+											const upload_img = document.getElementById(img_id);
+											const upload_video = document.getElementById(video_id);
+											
+											var fileType = '${files.type}';
+											
+											var img_exist = false;
+											var video_exist = false;
+											
+											// 각 해당 파일이 존재하면 exist 변수가 true가 됨
+											
+											if(fileType.includes("image") == true){
+												img_exist = true;
+											}				
+											else if(fileType.includes("video") == true){
+												video_exist = true;
+											}
+											else {
+												alert("ERROR");
+											}
+											
+											// 각 exist 변수가 true일 경우 보이고 false일 경우 숨김 처리됨
+											
+											
+											if(img_exist == false){
+												upload_img.style.display = 'none';
+											}
+											else if(img_exist == true){
+												upload_img.style.display = 'block';
+											}
+														
+											if(video_exist == false){
+												upload_video.style.display = 'none';
+											}
+											else if(video_exist == true){
+												upload_video.style.display = 'block';
+											}	
+											
+											
+										}
+										is_exist_file();
+							
+									</script>
+								</c:forEach>
+								<br>
+							
+							
+							<br>
+							<br>
+							${letter.content}					
+						</td>					
+					</tr>
+				</table>
+			
 		
 	</table>
 	
@@ -109,9 +179,10 @@
 	
 	<br><br>
 	
-	<input type="button" onclick="location.href='/user/update_board'" value="수정" id="edit_btn" class="edit_btn">
-	<input type="button" onclick="delete_board(${page_num})" id="delete_btn" class="delete_btn" value="삭제">
-
+	<div class="btn_div">
+		<input type="button" onclick="delete_board(${page_num})" id="delete_btn" class="delete_btn" value="삭제">
+		<input type="button" onclick="location.href='/user/update_board'" value="수정" id="edit_btn" class="edit_btn">
+	</div>
 	<script>	
 		// 게시글 작성자와 현재 게시글을 열람하는 사용자가 동일 인물일 경우
 		// 게시글 수정 및 삭제 버튼이 표시되고, 동일 인물이 아닐경우 버튼을 숨긴다.
@@ -172,7 +243,7 @@
 		
 		<table class="comment_main">
 			<tr>
-				<td colspan="4"><br>&nbsp;${cmt.content}<br></td>
+				<td colspan="4"><br>&nbsp;${cmt.content}<br><br></td>
 			</tr>
 		</table>
 		
@@ -226,8 +297,8 @@
 	
 	<hr><br>
 	
-	
-	<form action="/user/posts/comment" method="post">
+	<div class="write_comment_div">
+	<form action="/user/posts/comment" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="b_num" value="<%=page_num %>">
 		<input type="hidden" name="nickname" value="<%=userNickname %>">
 		<table border="1" class="comment_table">			
@@ -235,14 +306,14 @@
 				<td colspan="4"><textarea name="content"></textarea></td>
 			</tr>
 			<tr>
-				<td colspan="4"><input type="file" name="file"></td>
+				<td colspan="4"><input type="file" name="uploadfile"></td>
 			</tr>		
 		</table>
 		<br>
 		<input type="button" onClick="window.location.reload()" value="새로고침" class="reload_btn">
 		<input type="submit" value="작성" class="comment_btn">
 	</form>
-	
+	</div>
 	
 	
 	<c:if test="${c_msg == false}">
@@ -257,5 +328,10 @@
 		</script>
 	</c:if>
 	
+	<c:if test="${session_msg == false}">
+		<script>
+			alert('ERROR\n세션이 만료되었습니다.\n다시 로그인 해주세요!!');
+		</script>
+	</c:if>
 </body>
 </html>

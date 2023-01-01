@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.co.dto.FileDTO;
 import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
 
@@ -90,6 +91,42 @@ public class boardDAOImpl implements boardDAO{
 	public void downComment(int num) throws Exception {
 		// TODO Auto-generated method stub
 		sqlSession.update(Namespace+".downComment", num);
+	}
+
+	@Override
+	public void fileUpload(FileDTO fs) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert(Namespace+".fileUpload", fs);
+	}
+
+	@Override
+	public int maxNum() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".maxNum");
+	}
+
+	@Override
+	public List<FileDTO> fileDownload(int b_num) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".fileDownload", b_num);
+	}
+
+	@Override
+	public FileDTO fileView(int file_num) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".fileView", file_num);
+	}
+
+	@Override
+	public List<FileDTO> fileViewer(int b_num) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".fileViewer", b_num);
+	}
+
+	@Override
+	public List<FileDTO> viewFile(int b_num) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".viewFile", b_num);
 	}
 
 

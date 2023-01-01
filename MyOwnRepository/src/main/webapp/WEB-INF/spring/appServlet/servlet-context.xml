@@ -18,6 +18,7 @@
 	<resources mapping="/css/**" location="/resources/css/" /> 
 	<resources mapping="/js/**" location="/resources/js/" />
 	<resources mapping="/img/**" location="/resources/img/" />
+	
 
 	 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
@@ -26,6 +27,12 @@
 		<beans:property name="suffix" value=".jsp" />
 		<beans:property name="contentType" value="text/html; charset=UTF-8"/>
 	</beans:bean>
+	
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">   
+      <beans:property name="maxUploadSize" value="52428800" />
+      <beans:property name="maxInMemorySize" value="10000000" />
+      <beans:property name="defaultEncoding" value="utf-8" />
+   </beans:bean>
 	
 	<context:component-scan base-package="com.co.mor" use-default-filters="false">
 	<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>

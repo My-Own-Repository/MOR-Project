@@ -6,20 +6,13 @@
 <head>
 	<meta charset="EUC-KR">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/5309915bbd.js" crossorigin="anonymous" defer></script>
     <link rel="stylesheet" type="text/css" href="././resources/css/main.css">
 
-	<style>
-		p {
-			text-align: center;
-			font-size:25px;
-			color:blue;
-		}
-	</style>
 	
 	<script>
  		src="https://code.jquery.com/jquery-3.4.1.js"
@@ -33,7 +26,7 @@
 	<a href="/">
 		<img class="main-logo" src="././resources/img/MOR_symbol_logo.svg" />
 	</a>
-	<div>
+	<div class="search_div">
 		<input type="text" placeholder="검색어 입력">
 		<button>검색</button>
 	</div>
@@ -59,7 +52,7 @@
 	</ul>
 	<hr>
 	<p>자유게시판</p><hr><br><br>
-	
+	<div class="main_div">
 	<table border="1" class="board_table">
 		<thead class="board_head">
 			<tr>
@@ -70,21 +63,20 @@
 				<td>조회</td>
 			</tr>
 		</thead>
-
 		<tbody>
-			<c:forEach items="${BoardList}" var="letter">					
-                <tr>
-                	<td>${letter.num}</td>
-                    <td><a href="/unlogin_posts/${letter.num}">${letter.title}</a><font size="2px" color="red">&nbsp;&nbsp;[${letter.comment}]</font></td>
+			<c:forEach items="${BoardList}" var="letter">	
+				<tr>
+					<td>${letter.num}</td>
+                    <td><a href="/unlogin_posts/${letter.num}" class="board_title_a">${letter.title}</a><font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[${letter.comment}]</font></td>
                     <td>${letter.nickname}</td>
                     <td>${letter.date}</td>
                     <td>${letter.view}</td>
-                </tr>       
+				</tr>
             </c:forEach>
 		</tbody>
-	
 	</table>
-
+	
 	<br><br><input type="button" onclick="location.href='LoginPage'" class="write_button" value="글쓰기">
+	</div>
 </body>
 </html>

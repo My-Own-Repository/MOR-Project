@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.co.dao.boardDAO;
+import com.co.dto.FileDTO;
 import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
 
@@ -89,7 +90,43 @@ public class BoardServiceImpl implements BoardService{
 		dao.downComment(num);
 	}
 
+	@Override
+	public void fileUpload(FileDTO fs) throws Exception {
+		// TODO Auto-generated method stub
+		dao.fileUpload(fs);
+	}
 
+	@Override
+	public int maxNum() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.maxNum();
+	}
+
+	@Override
+	public List<FileDTO> fileDownload(int b_num) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.fileDownload(b_num);
+	}
+
+	@Override
+	public FileDTO fileView(int file_num) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.fileView(file_num);
+	}
+
+	@Override
+	public List<FileDTO> fileViewer(int b_num) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.fileViewer(b_num);
+	}
+
+	@Override
+	public List<FileDTO> viewFile(int b_num) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.viewFile(b_num);
+	}
+
+	
 
    
 }

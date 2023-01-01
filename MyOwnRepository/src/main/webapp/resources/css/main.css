@@ -6,13 +6,34 @@
  		background-size: 100% 100%;
   		margin:auto;
 }
-div {
+.search_div {
 	height: 40px;
 	width: 350px;
 	border: 1px solid #1b5ac2;
 	background: #ffffff;
 	margin:auto;
 }
+p {
+	text-align: center;
+	font-size:25px;
+	color:blue;
+}
+
+/*
+a {
+	한 줄만 보이게 한다. 넘어가면 ...으로 생략하여 보여줌
+	overflow: hidden;			
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+*/
+
+.main_div {
+	height: auto;
+	width: 1024px;
+	margin: auto;	
+}
+
 input{
 	font-size: 16px;
 	width: 275px;
@@ -35,9 +56,7 @@ button{
 	position: relative;
 	width: 70px;
 	height: 100%;
-	border: 0px
-	background: gray;
-	left: 448px;
+	background: lightgray;
 	margin:auto;
 	color: blue;
 }
@@ -114,6 +133,34 @@ a{text-decoration:none;font-size:14px}
           width: 100%;
           height: auto;
         }
+        .main_div{
+        	float: none;
+          	width: 100%;
+          	height: auto;
+          	font-size: 10px;
+        }
+        .board_title_a{
+			font-size: 10px;
+			height: 16px;
+			table-layout : fixed;
+			overflow: hidden;			
+    		text-overflow: ellipsis;
+   		 	white-space: nowrap;
+		}
+		.board_comment_font{
+			font-size: 8px;
+			height: 16px;
+			table-layout : fixed;
+			overflow: hidden;			
+    		text-overflow: ellipsis;
+   		 	white-space: nowrap;
+		}
+		p{
+			text-align: center;
+			font-size:12px;
+			color:blue;
+		}
+
         .board_table {
         	border: 1px;
         	float: none;
@@ -130,9 +177,11 @@ a{text-decoration:none;font-size:14px}
 			height: auto;
 			left: 0px;	
         }
-        hr{
-        	width: 100%;
-        } 
+        hr {
+			border-top: 1px dotted #bbb;
+			height: auto;
+			width: 100%;
+		}
 }
 
 

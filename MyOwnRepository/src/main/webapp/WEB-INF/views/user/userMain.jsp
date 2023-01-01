@@ -13,13 +13,6 @@
 	<script src="https://kit.fontawesome.com/5309915bbd.js" crossorigin="anonymous" defer></script>
     <link rel="stylesheet" type="text/css" href="../../../resources/css/main.css">
 
-	<style>
-		p {
-			text-align: center;
-			font-size:25px;
-			color:blue;
-		}
-	</style>
 
 <%
 	String userNickname = (String) session.getAttribute("userNickname");  
@@ -37,7 +30,7 @@
 	<a href="/user/userMain">
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
 	</a>
-	<div>
+	<div class="search_div">
 		<input type="text" placeholder="검색어 입력">
 		<button>검색</button>
 	</div>
@@ -65,7 +58,7 @@
 		<hr>
 		
 	<p>자유게시판</p><hr><br><br>
-	
+	<div class="main_div">
 	<table border="1" class="board_table">
 		<thead class="board_head">
 			<tr>
@@ -81,7 +74,7 @@
 			<c:forEach items="${BoardList}" var="letter">					
                 <tr>
                 	<td>${letter.num}</td>
-                    <td><a href="/user/posts/${letter.num}">${letter.title}</a><font size="2px" color="red">&nbsp;&nbsp;[${letter.comment}]</font></td>
+                    <td><a href="/user/posts/${letter.num}" class="board_title_a">${letter.title}</a><font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[${letter.comment}]</font></td>
                     <td>${letter.nickname}</td>
                     <td>${letter.date}</td>
                     <td>${letter.view}</td>
@@ -92,9 +85,13 @@
 	</table>
 	
 	<br><br><input type="button" onclick="location.href='/user/write'" class="write_button" value="글쓰기">
-	
+	</div>
 
-
+	<c:if test="${session_msg == false}">
+		<script>
+			alert('ERROR\n세션이 만료되었습니다.\n다시 로그인 해주세요!!');
+		</script>
+	</c:if>
 	
 </body>
 </html>

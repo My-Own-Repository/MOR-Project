@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -100,7 +101,11 @@
 		</table>
 	</form>
 	
-	
+	<c:if test="${session_msg == false}">
+		<script>
+			alert('ERROR\n세션이 만료되었습니다.\n다시 로그인 해주세요!!');
+		</script>
+	</c:if>
 	
 </body>
 </html>
