@@ -1,9 +1,12 @@
 package com.co.mor;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +28,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -554,7 +558,7 @@ public class HomeController {
     	model.addAttribute("fileViewer", fileViewer);
     	
     	
-    	//model.addAttribute("fileDown", fileList);	// 해당 게시글의 파일 전체 리스트이다. (다운로드 기능 구현때 사용할 예정) 
+    	model.addAttribute("fileDown", fileList);	// 해당 게시글의 파일 전체 리스트이다. (다운로드 기능 구현때 사용할 예정) 
     	
     	
     	String[] files_type = new String[fileList.size()];
@@ -594,7 +598,7 @@ public class HomeController {
     	return "redirect:/user/posts/"+urlnum;
     }
     
-    // 게시글의 첨부 파일들을 사용자들에게 보여주기 위한 메소드
+    // 게시글의 첨부 파일들을 사용자들에게 보여줌.
     
     @RequestMapping(value = "/loadfiles.do/{files_num}" , method = RequestMethod.GET)
     public void displayFiles(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable("files_num") int files_num) throws Exception{
@@ -613,6 +617,29 @@ public class HomeController {
 
     }
     
+    // 게시글의 첨부 파일을 다운로드 할 수 있도록 한다.
+    
+    @RequestMapping(value = "/downfiles.do/{files_num}")
+    public void downloadFile(HttpServletResponse response, @PathVariable("files_num") int files_num) throws Exception {
+    	FileDTO fileOne = b_service.fileView(files_num);
+    	
+    	File file = new File(fileOne.stored_path);
+    	String mimeType = new Tika().detect(file);
+    	
+    	if(mimeType==null) {	// 파일의 type이 딱히 없을 경우 mimeType을 임의로 설정함 (ex >> .ini 등)
+    		mimeType = "application/octet-stream";
+    	}
+    	
+    	String encodeType = "utf-8";
+ 
+    	response.setContentType(mimeType);		// 파일의 type 설정
+    	response.setHeader("Content-Disposition", "attachment; filename=\""+ URLEncoder.encode(fileOne.original_file_name, encodeType).replaceAll("\\+", "%20"));	// 브라우저에 다운로드 할 파일임을 알림.
+    	response.setContentLength((int)fileOne.file_size);	// 파일의 size 설정 (file_size는 long으로 선언했으나, 해당 기능의 원활한 사용을 위해 int형으로 변환.)
+    														// 향후 long 형식 그대로 사용할 방법 찾기를 요망 (동영상 파일의 경우 파일의 사이즈가 클 수 있기 때문)
+    	
+    	InputStream inputStream = new BufferedInputStream(new FileInputStream(file));	// 파일에 대한 inputstream 객체를 생성한다.
+    	FileCopyUtils.copy(inputStream, response.getOutputStream());	// 다운로드 할 파일을 복사해서 보내준다.
+    }
     
     // 게시글 삭제
     @RequestMapping(value = "/user/delete_board")

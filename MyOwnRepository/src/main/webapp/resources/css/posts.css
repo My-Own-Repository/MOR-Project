@@ -32,6 +32,9 @@ table {
 	padding: 8px;
 	float: right;
 }
+.upload_imgs {
+	max-width: 720px;
+}
 
 .upload_videos {
 	position: relative;
@@ -44,6 +47,14 @@ table {
 	background-color: #F6F6F6;
 	width: 350px;
 	height: auto;
+	margin: auto;
+	text-align: left;
+}
+
+.total_div{
+	position: relative;
+	width: 740px;		/* 350 */
+	height: 400px;
 	margin: auto;
 	text-align: left;
 }
@@ -155,28 +166,6 @@ hr {
 	float: right;
 	color: blue;
 }
-/*
-.small_write_btn{
-	font-size: 18px;
-	width: 100px;
-	height: 70%;
-	border: 0px;
-	font-weight: bold;
-	float: right;
-	color:blue;
-}
-
-.write_button{
-	position: relative;
-	width: 70px;
-	height: 100%;
-	border: 0px
-	background: gray;
-	left: 448px;
-	margin:auto;
-	color: blue;
-}
-*/
 
 .edit_btn{
 	position: relative;
@@ -198,6 +187,31 @@ hr {
 	color: blue;
 }
 
+.downFile_table{
+	position: relative;
+	width: 750px;
+	height: auto;
+	border: 1px;
+}
+
+/*
+	padding-left: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+*/
+
+.downFile_th{
+	background: darkgray;
+	text-align: auto;
+}
+
+.downFile_td{
+	padding: 5px;
+}
+
+.downFile_span{
+	font-size: 8px;
+}
 
 *{padding:0;margin:0}
 li{list-style:none}
@@ -346,7 +360,13 @@ a{text-decoration:none;font-size:14px}
 			width: 100%;		/* 350 */
 			height: auto;
 		} 
+		.downFile_table {
+			position: relative;
+			width: 100%;
+			height: auto;
+		}
 }
+
 
 @media ( min-width: 1024px ) {		/* 스크린 x축의 길이가 1024px이상 일때 적용됨 */
         table{

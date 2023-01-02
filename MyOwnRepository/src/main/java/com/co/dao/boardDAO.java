@@ -26,9 +26,9 @@ public interface boardDAO {
 	public void downComment(int num) throws Exception;		// 댓글 수 감소
 	
 	public void fileUpload(FileDTO fs) throws Exception;		// 파일 업로드
-	public List<FileDTO> fileDownload(int b_num) throws Exception;		// 파일 다운로드
-	public FileDTO fileView(int file_num) throws Exception; 	// 파일 보여주기
-	public List<FileDTO> fileViewer(int b_num) throws Exception;	// 파일 보여주기2 
+	public List<FileDTO> fileDownload(int b_num) throws Exception;		// 파일 다운로드(+파일 여러개 가져오기)
+	public FileDTO fileView(int file_num) throws Exception; 	// 파일 보여주기(+파일 한개 가져오기)
+	public List<FileDTO> fileViewer(int b_num) throws Exception;	// 파일 보여주기2
 	
 	public List<FileDTO> viewFile(int b_num) throws Exception;	// 이미지, 영상 파일만 추출해서 가져온 후 보여주기
 	
