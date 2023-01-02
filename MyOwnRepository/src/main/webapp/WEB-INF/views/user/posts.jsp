@@ -166,6 +166,24 @@
 	
 	<br>
 
+	<div>
+		<table border="1" class="downFile_table">
+			<tr>
+				<th class="downFile_th">&nbsp;첨부파일</th>
+			</tr>
+			<tr>
+				<td class="downFile_td">
+					<c:forEach items="${fileDown}" var="list">
+						<a href="/downfiles.do/${list.file_num}"><font size="2px" color="blue">&nbsp;${list.original_file_name}</font></a>
+						<span class="downFile_span">&nbsp;&nbsp;${list.file_size}&nbsp;kb</span>
+						<br>
+					</c:forEach>
+				</td>
+			</tr>		
+		</table>
+		<br><br>
+	</div>
+	
 	<table>	
 		<c:forEach items="${pre_post}" var="pre">	
 			<c:forEach items="${next_post}" var="next">		
@@ -183,6 +201,7 @@
 		<input type="button" onclick="delete_board(${page_num})" id="delete_btn" class="delete_btn" value="삭제">
 		<input type="button" onclick="location.href='/user/update_board'" value="수정" id="edit_btn" class="edit_btn">
 	</div>
+	
 	<script>	
 		// 게시글 작성자와 현재 게시글을 열람하는 사용자가 동일 인물일 경우
 		// 게시글 수정 및 삭제 버튼이 표시되고, 동일 인물이 아닐경우 버튼을 숨긴다.
