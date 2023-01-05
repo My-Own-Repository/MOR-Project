@@ -72,7 +72,8 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		<!-- <table cellpadding="0" cellspacing="0" border="1"> -->
 		
 	<p>자유게시판 - 글쓰기</p><hr><br><br>
-	<form action="/user/write" method="post" enctype="multipart/form-data">
+
+	<form id="write_form" action="/user/write" method="post" enctype="multipart/form-data">
 		<table border="1">
 			<tr>
  				<td><b>작성자</b></td>
@@ -85,14 +86,69 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
  
 			<tr>
 				<td><b>내용</b></td> 
-				<td> <textarea name="content" rows="20" cols="60" ></textarea> </td>
+				<td>
+					<div contenteditable="true" id="write_content_div" class="write_content_div"></div>
+					<textarea id="write_content_textarea" name="content" style=display:none></textarea>
+				</td>
+				
 			</tr>
 
 			<tr>
-				<td colspan="2"><input type="file" name="files" multiple="multiple"><input type="submit" value="글쓰기" class="small_write_btn"></td>
+				<td colspan="2"><input type="file" name="files" multiple="multiple" onchange="is_img_video(this)"><input type="button" value="글쓰기" class="small_write_btn" onclick="submit_btn();"></td>
 			</tr>
 		</table>
+	
 	</form>
+	
+	
+	<script>
+	
+	function is_img_video(f) {
+		var file = f.files;
+		
+		for(var i=0; i<file.length; i++) {
+			var fileList = f.files;		// 파일 받아와서 스크립트 내부 변수에 저장.
+			var fileName = fileList[i].name;		// 파일 이름 추출
+			
+			var fileLength = fileName.length;		// 파일명 길이 추출		
+			var fileDot = fileName.lastIndexOf(".");	// 파일의 확장자 추출		
+			var fileType = fileName.substr(fileDot+1, fileLength).toLowerCase();	// 추출한 확장자를 소문자로 변경한다.
+				
+            var reader = new FileReader();
+			
+            reader.onload = function (e) {
+            	
+            	// 파일이 이미지일때 수행
+            	if("jpg" == fileType || "jpeg" == fileType || "gif" == fileType || "png" == fileType || "bmp" == fileType){
+            		var previewImg = document.createElement("img");
+                	previewImg.setAttribute("src", e.target.result);
+                	document.querySelector("div#write_content_div").appendChild(previewImg);
+            	}
+            	// 파일이 동영상/오디오 일때 수행
+				else if("mpg" == fileType || "mpeg" == fileType || "mp4" == fileType || "ogg" == fileType || "webm" == fileType || "avi" == fileType || "wmv" == fileType || "mov" == fileType || "rm" == fileType || "ram" == fileType || 
+						"swf" == fileType || "flv" == fileType || "wav" == fileType || "mp3" == fileType){
+					var previewVideo = document.createElement("video");
+					previewVideo.setAttribute("src", e.target.result);
+                	document.querySelector("div#write_content_div").appendChild(previewVideo);
+				}
+
+            }
+            reader.readAsDataURL(f.files[i]);
+            
+        }
+		
+    }
+	
+	function submit_btn(){
+		var copy = document.getElementById('write_content_div').innerText;
+		//var paste = document.getElementById('write_content_textarea');
+		
+		document.getElementById('write_content_textarea').value = copy;
+				
+		document.getElementById('write_form').submit();
+	}
+
+	</script>
 	
 	<c:if test="${b_msg == false}">
 		<script>
