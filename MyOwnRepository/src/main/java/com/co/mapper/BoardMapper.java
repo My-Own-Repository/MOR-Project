@@ -94,4 +94,12 @@ public class BoardMapper {
 	public int maxNum() throws Exception{
 		return boardmapper.maxNum();
 	}
+	
+	public int totalNum() throws Exception{
+		return boardmapper.totalNum();
+	}
+	
+	public List<boardDTO> limitBoard(int first) throws Exception{
+		return boardmapper.limitBoard(first);
+	}
 }

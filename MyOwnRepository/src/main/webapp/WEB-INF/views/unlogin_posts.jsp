@@ -21,6 +21,10 @@
 		}
 	</style>
 
+<%
+	Integer page_num = (Integer) request.getAttribute("page_num");		// 정수형 변수는 int가 안되고 오로지 Integer로 선언해야함
+%>
+
 	<script>
  		src="https://code.jquery.com/jquery-3.4.1.js"
  		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
@@ -30,7 +34,7 @@
 <title>나만의 저장소 - MOR !</title>
 </head>
 <body>
-	<a href="/">
+	<a href="/1">
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<div class="search_div">
@@ -59,8 +63,9 @@
 	</ul>
 		<hr>
 	<p>자유게시판</p><hr><br><br>
+	<c:forEach items="${SelectPost}" var="letter">
 	<table border="1">
-		<c:forEach items="${SelectPost}" var="letter">	
+		
 			<tr>
 				<td><b>&nbsp;No.${letter.num}</b></td>
 			</tr>
@@ -78,14 +83,95 @@
 			</table>
 			<table border="1" class="content_table">
 				<tr>
-					<td colspan="4" class="content_td">&nbsp;${letter.content}</td>
+					<td colspan="4" class="content_td">
+							<c:forEach items="${fileViewer}" var="files">
+									<img src="/loadfiles.do/${files.file_num}" class="upload_imgs" id="${files.file_num}" alt="">
+									<br>
+									<video src="/loadfiles.do/${files.file_num}" class="upload_videos" id="${files.stored_file_name}" controls></video>
+									
+									<br>
+									
+									<script>								
+										function is_exist_file(){	
+											// img src와 video src의 각각 고유의 id를 가지기 위해 
+											// 이미지는 파일 번호, 동영상은 파일 이름을 아이디 값으로 주었다.
+											
+											// 각각 고유 id를 가지게 한 이유는 각 파일마다 숨길지 혹은 보이게 할지 판별할때 보다 용이하기 때문이다.
+											
+											const img_id = '${files.file_num}';
+											const video_id = '${files.stored_file_name}';
+																	
+											const upload_img = document.getElementById(img_id);
+											const upload_video = document.getElementById(video_id);
+											
+											var fileType = '${files.type}';
+											
+											var img_exist = false;
+											var video_exist = false;
+											
+											// 각 해당 파일이 존재하면 exist 변수가 true가 됨
+											
+											if(fileType.includes("image") == true){
+												img_exist = true;
+											}				
+											else if(fileType.includes("video") == true){
+												video_exist = true;
+											}
+											else {
+												alert("ERROR");
+											}
+											
+											// 각 exist 변수가 true일 경우 보이고 false일 경우 숨김 처리됨
+											
+											
+											if(img_exist == false){
+												upload_img.style.display = 'none';
+											}
+											else if(img_exist == true){
+												upload_img.style.display = 'block';
+											}
+														
+											if(video_exist == false){
+												upload_video.style.display = 'none';
+											}
+											else if(video_exist == true){
+												upload_video.style.display = 'block';
+											}	
+											
+											
+										}
+										is_exist_file();
+							
+									</script>
+								</c:forEach>
+								<br>
+														
+							<br>
+							<br>						
+										
+						${letter.content}					
+					</td>
 				</tr>
 			</table>
 	
-		</c:forEach>
+		
 	</table>
 	
 	<br>
+
+	<div>
+		<table border="1" class="downFile_table">
+			<tr>
+				<th class="downFile_th">&nbsp;첨부파일</th>
+			</tr>
+			<tr>
+				<td class="downFile_td">
+					<a href="/LoginPage"><input type="text" class="file_down_login" value="로그인이 필요한 서비스입니다."></a>
+				</td>
+			</tr>		
+		</table>
+		<br><br>
+	</div>
 
 	<table>	
 		<c:forEach items="${pre_post}" var="pre">	
@@ -99,7 +185,7 @@
 	</table>
 		<br><br><br><hr><br><br>
 	
-	<c:forEach items="${SelectPost}" var="letter">	
+	
 		<table class="title_table">	
 			<tr>
 				<td colspan="4">&nbsp;<b>댓글&nbsp;</b><font size="3px", color="red">${letter.comment}</font></td>

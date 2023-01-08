@@ -77,4 +77,13 @@
 		SELECT b_num, file_num, original_file_name, stored_file_name, stored_path, type, file_size FROM file WHERE (type LIKE 'image%' OR type LIKE 'video%') AND b_num=#{b_num}
 	</select>
 	
+	<select id="totalNum" resultType="int">
+		SELECT COUNT(*) FROM board WHERE is_exist=1
+	</select>
+	
+	<select id="limitBoard" resultType="boardDTO">
+		SELECT num, title, nickname, comment, date, view FROM board WHERE is_exist=1 ORDER BY num DESC LIMIT #{first},20
+
+	</select>
+	
 </mapper>

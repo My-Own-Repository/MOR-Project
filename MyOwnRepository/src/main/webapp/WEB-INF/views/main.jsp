@@ -20,10 +20,17 @@
  		crossorigin="anonymous"></script>
  	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">	
 
+	<%
+		int select_page = (int) request.getAttribute("select_page");		// 현재 선택한 페이지
+		int first_page = (int) request.getAttribute("first_page");			// 현재 선택한 페이지 기준에서 첫 번째 페이지
+		int last_page = (int) request.getAttribute("last_page");			// 현재 선택한 페이지 기준에서 마지막 페이지
+		int page_count = (int) request.getAttribute("page_count");			// 총 페이지 개수
+	%>
+
 <title>나만의 저장소 - MOR !</title>
 </head>
 <body>
-	<a href="/">
+	<a href="/1">
 		<img class="main-logo" src="././resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<div class="search_div">
@@ -50,8 +57,8 @@
 			<a href="/LoginPage">내 정보</a>
 		</li>
 	</ul>
-	<hr>
-	<p>자유게시판</p><hr><br><br>
+	<br><br>
+	<p>자유게시판</p><br>
 	<div class="main_div">
 	<table border="1" class="board_table">
 		<thead class="board_head">
@@ -77,6 +84,43 @@
 	</table>
 	
 	<br><br><input type="button" onclick="location.href='LoginPage'" class="write_button" value="글쓰기">
+	<br><br><br><br><br><br>
+	<div class="bottom_div">
+		<c:if test="${first_page > 10}">
+			<a href="/${first_page-10}"><b>&lt;&nbsp;이전</b></a>&emsp;
+		</c:if>
+		<div class="paging_div">
+			<div class="paging_div2">
+			<c:forEach begin="${first_page}" end="${last_page}" var="p">
+				<c:choose>
+					<c:when test="${p == select_page}">
+						<b class="b_sty">${p}&emsp;</b>
+					</c:when>
+					<c:when test="${p != select_page}">
+						<a href="/${p}">${p}</a>&emsp;
+					</c:when>
+				</c:choose>
+			</c:forEach>
+			</div>
+		</div>
+		<c:if test="${last_page != page_count}">
+			&emsp;
+			<a href="/${last_page+1}"><b>다음&nbsp;&lt;</b></a>
+		</c:if>
+		<hr class="hr_sty">
+		<div class="board_search_div">		
+				<select name='search_filter' class="in_board_search_menu">
+					<option value="search_title">제목</option>
+					<option value="search_cotent">내용</option>
+					<option value="search_tit_cot">제목 + 내용</option>
+					<option value="search_writer">작성자</option>
+				</select>								
+			<button class="in_board_search_btn">검색</button>
+			<input type="text" class="in_board_search_text" placeholder="검색어를 입력해주세요.">	
+		</div>
 	</div>
+	<br><br><br><br>
+	</div>
+	<hr class="bottom_hr">
 </body>
 </html>

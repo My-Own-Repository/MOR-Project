@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>	
 <body>
-	<a href="/">
+	<a href="/1">
 		<img class="main-logo" src="././resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<p align="center">*는 필수 입력 항목입니다.</p>

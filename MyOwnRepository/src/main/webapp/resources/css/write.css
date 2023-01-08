@@ -1,5 +1,6 @@
 table {
 	width: 740px;
+	min-height: 400px;
 	height: auto;
 	margin: auto;
 	text-align: center;
@@ -11,7 +12,7 @@ table {
 .write_content_div {
 	text-align: left;
 	width: 640px;
-	height: 400px;
+	min-height: 400px;
 	white-space:normal;
  	padding: 0.5em;
  	display:inline-block;
@@ -184,6 +185,7 @@ a{text-decoration:none;font-size:14px}
         table{
         	position: relative;
         	width: 100%;
+        	min-height: 400px;
 			height: auto;
         }
         
@@ -203,16 +205,11 @@ a{text-decoration:none;font-size:14px}
         	text-align: left;
 			position: relative;
 			width: 96%;
-			height: 400px;
-			table-layout : fixed;
-			white-space: normal;
+			min-height: 400px;			/* table를 auto로 두고, 길이가 늘어나도 형태 유지가 용이한 div는 최소 높이만 지정하여 */
+			table-layout : fixed;		/* div contenteditable=true를 사용해도 자연스럽게 글 작성이 되도록 했다. */
+			white-space: normal;		
 			overflow: hidden;
 			word-break: break-all;
-			/*
-			overflow: hidden;			
-    		text-overflow: ellipsis;
-   		 	white-space: nowrap;
-   		 	*/
 		}
 		
 		#write_content_div img{

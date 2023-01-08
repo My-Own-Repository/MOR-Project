@@ -43,7 +43,7 @@
 </head>
  
 <body>
-	<a href="/user/userMain">
+	<a href="/user/userMain/1">
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<div>

@@ -32,8 +32,10 @@ public interface boardDAO {
 	
 	public List<FileDTO> viewFile(int b_num) throws Exception;	// 이미지, 영상 파일만 추출해서 가져온 후 보여주기
 	
-	
 	public int maxNum() throws Exception;		// 마지막으로 게시 된 게시글의 고유번호 검색 (파일 업로드시 파일을 업로드한 게시글을 특정하기 위함.)
+
+	public int totalNum() throws Exception;		// 게시글 총 개수 가져오기
+	public List<boardDTO> limitBoard(int first) throws Exception;		// first부터 20개의 게시글 목록 가져오기
 	
 	// 첫 글과 마지막 글의 고유번호 조회(이전,다음 글 조회할때 사용)
 	public int selectMinNum() throws Exception;	
