@@ -38,7 +38,7 @@
 <title>나만의 저장소 - MOR !</title>
 </head>
 <body>
-	<a href="/user/userMain">
+	<a href="/user/userMain/1">
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<div class="search_div">

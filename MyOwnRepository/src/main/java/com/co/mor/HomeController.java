@@ -74,6 +74,8 @@ public class HomeController {
 	public List<boardDTO> show_post;	// 사용자가 보는 게시글을 특정하여 해당 페이지로 이동할 때 사용 할 전역변수 (좋은 방법은 아닌거같음. 향후 개선요망)
 										// 컨트롤러에서 컨트롤러로 데이터를 전송할 때의 대체제로 전역변수를 사용한것임.
 	
+	public int board_first_index = 1;		// 사용자가 보는 게시글을 20개씩 나누어 페이징하기 위한 쿼리문에서 사용되는 전역변수.
+										// = MYSQL의 쿼리문인 limitBoard의 LIMIT의 시작 인덱스가 될 값
 	//public ArrayList<Object> pre_next_posts;	
 	
 	// 사용자가 보는 게시글에서 바로 이전과 다음 게시글을 의미하는 전역변수
@@ -91,13 +93,76 @@ public class HomeController {
     @Inject
     private BoardService b_service;
    
+    // {page}는 사용자가 선택한 게시판의 페이지 번호
+    @RequestMapping(value = "/{page}", method = RequestMethod.GET)
+    public String main(Locale locale, Model model, HttpServletRequest request, @PathVariable("page") int page) throws Exception{ 
+        logger.info("main");
+        
+        // 사용자가 선택한 페이지에 따라 sql에 보낼 파라미터 값(LIMIT 시작 인덱스)이 바뀜 (1번째 페이지 일 경우 값은 1, 2번째의 경우 값은 21 .... 20씩 증가)      
+        board_first_index = (page-1) * 20 + 1;
+ 
+        return "redirect:/";
+    }
     
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String main(Locale locale, Model model) throws Exception{
- 
+    public String view_main(Locale locale, Model model, HttpServletRequest request) throws Exception{ 
         logger.info("main");
-        List<boardDTO> board_list = b_service.printBoard();
-    	model.addAttribute("BoardList", board_list);
+        int total = b_service.totalNum();
+        int page_count=1;
+        
+        // 한 페이지에 20개의 글이 보이게 한다.
+        // 총 게시글 수의 대입해, 필요한 총 페이지 수(page_count)를 알아 내기위한 반복문.
+        while(true) {
+        	if((total / 20) != 0 && (total % 20) > 0) {
+        		page_count++;
+        		total -= 20;
+        	}
+        	else {
+        		break;
+        	}
+        }
+        
+        /* 하단에 페이지 숫자 범위지정을 위한 과정 ( ex, <이전 1 2 3 4 5 6 7 8 9 10 다음>) */
+        
+        // 현재 선택한 페이지
+        int page = (board_first_index -1) / 20 + 1;
+        model.addAttribute("select_page", page);
+        
+        // 처음 페이지의 숫자
+        int first_page = 1;
+        if(page % 10 == 0) {
+        	first_page = page - 9;		
+        }
+        else {
+        	first_page = page - (page % 10) + 1;		
+        }
+        model.addAttribute("first_page", first_page);
+        
+        // 마지막 페이지의 숫자
+        int last_page = 10;
+        if(page % 10 == 0) {
+        	last_page = page;
+        }
+        else if((page / 10 + 1) * 10 > page_count) {		// 마지막 페이지 그룹일 경우 실행 되는 조건문
+        	last_page = page_count;
+        }
+        else {
+        	last_page = ((page / 10) + 1) * 10;
+        }
+        model.addAttribute("last_page", last_page);
+        
+        // 총 페이지의 숫자
+        model.addAttribute("page_count", page_count);
+        
+        
+        
+        
+        
+        // 처음 웹 사이트를 실행시켰을때는 페이지 디폴트값인 첫번째 페이지를 보여주도록 유도(board_first_num의 값을 선언과 동시에 1로 초기화)하고
+        // 이후에는 사용자가 고르는 페이지가 보여지도록 함.       
+        List<boardDTO> board_list = b_service.limitBoard(board_first_index);
+        model.addAttribute("BoardList", board_list);
+        
  
         return "main";
     }
@@ -222,27 +287,100 @@ public class HomeController {
         return "redirect:/";
     }
     
-    
-    @RequestMapping(value = "/user/userMain", method = RequestMethod.GET)
-    public String userMainPage(HttpServletRequest request, Model model) throws Exception {
+    @RequestMapping(value = "/user/userMain/{page}", method = RequestMethod.GET)
+    public String userMainPage(HttpServletRequest request, Model model, @PathVariable("page") int page) throws Exception {
     	HttpSession session = request.getSession(false);
     	System.out.println("사용자 닉네임 >> " + user_nickname);
-    	
+   	
     	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
     		model.addAttribute("session_msg", false);
     		return "redirect:/LoginPage";
-    	}
-    	
+    	}  	
     	if(user_nickname.isBlank() == true) {
     		model.addAttribute("session_msg", false);
     		session.invalidate();
     		return "redirect:/";
     	}
     	
-    	List<boardDTO> board_list = b_service.printBoard();
-    	model.addAttribute("BoardList", board_list);
+    	
+        // 사용자가 선택한 페이지에 따라 sql에 보낼 파라미터 값(LIMIT 시작 인덱스)이 바뀜 (1번째 페이지 일 경우 값은 1, 2번째의 경우 값은 21 .... 20씩 증가)      
+        board_first_index = (page-1) * 20 + 1;
     	
     	System.out.println(LOGIN_MEMBER);
+    	return "redirect:/user/userMain";
+	
+    }
+    
+    @RequestMapping(value = "/user/userMain", method = RequestMethod.GET)
+    public String view_userMainPage(HttpServletRequest request, Model model) throws Exception {
+    	HttpSession session = request.getSession(false);
+    	
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		model.addAttribute("session_msg", false);
+    		return "redirect:/LoginPage";
+    	}    	
+    	if(user_nickname.isBlank() == true) {
+    		model.addAttribute("session_msg", false);
+    		session.invalidate();
+    		return "redirect:/";
+    	}
+    	
+        int total = b_service.totalNum();
+        int page_count=1;
+        
+        // 한 페이지에 20개의 글이 보이게 한다.
+        // 총 게시글 수의 대입해, 필요한 총 페이지 수(page_count)를 알아 내기위한 반복문.
+        while(true) {
+        	if((total / 20) != 0 && (total % 20) > 0) {
+        		page_count++;
+        		total -= 20;
+        	}
+        	else {
+        		break;
+        	}
+        }
+        
+        /* 하단에 페이지 숫자 범위지정을 위한 과정 ( ex, <이전 1 2 3 4 5 6 7 8 9 10 다음>) */
+        
+        // 현재 선택한 페이지
+        int page = (board_first_index -1) / 20 + 1;
+        model.addAttribute("select_page", page);
+        
+        // 처음 페이지의 숫자
+        int first_page = 1;
+        if(page % 10 == 0) {
+        	first_page = page - 9;		
+        }
+        else {
+        	first_page = page - (page % 10) + 1;		
+        }
+        model.addAttribute("first_page", first_page);
+        
+        // 마지막 페이지의 숫자
+        int last_page = 10;
+        if(page % 10 == 0) {
+        	last_page = page;
+        }
+        else if((page / 10 + 1) * 10 > page_count) {		// 마지막 페이지 그룹일 경우 실행 되는 조건문
+        	last_page = page_count;
+        }
+        else {
+        	last_page = ((page / 10) + 1) * 10;
+        }
+        model.addAttribute("last_page", last_page);
+        
+        // 총 페이지의 숫자
+        model.addAttribute("page_count", page_count);
+        
+        
+        
+        
+        
+        // 처음 웹 사이트를 실행시켰을때는 페이지 디폴트값인 첫번째 페이지를 보여주도록 유도(board_first_num의 값을 선언과 동시에 1로 초기화)하고
+        // 이후에는 사용자가 고르는 페이지가 보여지도록 함.       
+        List<boardDTO> board_list = b_service.limitBoard(board_first_index);
+        model.addAttribute("BoardList", board_list);
+    	
     	return "user/userMain";
 	
     }
@@ -753,6 +891,24 @@ public class HomeController {
     
     	
     	model.addAttribute("printComment", cmt);		// 해당 고유번호를 가진 게시글의 모든 댓글의 정보를 jsp에 보내는 구문
+    	
+    	List<FileDTO> fileList = b_service.fileViewer(show_post.get(0).num);
+    	
+    	
+     	
+    	// 이미지와 동영상 파일만 가져오는 쿼리문을 통해 가져와서 JSP로 보낸다.
+    	List<FileDTO> fileViewer = b_service.viewFile(show_post.get(0).num);
+    	model.addAttribute("fileViewer", fileViewer);
+    	
+    	
+    	model.addAttribute("fileDown", fileList);	// 해당 게시글의 파일 전체 리스트이다. (다운로드 기능 구현때 사용할 예정) 
+    	
+    	
+    	String[] files_type = new String[fileList.size()];
+    	for(int i=0; i<fileList.size(); i++) {
+    		files_type[i] = fileList.get(i).type;
+    	}
+    	model.addAttribute("files_type", files_type);
     	
     	return "/unlogin_posts";
     }

@@ -126,6 +126,18 @@ public class BoardServiceImpl implements BoardService{
 		return dao.viewFile(b_num);
 	}
 
+	@Override
+	public int totalNum() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.totalNum();
+	}
+
+	@Override
+	public List<boardDTO> limitBoard(int first) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.limitBoard(first);
+	}
+
 	
 
    

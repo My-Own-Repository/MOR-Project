@@ -33,6 +33,9 @@ public interface BoardService {
 	
 	public int maxNum() throws Exception;	// 마지막 게시글의 고유번호 검색
 	
+	public int totalNum() throws Exception;		// 유효한 게시글 총 개수 가져오기
+	public List<boardDTO> limitBoard(int first) throws Exception;	// first부터 20개의 게시글 목록 가져오기
+	
 	// 첫 글과 마지막 글의 고유번호 조회(이전,다음 글 조회할때 사용)
 	public int selectMinNum() throws Exception;		 
 	public int selectMaxNum() throws Exception;

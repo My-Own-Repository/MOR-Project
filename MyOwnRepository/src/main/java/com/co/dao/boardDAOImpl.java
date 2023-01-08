@@ -129,6 +129,18 @@ public class boardDAOImpl implements boardDAO{
 		return sqlSession.selectList(Namespace+".viewFile", b_num);
 	}
 
+	@Override
+	public int totalNum() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".totalNum");
+	}
+
+	@Override
+	public List<boardDTO> limitBoard(int first) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".limitBoard", first);
+	}
+
 
 	
 }
