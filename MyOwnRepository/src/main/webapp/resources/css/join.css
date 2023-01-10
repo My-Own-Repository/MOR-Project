@@ -6,50 +6,60 @@
  		background-size: 100% 100%;
   		margin:auto;
 }
-
+.input_info {
+	width: 200px;
+	height: 30px;
+}
 
 .tables{
+	width: 724px;
 	margin:auto;
 }
 .join_button{
 	display: block;
-	width: 300px;
+	width: 312px;
 	height: 40px;
 	margin:auto;
 }
 .is_same{
-	wight: 100%;
+	width: 50px;
 	height: 25px;
 	margin:auto
 }
 .nick_issame{
-	wight: 100%;
+	width: 50px;
 	height: 25px;
 	margin:auto
 }
 @media ( max-width: 1024px ) {
         .main-logo {
-			width: 100%;
-			height: auto;
+        	position: relation;
+			width: 6px;
+			height: 6px;
         }
+        .input_info {
+        	position: relation;
+			width: 60%;
+			height: auto;
+		}
         .tables {
-			float: none;
+        	position: relation;
 			width: 100%;
 			height: auto;
         }
         .join_button {
-			float: none;
+        	position: relation;
 			width: 100%;
 			height: auto;
         }
         .is_same {
-			float: none;
-			width: 100%;
-			height: auto;
+        	position: relation;
+			width: 5%;
+			height: 25px;
         }
         .nick_issame{
-			wight: 100%;
+        	position: relation;
+			wight: 5%;
 			height: 25px;
-			margin:auto
 		}
 }

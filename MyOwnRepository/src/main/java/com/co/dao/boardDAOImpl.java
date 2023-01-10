@@ -141,6 +141,18 @@ public class boardDAOImpl implements boardDAO{
 		return sqlSession.selectList(Namespace+".limitBoard", first);
 	}
 
+	@Override
+	public void updateComment(commentDTO cmt) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(Namespace+".updateComment", cmt);
+	}
+
+	@Override
+	public void deleteComment(int c_num) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.delete(Namespace+".deleteComment", c_num);
+	}
+
 
 	
 }

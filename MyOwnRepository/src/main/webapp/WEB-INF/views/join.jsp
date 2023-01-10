@@ -18,19 +18,58 @@
   integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
   crossorigin="anonymous"></script>
    
+   <style>
+   		/* 
+   			회원가입 방식을 window.open()을 통한 새 팝업창으로 바꾸었는데,
+   			팝업창에서는 jsp내의 스타일만 적용돼서 style 설정을 따로 추가했다. 
+   		*/
+   		@media ( max-width: 1024px ) {
+        .main-logo {
+        	position: relation;
+			width: 86px;
+			height: 86px;
+        }
+        .input_info {
+        	position: relation;
+			width: 50%;
+			height: auto;
+		}
+        .tables {
+        	position: relation;
+			width: 100%;
+			height: auto;
+        }
+        .join_button {
+        	position: relation;
+			width: 100%;
+			height: 40px;
+        }
+        .is_same {
+        	position: relation;
+			width: 100px;
+			height: 25px;
+        }
+        .nick_issame{
+        	position: relation;
+			width: 100px;
+			height: 25px;
+		}
+	}
+   </style>
+   
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 </head>	
 <body>
 	<a href="/1">
 		<img class="main-logo" src="././resources/img/MOR_symbol_logo.svg" />
 	</a>
-	<p align="center">*는 필수 입력 항목입니다.</p>
+	<p align="center">*는 필수 입력 항목입니다.</p><br><br><br><br>
 <form id = join_form class="wrap" method="get"> 
 	<table class="tables">
 		<tr>
 			<th>* 아이디<br><br></th>
 			<td>
-				<input type="text" title="아이디" id="id" name="id"/>
+				<input type="text" title="아이디" id="id" name="id" class="input_info"/>
 				<input type="button" class="is_same" id="is_same" value="아이디 확인"/><br><br>
 
 			</td>
@@ -38,43 +77,45 @@
 		<tr>
 			<th>* 비밀번호<br><br></th>
 			<td>
-				<input type="password" title="비밀번호" id="pw" name="pw"/><br><br>
+				<input type="password" title="비밀번호" id="pw" name="pw" class="input_info"/><br><br>
 			</td>
 		</tr>
 		<tr>
 			<th>* 비밀번호 확인<br><br></th>
 			<td>
-				<input type="password" id="pw2" title="비밀번호"/><br><br>
+				<input type="password" id="pw2" title="비밀번호" class="input_info"/><br><br>
 			</td>
 			
 		</tr>
 		<tr>
 			<th>* 성명<br><br></th>
 			<td>
-				<input type="text" title="성명" id="name" name="name"/><br><br>
+				<input type="text" title="성명" id="name" name="name" class="input_info"/><br><br>
 			</td>
 		</tr>
 		<tr>
 			<th>* 닉네임<br><br></th>
 			<td>
-				<input type="text" title="닉네임" id="nickname" name="nickname"/>
+				<input type="text" title="닉네임" id="nickname" name="nickname" class="input_info"/>
 				<input type="button" class="nick_issame" value="닉네임 확인"/><br><br>
 			</td>
 		</tr>
 		<tr>
 			<th>전화번호<br><br></th>
 			<td>
-				<input type="text" title="전화번호" id="phone_number" name="phone_number"/><br><br>
+				<input type="text" title="전화번호" id="phone_number" name="phone_number" class="input_info"/><br><br>
 			</td>
 		</tr>
 		<tr>
 			<th>이메일<br><br></th>
 			<td>
-				<input type="text" title="이메일" id="email" name="email"/><br><br>
+				<input type="text" title="이메일" id="email" name="email" class="input_info"/><br><br>
 			</td>
 		</tr>
 	</table>
+	<br><br><br>
 	<input type="button" class="join_button" value="회원가입">
+	<br>
 	
 
 
@@ -203,8 +244,9 @@ function checkNICKNAME(){			// 닉네임 중복 체크함수
 			alert("프로그램 에러입니다.");
 		}
 	});
+	
 }
-
+	
 	$(document).ready(function(){	
 		// 아이디 중복 확인
 		$(".is_same").click(function(){
@@ -219,7 +261,7 @@ function checkNICKNAME(){			// 닉네임 중복 체크함수
 		//회원가입 버튼(회원가입 기능 작동)
 		$(".join_button").click(function(){
 			effectiveness();	
-			if(is_not_error == true) {			
+			if(is_not_error == true) {		
 				$("#join_form").attr("action", "join");
 				$("#join_form").submit();
 			}
@@ -229,7 +271,11 @@ function checkNICKNAME(){			// 닉네임 중복 체크함수
 	});
 </script>  
 
-
+	<c:if test="${sign_complete_msg == true}">
+		<script>
+			window.close();
+		</script>
+	</c:if>
 
 </body>
 </html>

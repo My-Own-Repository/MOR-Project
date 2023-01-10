@@ -121,6 +121,13 @@ textarea{
 	margin: auto;
 	text-align: left;
 }
+.update_comment_textarea{
+	position: relative;
+	width: 700px; 
+	height: 200px;
+	margin: auto;
+	text-align: left;
+}
 
 .file_down_login {
 	position: relative;
@@ -202,6 +209,26 @@ hr {
 	background: lightgray;
 	float: right;
 	color: blue;
+}
+
+.update_comment_btn{
+	position: relative;
+	width: 120px;
+	height: 40px;
+	background-color: darkgray;
+	color: white;
+	float: right;
+	right: 12px;
+}
+
+.update_cancle_btn{
+	position: relative;
+	width: 120px;
+	height: 40px;
+	background-color: darkgray;
+	color: white;
+	float: right;
+	
 }
 
 .downFile_table{

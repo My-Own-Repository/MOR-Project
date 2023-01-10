@@ -19,6 +19,9 @@
 			font-size:25px;
 			color:blue;
 		}
+		.update_cmt {
+			display: none;
+		}
 	</style>
 
 <%
@@ -251,8 +254,8 @@
 			<tr>
 				<th>&nbsp;&nbsp;${cmt.nickname}
 				
-				<a href="#"><img src="../../../resources/img/Red_X_img.png" class="imgs"></a>
-				<a href="#"><img src="../../../resources/img/Pencil_img.png" class="imgs"></a>
+				<a href="javascript:delete_cmt(${cmt.b_num}, ${cmt.c_num})"><img src="../../../resources/img/Red_X_img.png" class="imgs"></a>
+				<a href="javascript:update_cmt(${cmt.c_num}, ${cmt.b_num + cmt.c_num})"><img src="../../../resources/img/Pencil_img.png" class="imgs"></a>
 				&nbsp;&nbsp;
 				
 				</th>
@@ -262,9 +265,63 @@
 		
 		<table class="comment_main">
 			<tr>
-				<td colspan="4"><br>&nbsp;${cmt.content}<br><br></td>
-			</tr>
+				<td colspan="4" id="${cmt.c_num}"><br>&nbsp;${cmt.content}<br><br></td>
+				<td colspan="4" id="${cmt.b_num + cmt.c_num}" class="update_cmt"> 
+					<form id="${(cmt.b_num + cmt.c_num) * -1}" action="/user/posts/comment_update" method="post">
+						<textarea name="content" class="update_comment_textarea">${cmt.content}</textarea>
+						<input type="hidden" name="b_num" value="${cmt.b_num}">
+						<input type="hidden" name="c_num" value="${cmt.c_num}">
+						<input type="hidden" name="is_exist" value="${cmt.is_exist}">
+						<input type="button" value="수정 완료" class="update_comment_btn" onClick="submit_update_cmt(${cmt.c_num},${cmt.b_num + cmt.c_num});">
+						<input type="button" value="취소" class="update_cancle_btn" onClick="window.location.reload()">
+					</form>
+				</td>
+			</tr>		
 		</table>
+		
+		<script type="text/javascript">	// HTML5에서는 디폴트 값인 text/javascript를 따로 선언할 필요는 없지만
+										// 이번 경우에는 혹시 모를 호환성을 위해 적었다.
+			function update_cmt(view_num, form_num) {
+				var showed_updateComment = document.getElementById(view_num);		// 수정 할 댓글 가져오기
+				var updating_comment = document.getElementById(form_num);	// 댓글 수정 폼 가져오기
+								
+				showed_updateComment.style.display = "none";	// 수정 할 댓글 뷰 숨기기
+				updating_comment.style.display = "block";		// 댓글 수정 폼 보이기
+			}
+		
+			function submit_update_cmt(view_num, form_num){		
+				var form_submit_num = form_num * -1;
+				document.getElementById(form_submit_num).submit();	// 댓글 수정 폼 컨트롤러로 submit 하기
+			}
+			
+			function viewmode_update_cmt(view_num, form_num){
+				var showed_updateComment = document.getElementById(view_num);		// 수정 할 댓글 가져오기
+				var updating_comment = document.getElementById(form_num);	// 댓글 수정 폼 가져오기
+				
+				updating_comment.style.display = "none";		// 댓글 수정 폼 숨기기
+				showed_updateComment.style.display = "block";	// 수정한 댓글 보이기								
+			}
+			
+			function delete_cmt(b_num, c_num){		// 댓글삭제에 대한 확인 의사를 재차 묻기위해 실행되는 함수 
+				var path = 'posts/comment_delete/';
+				if(confirm("댓글을 삭제 하시겠습니까?")){
+					path += b_num;
+					path += '/';
+					path += c_num;
+					
+					location.href = path;
+				}
+			}
+		</script>
+		
+		<c:if test="${cu_msg == true}">		
+			<script>	
+				// 댓글의 수정 폼을 숨기고 view 모드로 전환하기 위한 컨트롤러와의 통신수단. 
+				// 댓글의 정보를 함수 인자로 사용하기 위해 forEach문 안에 배치했다.
+				viewmode_update_cmt(${cmt.c_num}, ${cmt.b_num + cmt.c_num});
+				
+			</script>
+		</c:if>
 		
 		<script>
 			function is_mine_img(){		// 댓글을 작성자와 로그인을 하여 댓글을 열람중인 사용자가 동일인물 이면

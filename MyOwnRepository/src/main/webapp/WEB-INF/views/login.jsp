@@ -35,7 +35,7 @@
                 <div class="find_area">
                     <a href="#">아이디찾기</a>
                     <a href="#">비밀번호 찾기</a>
-                    <a href="/join">회원가입</a>
+                    <a href="javascript:join_window()">회원가입</a>
                 </div>
             </div>
 
@@ -64,6 +64,12 @@
     </div>
 	</form>
 
+	<script type="text/javascript">
+		function join_window(){
+			// resizable은 더이상 지원을 안하네요...
+			window.open("<%= request.getContextPath()%>/join", "", "width=640, height=800, resizable=no, fullscreen=no scrollbars=no, status=yes, left=600, top=100");
+		}
+	</script>
   
 <c:if test="${msg == false}">
 	<script>

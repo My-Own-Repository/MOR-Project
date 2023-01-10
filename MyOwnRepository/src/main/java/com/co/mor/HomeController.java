@@ -99,7 +99,7 @@ public class HomeController {
         logger.info("main");
         
         // 사용자가 선택한 페이지에 따라 sql에 보낼 파라미터 값(LIMIT 시작 인덱스)이 바뀜 (1번째 페이지 일 경우 값은 1, 2번째의 경우 값은 21 .... 20씩 증가)      
-        board_first_index = (page-1) * 20 + 1;
+        board_first_index = (page-1) * 20;
  
         return "redirect:/";
     }
@@ -109,6 +109,8 @@ public class HomeController {
         logger.info("main");
         int total = b_service.totalNum();
         int page_count=1;
+        
+        System.out.println("유효 게시글 총 개수 >>>> " + total);
         
         // 한 페이지에 20개의 글이 보이게 한다.
         // 총 게시글 수의 대입해, 필요한 총 페이지 수(page_count)를 알아 내기위한 반복문.
@@ -125,7 +127,7 @@ public class HomeController {
         /* 하단에 페이지 숫자 범위지정을 위한 과정 ( ex, <이전 1 2 3 4 5 6 7 8 9 10 다음>) */
         
         // 현재 선택한 페이지
-        int page = (board_first_index -1) / 20 + 1;
+        int page = board_first_index / 20 + 1;
         model.addAttribute("select_page", page);
         
         // 처음 페이지의 숫자
@@ -214,6 +216,7 @@ public class HomeController {
     			logger.info("회원가입 성공!");
     			service.joinMember(member);
     			url = "redirect:/";
+    			model.addAttribute("sign_complete_msg", true);	// 회원가입 완료시 팝업창을 닫기 위해 JSP로 신호를 보냄.
     		}
     		else if(integration_id == 1 || integration_nickname == 1) {
     			logger.info("회원가입 실패..");
@@ -221,10 +224,11 @@ public class HomeController {
     		}
     	}
 
-
     	integration_id = -1;
-    	return url;
-
+    	   
+    	
+    	//return url;
+    	return "join";
     }
 
     
@@ -304,7 +308,7 @@ public class HomeController {
     	
     	
         // 사용자가 선택한 페이지에 따라 sql에 보낼 파라미터 값(LIMIT 시작 인덱스)이 바뀜 (1번째 페이지 일 경우 값은 1, 2번째의 경우 값은 21 .... 20씩 증가)      
-        board_first_index = (page-1) * 20 + 1;
+        board_first_index = (page-1) * 20;
     	
     	System.out.println(LOGIN_MEMBER);
     	return "redirect:/user/userMain";
@@ -343,7 +347,7 @@ public class HomeController {
         /* 하단에 페이지 숫자 범위지정을 위한 과정 ( ex, <이전 1 2 3 4 5 6 7 8 9 10 다음>) */
         
         // 현재 선택한 페이지
-        int page = (board_first_index -1) / 20 + 1;
+        int page = board_first_index / 20 + 1;
         model.addAttribute("select_page", page);
         
         // 처음 페이지의 숫자
@@ -713,7 +717,17 @@ public class HomeController {
     @RequestMapping(value = "/user/posts/comment", method = RequestMethod.POST)		
     public String comment(HttpServletRequest request, HttpServletResponse response, Model model, commentDTO letter) throws Exception {
     	HttpSession session = request.getSession(false);
+    	  	
     	// 이 부분은 기능을 수행할 때 세션과 연관된 부분이 아니기에, 세션 만료시 로그인 페이지로 넘기는 작업을 할 필요없어서 생략했다.
+    	// 세션이 필요 한 것 같아서 일단 넣어놓고 보류. (단, 세션 종료 알림은 넣지않음)  	
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		return "redirect:/LoginPage";
+    	}
+    	else if(user_nickname.isBlank() == true) {
+        	session.invalidate();
+        	return "redirect:/LoginPage";
+    	}
+    	
     	
     	if(letter.content != null) {		// 댓글 작성하는 구문
     		if(letter.content.length() > 0 && letter.content.length() <= 300) {
@@ -734,6 +748,62 @@ public class HomeController {
     	}
     	String urlnum = Integer.toString(show_post.get(0).num);
     	return "redirect:/user/posts/"+urlnum;
+    }
+    
+    // 댓글 수정
+    @RequestMapping(value = "/user/posts/comment_update", method = RequestMethod.POST)
+    public String update_comment(HttpServletRequest request, Model model, commentDTO cmt) throws Exception{		//, @PathVariable("b_num") int b_num, @PathVariable("c_num") int c_num, 
+    	HttpSession session = request.getSession(false);
+    	
+    	// 이 부분은 기능을 수행할 때 세션과 연관된 부분이 아니기에, 세션 만료시 로그인 페이지로 넘기는 작업을 할 필요없어서 생략했다.
+    	// 세션이 필요 한 것 같아서 일단 넣어놓고 보류. (단, 세션 종료 알림은 넣지않음)  	
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		return "redirect:/LoginPage";
+    	}
+    	else if(user_nickname.isBlank() == true) {
+        	session.invalidate();
+        	return "redirect:/LoginPage";
+    	}
+    
+    	if(cmt.content != null) {		// 댓글 작성하는 구문
+    		if(cmt.content.length() > 0 && cmt.content.length() <= 300) {
+    			logger.info("댓글수정 성공!");
+   		
+    			b_service.updateComment(cmt);		// 게시글의 댓글 수정
+    			model.addAttribute("cu_msg", true);		// 업데이트 성공 메시지 - 댓글 수정이 완료 되면 댓글 수정 폼을 숨기고 수정된 뷰를 보여주기 위함.
+    		}
+    		else {
+    			logger.info("댓글수정 실패..");
+    			model.addAttribute("c_msg", false);
+    		}
+    	}
+    	
+    	return "redirect:/user/posts/"+cmt.b_num;
+    }
+    
+    
+    // 댓글 삭제
+    @RequestMapping(value = {"/user/posts/comment_delete/{b_num}/{c_num}"})
+    public String delete_comment(HttpServletRequest request, @PathVariable("b_num") String b_num, @PathVariable("c_num") String c_num) throws Exception{
+    	HttpSession session = request.getSession(false);
+    	
+    	// 이 부분은 기능을 수행할 때 세션과 연관된 부분이 아니기에, 세션 만료시 로그인 페이지로 넘기는 작업을 할 필요없어서 생략했다.
+    	// 세션이 필요 한 것 같아서 일단 넣어놓고 보류. (단, 세션 종료 알림은 넣지않음)  	
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		return "redirect:/LoginPage";
+    	}
+    	else if(user_nickname.isBlank() == true) {
+        	session.invalidate();
+        	return "redirect:/LoginPage";
+    	}
+    	
+    	int board_num = Integer.parseInt(b_num);
+    	int comment_num = Integer.parseInt(c_num);
+    	
+    	b_service.deleteComment(comment_num);		// 게시글의 댓글 삭제
+    	b_service.downComment(board_num);		// 게시글의 댓글 수 1개 줄이기
+    	
+    	return "redirect:/user/posts/"+board_num;
     }
     
     // 게시글의 첨부 파일들을 사용자들에게 보여줌.
