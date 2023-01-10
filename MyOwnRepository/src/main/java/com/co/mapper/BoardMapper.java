@@ -102,4 +102,12 @@ public class BoardMapper {
 	public List<boardDTO> limitBoard(int first) throws Exception{
 		return boardmapper.limitBoard(first);
 	}
+	
+	public void updateComment(commentDTO cmt) throws Exception{
+		boardmapper.updateComment(cmt);
+	}
+	
+	public void deleteComment(int c_num) throws Exception{
+		boardmapper.deleteComment(c_num);
+	}
 }

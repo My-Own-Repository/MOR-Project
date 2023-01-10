@@ -204,7 +204,7 @@
 		</table>
 		<table class="comment_main">
 			<tr>
-				<td colspan="4"><br>&nbsp;${cmt.content}<br></td>
+				<td colspan="4">&nbsp;${cmt.content}<br></td>
 			</tr>
 		</table>
 		<br><br><br>

@@ -23,6 +23,10 @@ public interface BoardService {
 	public void upComment(int num) throws Exception;		// 댓글 수 증가
 	public void downComment(int num) throws Exception;		// 댓글 수 감소
 	
+	public void updateComment(commentDTO cmt) throws Exception;		// 댓글 수정
+	public void deleteComment(int c_num) throws Exception;		// 댓글 삭제
+	
+	
 	
 	public void fileUpload(FileDTO fs) throws Exception;		// 파일 업로드
 	public List<FileDTO> fileDownload(int b_num) throws Exception;		// 파일 다운로드

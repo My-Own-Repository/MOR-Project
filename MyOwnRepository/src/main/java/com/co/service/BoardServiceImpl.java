@@ -138,6 +138,18 @@ public class BoardServiceImpl implements BoardService{
 		return dao.limitBoard(first);
 	}
 
+	@Override
+	public void updateComment(commentDTO cmt) throws Exception {
+		// TODO Auto-generated method stub
+		dao.updateComment(cmt);
+	}
+
+	@Override
+	public void deleteComment(int c_num) throws Exception {
+		// TODO Auto-generated method stub
+		dao.deleteComment(c_num);
+	}
+
 	
 
    

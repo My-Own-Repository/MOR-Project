@@ -42,7 +42,7 @@
 	</select>
 	
 	<select id="printComment" resultType="commentDTO">
-		SELECT * FROM comment WHERE b_num=#{b_num}
+		SELECT * FROM comment WHERE b_num=#{b_num} AND is_exist=1
 	</select>
 	
 	<update id="upComment">
@@ -83,7 +83,13 @@
 	
 	<select id="limitBoard" resultType="boardDTO">
 		SELECT num, title, nickname, comment, date, view FROM board WHERE is_exist=1 ORDER BY num DESC LIMIT #{first},20
-
 	</select>
 	
+	<update id="updateComment">
+		UPDATE comment SET content=#{content} WHERE c_num=#{c_num} AND is_exist=1
+	</update>	
+	
+	<update id="deleteComment">
+		UPDATE comment SET is_exist=0 WHERE c_num=#{c_num} AND is_exist=1
+	</update>
 </mapper>
