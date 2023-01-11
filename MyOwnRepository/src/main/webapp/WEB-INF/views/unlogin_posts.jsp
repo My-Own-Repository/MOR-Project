@@ -46,7 +46,7 @@
 		<li>
 			<a href="#">게시판</a>
 			<ul class="submenu">
-				<li><a href="/">자유게시판</a></li>
+				<li><a href="/1">자유게시판</a></li>
 				<li><a href="/LoginPage">비밀게시판</a></li>
 			</ul>
 		</li>
@@ -63,22 +63,22 @@
 	</ul>
 		<hr>
 	<p>자유게시판</p><hr><br><br>
-	<c:forEach items="${SelectPost}" var="letter">
+	
 	<table border="1">
 		
 			<tr>
-				<td><b>&nbsp;No.${letter.num}</b></td>
+				<td><b>&nbsp;No.${SelectPost.num}</b></td>
 			</tr>
 			<table border="1" class="title_table">			
 				<tr>
 					<td align="center"><b>제목</b></td>
-					<td colspan="3">&nbsp;${letter.title}</td>
+					<td colspan="3">&nbsp;${SelectPost.title}</td>
 				</tr>
 				<tr>
-					<td align="center" style="color:blue">${letter.nickname}</td>
-					<td>&nbsp;댓글 <font color="red">${letter.comment}</font></td>
-					<td>&nbsp;${letter.date}</td>
-					<td>&nbsp;조회수 ${letter.view}</td>
+					<td align="center" style="color:blue">${SelectPost.nickname}</td>
+					<td>&nbsp;댓글 <font color="red">${SelectPost.comment}</font></td>
+					<td>&nbsp;${SelectPost.date}</td>
+					<td>&nbsp;조회수 ${SelectPost.view}</td>
 				</tr>
 			</table>
 			<table border="1" class="content_table">
@@ -149,7 +149,7 @@
 							<br>
 							<br>						
 										
-						${letter.content}					
+						${SelectPost.content}					
 					</td>
 				</tr>
 			</table>
@@ -174,25 +174,23 @@
 	</div>
 
 	<table>	
-		<c:forEach items="${pre_post}" var="pre">	
-			<c:forEach items="${next_post}" var="next">		
+	
 				<tr>
-					<td>이전글&nbsp;&nbsp;<a href="/unlogin_posts/${pre.num}">${pre.title}</a></td>			
-					<td>다음글&nbsp;&nbsp;<a href="/unlogin_posts/${next.num}">${next.title}</a></td>
+					<td>이전글&nbsp;&nbsp;<a href="/unlogin_posts?urlnum=${pre_posts.num}">${pre_posts.title}</a></td>			
+					<td>다음글&nbsp;&nbsp;<a href="/unlogin_posts?urlnum=${next_posts.num}">${next_posts.title}</a></td>
 				</tr>		
-			</c:forEach>	
-		</c:forEach>
+
 	</table>
 		<br><br><br><hr><br><br>
 	
 	
 		<table class="title_table">	
 			<tr>
-				<td colspan="4">&nbsp;<b>댓글&nbsp;</b><font size="3px", color="red">${letter.comment}</font></td>
+				<td colspan="4">&nbsp;<b>댓글&nbsp;</b><font size="3px", color="red">${SelectPost.comment}</font></td>
 			</tr>
 		</table>
 	
-	</c:forEach>
+	
 	
 	<br>
 	<c:forEach items="${printComment}" var="cmt">

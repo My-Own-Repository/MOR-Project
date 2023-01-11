@@ -74,7 +74,7 @@
 			<c:forEach items="${BoardList}" var="letter">	
 				<tr>
 					<td>${letter.num}</td>
-                    <td><a href="/unlogin_posts/${letter.num}" class="board_title_a">${letter.title}</a><font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[${letter.comment}]</font></td>
+                    <td><a href="/unlogin_posts?urlnum=${letter.num}" class="board_title_a">${letter.title}</a><font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[${letter.comment}]</font></td>
                     <td>${letter.nickname}</td>
                     <td>${letter.date}</td>
                     <td>${letter.view}</td>

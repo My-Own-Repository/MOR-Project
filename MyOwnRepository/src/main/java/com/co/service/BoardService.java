@@ -11,7 +11,8 @@ public interface BoardService {
 	public void writeBoard(boardDTO letter) throws Exception;		// 게시글 작성
 	public List<boardDTO> printBoard() throws Exception;			// 게시글 목록
 	
-	public List<boardDTO> selectBoard(int num) throws Exception;		// 특정 게시글
+	public boardDTO selectBoard(int num) throws Exception;		// 특정 게시글
+	
 	public void addView(int num) throws Exception;		// 조회수 증가
 	public void updateBoard(boardDTO letter) throws Exception;		// 게시글 수정
 	public void deleteBoard(int num) throws Exception;		// 게시글 삭제

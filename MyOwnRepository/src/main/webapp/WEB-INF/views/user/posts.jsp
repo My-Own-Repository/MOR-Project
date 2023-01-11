@@ -25,7 +25,7 @@
 	</style>
 
 <%
-	String userNickname = (String) session.getAttribute("userNickname");  	// 로그인한 유저의 nickname
+	String userNickname = (String) request.getAttribute("userNickname");  	// 로그인한 유저의 nickname
 	String page_name = (String) request.getAttribute("page_name");		// 글 작성자의 nickname
 	Integer page_num = (Integer) request.getAttribute("page_num");		// 정수형 변수는 int가 안되고 오로지 Integer로 선언해야함
 	
@@ -53,7 +53,7 @@
 		<li>
 			<a href="#">게시판</a>
 			<ul class="submenu">
-				<li><a href="/user/userMain">자유게시판</a></li>
+				<li><a href="/user/userMain/1">자유게시판</a></li>
 				<li><a href="/user/secret_board">비밀게시판</a></li>
 			</ul>
 		</li>
@@ -65,28 +65,28 @@
 			</ul>
 		</li>
 		<li>
-			<a href="/user/mypage">${userNickname}</a>
+			<a href="/user/mypage">${member.nickname}</a>
 		</li>
 	</ul>
 		<hr>
 	<p>자유게시판</p><hr><br><br>
-	<c:forEach items="${SelectPost}" var="letter">
+	
 
 	<table border="1">	
 			<tr>
-				<td><b>&nbsp;No.${letter.num}</b></td>
+				<td><b>&nbsp;No.${SelectPost.num}</b></td>
 			</tr>
 			
 			<table border="1" class="title_table">			
 				<tr>
 					<td align="center"><b>제목</b></td>
-					<td colspan="3">&nbsp;${letter.title}</td>
+					<td colspan="3">&nbsp;${SelectPost.title}</td>
 				</tr>
 				<tr>
-					<td align="center" style="color:blue">${letter.nickname}</td>
-					<td>&nbsp;댓글 <font color="red">${letter.comment}</font></td>
-					<td>&nbsp;${letter.date}</td>
-					<td>&nbsp;조회수 ${letter.view}</td>
+					<td align="center" style="color:blue">${SelectPost.nickname}</td>
+					<td>&nbsp;댓글 <font color="red">${SelectPost.comment}</font></td>
+					<td>&nbsp;${SelectPost.date}</td>
+					<td>&nbsp;조회수 ${SelectPost.view}</td>
 				</tr>
 			</table>
 			
@@ -159,7 +159,7 @@
 							
 							<br>
 							<br>
-							${letter.content}					
+							${SelectPost.content}					
 						</td>					
 					</tr>
 				</table>
@@ -188,21 +188,19 @@
 	</div>
 	
 	<table>	
-		<c:forEach items="${pre_post}" var="pre">	
-			<c:forEach items="${next_post}" var="next">		
+	
 				<tr>
-					<td>이전글&nbsp;&nbsp;<a href="/user/posts/${pre.num}">${pre.title}</a></td>			
-					<td>다음글&nbsp;&nbsp;<a href="/user/posts/${next.num}">${next.title}</a></td>
+					<td>이전글&nbsp;&nbsp;<a href="/user/posts?urlnum=${pre_post.num}">${pre_post.title}</a></td>			
+					<td>다음글&nbsp;&nbsp;<a href="/user/posts?urlnum=${next_post.num}">${next_post.title}</a></td>
 				</tr>		
-			</c:forEach>	
-		</c:forEach>
+
 	</table>
 	
 	<br><br>
 	
 	<div class="btn_div">
 		<input type="button" onclick="delete_board(${page_num})" id="delete_btn" class="delete_btn" value="삭제">
-		<input type="button" onclick="location.href='/user/update_board'" value="수정" id="edit_btn" class="edit_btn">
+		<input type="button" onclick="location.href='/user/update_board?urlnum=${page_num}'" value="수정" id="edit_btn" class="edit_btn">
 	</div>
 	
 	<script>	
@@ -242,10 +240,10 @@
 			
 		<table class="title_table">	
 			<tr>
-				<td colspan="4">&nbsp;<b>댓글&nbsp;</b><font size="3px", color="red">${letter.comment}</font></td>
+				<td colspan="4">&nbsp;<b>댓글&nbsp;</b><font size="3px" color="red">${SelectPost.comment}</font></td>
 			</tr>
 		</table>
-	</c:forEach>
+	
 	
 	
 	<br>
@@ -311,7 +309,7 @@
 					
 					location.href = path;
 				}
-			}
+			}			
 		</script>
 		
 		<c:if test="${cu_msg == true}">		
@@ -377,9 +375,9 @@
 	<form action="/user/posts/comment" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="b_num" value="<%=page_num %>">
 		<input type="hidden" name="nickname" value="<%=userNickname %>">
-		<table border="1" class="comment_table">			
+		<table border="1" class="comment_table">		
 			<tr>
-				<td colspan="4"><textarea name="content"></textarea></td>
+				<td colspan="4"><textarea id="comment_id" name="content"></textarea></td>
 			</tr>
 			<tr>
 				<td colspan="4"><input type="file" name="uploadfile"></td>

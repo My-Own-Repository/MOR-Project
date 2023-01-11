@@ -1,3 +1,4 @@
+
 table {
 	position: relative;
 	width: 750px;
@@ -422,6 +423,30 @@ a{text-decoration:none;font-size:14px}
 			margin: auto;
 			font-size: 10px;
 			
+		}
+		.update_comment_textarea{
+			position: none;
+			width: 100%; 
+			height: 50px;
+		}
+		
+		.update_comment_btn{
+			position: relative;
+			width: 25%;
+			height: auto;
+			background-color: darkgray;
+			color: white;
+			float: right;
+		}
+
+		.update_cancle_btn{
+			position: relative;
+			width: 25%;
+			height: auto;
+			background-color: darkgray;
+			color: white;
+			float: right;
+			right: 5%;
 		}
 }
 
