@@ -31,7 +31,7 @@ public class BoardServiceImpl implements BoardService{
     }
 
 	@Override
-	public List<boardDTO> selectBoard(int num) throws Exception {
+	public boardDTO selectBoard(int num) throws Exception {
 		// TODO Auto-generated method stub
 		return dao.selectBoard(num);
 	}

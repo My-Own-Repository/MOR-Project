@@ -15,7 +15,7 @@
 	<link rel="stylesheet" type="text/css" href="../../../resources/css/write.css">
 	
 	<%
-		String userNickname = (String) session.getAttribute("userNickname");  
+		//String userNickname = (String) session.getAttribute("userNickname");  
 	
 		Integer post_num = (Integer) request.getAttribute("post_num");			
 		String post_nickname = (String) request.getAttribute("post_nickname");
@@ -67,7 +67,7 @@
 			</ul>
 		</li>
 		<li>
-			<a href="/user/mypage">${userNickname}</a>
+			<a href="/user/mypage">${member.nickname}</a>
 		</li>
 	</ul>
 		<hr>
@@ -96,7 +96,7 @@
 			</tr>
 			<tr>
 				<td colspan="2"><input type="submit" value="수정" class="small_write_btn2">
-				<input type="button" onclick="location.href='/user/posts/<%=post_num%>'" value="취소" class="small_write_btn3"></td>
+				<input type="button" onclick="location.href='/user/posts=?<%=post_num%>'" value="취소" class="small_write_btn3"></td>
 			</tr>
 		</table>
 	</form>

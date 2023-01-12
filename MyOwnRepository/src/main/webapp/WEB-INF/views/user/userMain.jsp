@@ -15,7 +15,7 @@
 
 
 <%
-	String userNickname = (String) session.getAttribute("userNickname");  
+	//String userNickname = (String) session.getAttribute("userNickname");  
 	int select_page = (int) request.getAttribute("select_page");		// 현재 선택한 페이지
 	int first_page = (int) request.getAttribute("first_page");			// 현재 선택한 페이지 기준에서 첫 번째 페이지
 	int last_page = (int) request.getAttribute("last_page");			// 현재 선택한 페이지 기준에서 마지막 페이지
@@ -55,7 +55,7 @@
 			</ul>
 		</li>
 		<li>
-			<a href="/user/mypage">${userNickname}</a>
+			<a href="/user/mypage">${member.nickname}</a>
 		</li>
 	</ul>
 	
@@ -77,7 +77,7 @@
 			<c:forEach items="${BoardList}" var="letter">					
                 <tr>
                 	<td>${letter.num}</td>
-                    <td><a href="/user/posts/${letter.num}" class="board_title_a">${letter.title}</a><font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[${letter.comment}]</font></td>
+                    <td><a href="/user/posts?urlnum=${letter.num}" class="board_title_a">${letter.title}</a><font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[${letter.comment}]</font></td>
                     <td>${letter.nickname}</td>
                     <td>${letter.date}</td>
                     <td>${letter.view}</td>

@@ -32,9 +32,9 @@ public class boardDAOImpl implements boardDAO{
 	}
 
 	@Override
-	public List<boardDTO> selectBoard(int num) throws Exception {
+	public boardDTO selectBoard(int num) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(Namespace+".selectBoard", num);
+		return sqlSession.selectOne(Namespace+".selectBoard", num);
 	}
 
 	@Override

@@ -31,9 +31,10 @@ public class BoardMapper {
 		return boardmapper.printBoard();
 	}
 	
-	public List<boardDTO> selectBoard(int num) throws Exception {
+	public boardDTO selectBoard(int num) throws Exception {		// 게시글 하나만 가져오는걸로 수정
 		return boardmapper.selectBoard(num);
 	}
+
 	
 	public void addView(int num) throws Exception {
 		boardmapper.addView(num);

@@ -19,7 +19,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 	<link rel="stylesheet" type="text/css" href="../../../resources/css/write.css">
 	
 	<%
-		String userNickname = (String) session.getAttribute("userNickname");  
+		//String userNickname = (String) session.getAttribute("userNickname");  
 	%> 
 	
 	<style>
@@ -65,7 +65,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 			</ul>
 		</li>
 		<li>
-			<a href="/user/mypage">${userNickname}</a>
+			<a href="/user/mypage">${member.nickname}</a>
 		</li>
 	</ul>
 		<hr>
@@ -77,7 +77,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		<table border="1">
 			<tr>
  				<td><b>작성자</b></td>
- 				<td style="text-align: left">&nbsp;&nbsp;${userNickname}</td>
+ 				<td style="text-align: left">&nbsp;&nbsp;${member.nickname}</td>
 			</tr>
 			<tr>
 				<td><b>제목</b></td>
