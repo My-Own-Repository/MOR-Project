@@ -29,14 +29,17 @@ public interface boardDAO {
 	
 	public void updateComment(commentDTO cmt) throws Exception;		// 댓글 수정
 	public void deleteComment(int c_num) throws Exception; 		// 댓글 삭제
+	public void allDeleteComment(int b_num) throws Exception; 	// 특정 게시글 삭제시 모든 댓글 삭제
 	
 	
 	public void fileUpload(FileDTO fs) throws Exception;		// 파일 업로드
-	public List<FileDTO> fileDownload(int b_num) throws Exception;		// 파일 다운로드(+파일 여러개 가져오기)
+	public List<FileDTO> fileDownload(int b_num) throws Exception;		// 파일 다운로드(+파일 모두 가져오기)
 	public FileDTO fileView(int file_num) throws Exception; 	// 파일 보여주기(+파일 한개 가져오기)
-	public List<FileDTO> fileViewer(int b_num) throws Exception;	// 파일 보여주기2
-	
+	public List<FileDTO> fileViewer(int b_num) throws Exception;	// 파일 보여주기(+파일 모두 가져오기)
+		
 	public List<FileDTO> viewFile(int b_num) throws Exception;	// 이미지, 영상 파일만 추출해서 가져온 후 보여주기
+	
+	public void allDeleteFile(int b_num) throws Exception;		// 특정 게시글 삭제시 모든 파일 삭제
 	
 	public int maxNum() throws Exception;		// 마지막으로 게시 된 게시글의 고유번호 검색 (파일 업로드시 파일을 업로드한 게시글을 특정하기 위함.)
 

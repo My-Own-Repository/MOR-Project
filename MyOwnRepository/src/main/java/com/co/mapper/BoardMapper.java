@@ -111,4 +111,12 @@ public class BoardMapper {
 	public void deleteComment(int c_num) throws Exception{
 		boardmapper.deleteComment(c_num);
 	}
+	
+	public void allDeleteComment(int b_num) throws Exception{
+		boardmapper.allDeleteComment(b_num);
+	}
+	
+	public void allDeleteFile(int b_num) throws Exception{
+		boardmapper.allDeleteFile(b_num);
+	}
 }

@@ -1,4 +1,467 @@
+body{
+	background-color: lightgray;
+}
+
+.empty_main_div{
+	background-color: white;
+	width: 80%;
+	height: auto;
+	margin: auto;	
+}
+
+.total_main_div{
+	background-color: white;
+	width: 1024px;
+	height: auto;
+	margin: auto;
+}
+
 .main-logo {
+		display: block;
+  		width: 300px;
+  		height: 100px;
+  		background-position: left;
+ 		background-size: 100% 100%;
+  		float: left;
+  		padding: 30px;
+}
+.search_div {
+	position: relative;
+	top: 75px;
+	height: 40px;
+	width: 350px;
+	border: 1px solid black;
+	background: #ffffff;
+	float: right;
+}
+
+.search_input {
+	border-color: black;
+}
+
+p {
+	width: 1024px;
+	text-align: center;
+	font-size:25px;
+	color:white;
+	background-color: darkgray;
+	margin: auto;
+}
+
+/*
+a {
+	한 줄만 보이게 한다. 넘어가면 ...으로 생략하여 보여줌
+	overflow: hidden;			
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+*/
+
+.main_div {
+	height: auto;
+	width: 1024px;
+	margin: auto;	
+}
+
+input{
+	font-size: 16px;
+	width: 275px;
+	padding: 10px;
+	border: 0px;
+	outline: none;
+	float: left;
+}
+
+.search{
+	width: 50px;
+	height: 100%;
+	border: 0px;
+	background-color: black;
+	outline: none;
+	float: right;
+	color: white;
+}
+
+button{
+	width: 50px;
+	height: 100%;
+	border: 0px;
+	background-color: black;
+	outline: none;
+	float: right;
+	color: white;	
+}
+
+.write_button{
+	position: relative;
+	font-size: 12px;
+	width: 60px;
+	height: auto;
+	background: darkgray;
+	margin:auto;
+	float: right;
+	color: white;
+}
+
+
+*{padding:0;margin:0}
+li{list-style:none}
+a{text-decoration:none;font-size:14px}
+
+.menu {
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  margin:25px auto;
+}
+
+.menu > li {
+  width: 33.3%; 
+  float: left;
+  text-align: center;
+  line-height: 40px;
+  background-color: black;
+}
+
+.menu a {
+  color: #fff;
+}
+
+.submenu > li {
+  line-height: 50px;
+  background-color: darkgray;		/* #94a9ff */
+}
+
+.submenu {
+  height: 0; 		/* ul의 높이를 0로 맞춰서 ui상으로 안보이게 함 */
+  overflow: hidden;
+}
+
+.menu > li:hover {			/* 마우스를 올렸을 때 */
+  background-color: darkgray;
+  transition-duration: 0.5s;
+  font-weight:bold;
+}
+
+.board_table {
+	border: 1px;
+	margin:auto;
+	width: 1024px;
+    height: auto;
+    text-align: center;
+}
+.board_head {
+	background-color: lightgray;
+	color:black;
+	font-weight: bold;
+}
+
+.bottom_div {
+	background-color: #FAFAFA;
+	width: 1024px;
+	height: 150px;
+	margin: auto;
+	text-align: center;
+}
+
+.paging_div {
+	font-size: 20px;
+	min-width: 624px;
+	color: black;
+	height: 40px;
+	margin: auto;
+	padding: 15px;
+}
+
+.b_sty {
+	color: green;
+	font-size: 18px;
+}
+
+
+.hr_sty {
+	border-top: 1px dotted #bbb;
+	height: auto;
+	width: 100%;
+	margin: auto;
+}
+
+.bottom_hr {
+	border-top: 1px dotted black;
+}
+
+.board_search_div {
+	padding-top: 15px;
+	padding-bottom: 15px;
+	width: 500px;
+	height: 50px;
+	font-size: 13px;
+	text-align: center;
+	margin: auto;
+}
+
+.in_board_search_menu{
+    position: relative;
+ 	width: 140px;
+    height: 34px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+	text-align: center;
+	float: left;
+}
+
+.in_board_search_text {
+	position: relative;
+	background-color: white;
+	color: black;
+ 	width: 240px;
+ 	height: 16px;
+	float: right;
+}
+
+.in_board_search_text input {
+	width: 100%;
+	height: 100%;
+	
+}
+
+.in_board_search_btn {
+	position: relative;
+ 	width: 70px;
+	height: 34px;
+	background-color: black;		/* 초록 #03C75A */
+	border: 0px;
+	color: white;
+	float: right;
+}
+
+.menu > li:hover .submenu {
+  height: 100px; 			/*서브메뉴 li의 총 높이 */
+  transition-duration: 1s;
+}
+
+@media ( max-width: 720px ) {		/* 모바일 설정*/ /* 스크린 x축의 길이가 720px이하 일때 적용됨 */
+		html {						/* 와 진짜... 모바일에서 가로로 스크롤이 되는 오류가 발생해서 */
+			max-width: 100%;		/* 11:00 pm ~ 8:00 am 까지 잠도 못자고 했는데 html, body 설정으로 해결!!!!! */
+			overflow-x: hidden;
+		}
+		body {
+			max-width: 100%;
+			overflow-x: hidden;
+			background-color: white;
+		}
+
+		.empty_main_div{
+			background-color: white;
+			width: 100%;
+			height: auto;
+			margin: auto;	
+		}
+		
+		.total_main_div{
+			background-color: white;
+			width: 100%;
+			height: auto;
+			margin: auto;
+		}
+		
+        .main-logo {
+	  		width: 90%;
+	  		height: 50px;
+
+        }
+        .search_div {
+            position: static;
+			height: 40px;
+			width: 100%;
+			border: 1px solid black;
+			background: #ffffff;
+			margin: auto;
+			font-size: 14px;
+        }
+        .search_input{     	
+        	font-size: 14px;
+        	width: 80%;
+        	height: auto;
+        }
+        input::placeholder {
+        	font-size: 14px;
+        }
+		.search {
+			width: 50px;
+			height: 100%;
+			border-radius: 4px;
+			background-color: black;
+			outline: none;
+			float: right;
+			color: white;
+		}
+		/*
+			search
+		*/
+        .menu {
+        	padding-top: 20px;
+          	width: 100%;
+          	height: auto;
+        }
+        .main_div{
+          	width: 100%;
+          	height: auto;
+          	font-size: 10px;
+        }
+        .board_title_a{
+			font-size: 10px;
+			height: 16px;
+			table-layout : fixed;
+			overflow: hidden;			
+    		text-overflow: ellipsis;
+   		 	white-space: nowrap;
+		}
+		.board_comment_font{
+			font-size: 8px;
+			height: 16px;
+			table-layout : fixed;
+			overflow: hidden;			
+    		text-overflow: ellipsis;
+   		 	white-space: nowrap;
+		}
+		p{
+			width: 100%;
+			text-align: center;
+			font-size:18px;
+			color:white;
+			background-color: darkgray;
+			margin: auto;
+		}
+
+        .board_table {
+        	border: 1px;
+        	width: 100%;
+        	height: auto;
+        }
+        .board_head {  	
+        	width: 100%;
+          	height: auto;
+			background-color: lightgray;
+			color:black;
+			font-weight: bold;
+		}
+        .write_button {
+        	position: relative;
+        	font-size: 10px;
+        	width: 15%;
+			height: auto;
+			float: right;
+			background-color: darkgray;
+			color: white;
+        }
+        
+		.bottom_div {
+			position: relative;
+			background-color: #FAFAFA;
+			width: 100%;
+			height: 80px;
+			text-align: center;
+			margin: auto;
+		}
+		
+		.paging_div {
+			position: relative;
+			font-size: 14px;
+			height: 25px;
+			color: black;
+			text-align: center;
+		}
+		
+		.paging_div2{
+			position: absolute;
+			padding-bottom: 15px;
+			left: 25%;
+			top: 25%;
+		}
+		
+		.b_sty {
+			position: relative;
+			color: green;
+			font-size: 15px;
+		}
+		
+		
+		.hr_sty {
+			position: relative;
+			border-top: 1px dotted #bbb;
+			height: auto;
+			width: 100%;
+			margin: auto;
+		}
+		
+		.bottom_hr {
+			width: 100%;
+			border-top: 1px dotted black;
+		}
+		
+		.board_search_div {
+			position: relative;
+			padding-top: 15px;
+			padding-bottom: 15px;
+			width: 94%;
+			min_height: 30px;
+			height: 40px;
+			font-size: 13px;		
+			padding: 10px;
+			text-align: center;
+			margin: auto;
+		}
+		
+		.in_board_search_menu{
+		    position: relative;
+		 	width: 24%;
+		 	min_height: 24px;
+		    height: auto;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    white-space: nowrap;			
+			float: left;
+		}
+		
+		.in_board_search_text {
+			position: relative;
+			background-color: white;
+			color: black;
+		 	width: 48%;
+		 	height: 6px;
+			float: right;
+		}
+		
+		.in_board_search_text input {
+			width: 100%;
+			height: 100%;
+			
+		}
+		
+		.in_board_search_btn {
+			position: relative;
+		 	width: 12%;
+			height: 24px;
+			background-color: black;
+			border: 0px;
+			color: white;
+			float: right;
+		}	
+		
+}
+
+
+
+
+
+/*
+	초기버전 UI
+*/
+
+/*
+	.main-logo {
 		display: block;
   		width: 150px;
   		height: 50px;
@@ -21,15 +484,6 @@ p {
 	background-color: darkgray;
 	margin: auto;
 }
-
-/*
-a {
-	한 줄만 보이게 한다. 넘어가면 ...으로 생략하여 보여줌
-	overflow: hidden;			
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-*/
 
 .main_div {
 	height: auto;
@@ -96,11 +550,11 @@ a{text-decoration:none;font-size:14px}
 }
 
 .submenu {
-  height: 0; 		/* ul의 높이를 0로 맞춰서 ui상으로 안보이게 함 */
+  height: 0; 		 ul의 높이를 0로 맞춰서 ui상으로 안보이게 함 
   overflow: hidden;
 }
 
-.menu > li:hover {			/* 마우스를 올렸을 때 */
+.menu > li:hover {			 마우스를 올렸을 때 
   background-color: #94a9ff;
   transition-duration: 0.5s;
   font-weight:bold;
@@ -199,13 +653,13 @@ a{text-decoration:none;font-size:14px}
 }
 
 .menu > li:hover .submenu {
-  height: 100px; 			/*서브메뉴 li의 총 높이 */
+  height: 100px; 			서브메뉴 li의 총 높이 
   transition-duration: 1s;
 }
 
-@media ( max-width: 720px ) {		/* 모바일 설정*/ /* 스크린 x축의 길이가 720px이하 일때 적용됨 */
-		html, body {				/* 와 진짜... 모바일에서 가로로 스크롤이 되는 오류가 발생해서 */
-			max-width: 100%;		/* 11:00 pm ~ 8:00 am 까지 잠도 못자고 했는데 html, body 설정으로 해결!!!!! */
+@media ( max-width: 720px ) {		 모바일 설정  스크린 x축의 길이가 720px이하 일때 적용됨 
+		html, body {				 와 진짜... 모바일에서 가로로 스크롤이 되는 오류가 발생해서 
+			max-width: 100%;		 11:00 pm ~ 8:00 am 까지 잠도 못자고 했는데 html, body 설정으로 해결!!!!! 
 			overflow-x: hidden;
 		}
 
@@ -364,5 +818,5 @@ a{text-decoration:none;font-size:14px}
 		}	
 		
 }
-
-
+	
+*/

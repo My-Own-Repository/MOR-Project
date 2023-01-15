@@ -31,12 +31,15 @@
 <title>나만의 저장소 - MOR !</title>
 </head>
 <body>
+	<div class="empty_main_div">
+	<div class="total_main_div">
+	
 	<a href="/user/userMain/1">
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<div class="search_div">
-		<input type="text" placeholder="검색어 입력">
-		<button>검색</button>
+		<input type="text" class="search_input" placeholder="검색어 입력">
+		<input type="button" value="검색" class="search">
 	</div>
 	
 	<ul class="menu">
@@ -132,6 +135,8 @@
 			alert('ERROR\n세션이 만료되었습니다.\n다시 로그인 해주세요!!');
 		</script>
 	</c:if>
+	</div>
+	</div>
 	
 </body>
 </html>

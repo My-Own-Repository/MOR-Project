@@ -1,28 +1,66 @@
+body{
+	background-color: lightgray;
+}
+
+.empty_post_div{
+	background-color: white;
+	width: 60%;
+	height: auto;
+	margin: auto;	
+}
+
+.total_post_div{
+	background-color: white;
+	width: 850px;
+	height: auto;
+	margin: auto;
+}
+
+/*
+.real_post_div{
+	background-color: white;
+	width: 850px;
+	height: auto;
+	margin: auto;
+	
+}
+*/
+p {
+	width: 100%;
+	text-align: center;
+	font-size:25px;
+	color: white;
+	background-color: darkgray;
+	margin: auto;
+}
 
 table {
 	position: relative;
-	width: 750px;
+	width: 100%;
 	height: auto;
 	margin: auto;
 	text-align: left;
 }
 .search_div {
+	position: relative;
+	top: 75px;
+	right: 15px;
 	height: 40px;
 	width: 350px;
-	border: 1px solid #1b5ac2;
+	border: 1px solid black;
 	background: #ffffff;
-	margin:auto;
+	float: right;
 }
 
 .write_comment_div{
+	width: 100%;
 	height: auto;
-	width: 740px;
-	margin: auto;
+	text-align: center;
 }
 
 .btn_div{
 	height: auto;
-	width: 740px;
+	width: 100%;
 	margin: auto;
 }
 
@@ -46,7 +84,7 @@ table {
 .title_table{
 	position: relative;
 	background-color: #F6F6F6;
-	width: 750px;
+	width: 100%;
 	height: auto;
 	margin: auto;
 	text-align: left;
@@ -54,7 +92,7 @@ table {
 
 .total_div{
 	position: relative;
-	width: 740px;		/* 350 */
+	width: 100%;		/* 350 */
 	height: 400px;
 	margin: auto;
 	text-align: left;
@@ -62,7 +100,7 @@ table {
 
 .content_table{
 	position: relative;
-	width: 750px;		/* 350 */
+	width: 100%;		/* 350 */
 	min-height: 400px;
 	height: auto;
 	margin: auto;
@@ -72,7 +110,7 @@ table {
 
 .content_td{
 	position: relative;
-	width: 740px;		/* 350 */
+	width: 100%;		/* 350 */
 	min-height: 400px;
 	height: auto;
 	padding-left: 10px;
@@ -89,7 +127,7 @@ table {
 	position: relative;
 	background-color: #FAFAFA;
 	color: blue;
-	width: 740px;
+	width: 100%;
 	height: 50px;
 	margin: auto;
 	text-align: left;
@@ -101,7 +139,7 @@ table {
 	color: blue;
 	font-weight: bold;
 	padding: 10px;
-	width: 540px;
+	width: 80%;
 	height: 25px;
 	margin: auto;
 	text-align: left;
@@ -109,7 +147,7 @@ table {
 .comment_main{
 	position: relative;
 	background-color: #FAFAFA;
-	width: 740px;
+	width: 100%;
 	height: 200px;
 	margin: auto;
 	padding: 10px;
@@ -117,14 +155,14 @@ table {
 }
 textarea{
 	position: relative;
-	width: 740px; 
+	width: 100%;
 	height: 200px;
 	margin: auto;
 	text-align: left;
 }
 .update_comment_textarea{
 	position: relative;
-	width: 700px; 
+	width: 100%; 
 	height: 200px;
 	margin: auto;
 	text-align: left;
@@ -132,7 +170,7 @@ textarea{
 
 .file_down_login {
 	position: relative;
-	width: 720px; 
+	width: 100%;
 	height: 20px;
 	margin: auto;
 	font-size: 12px;
@@ -141,30 +179,43 @@ textarea{
 
 .comment_btn{
 	position: relative;		
-	background: green;
+	background-color: green;
 	color: white;
-	width: 350px;
-	height: 30px;
+	max-width: 400px;
+	width: 45%;
+	height: 40px;
 	float: right;
-	margin: auto;
+	text-align: center;
 }
+
 .reload_btn{
 	position: relative;
-	background: lightgray;
+	background-color: lightgray;
 	color: white;
-	width: 350px;
-	height: 30px;
+	max-width: 400px;
+	width: 45%;
+	height: 40px;
 	float: left;
-	margin: auto;
+	text-align: center;
 }
 
 .main-logo {
 		display: block;
-  		width: 150px;
-  		height: 50px;
-  		background-position: center;
+  		width: 300px;
+  		height: 100px;
+  		background-position: left;
  		background-size: 100% 100%;
-  		margin:auto;
+  		float: left;
+  		padding: 30px;
+}
+
+.search_input{
+	font-size: 16px;
+	width: 275px;
+	padding: 10px;
+	border: 0px;
+	outline: none;
+	float: left;	
 }
 
 input{
@@ -178,38 +229,37 @@ input{
 hr {
 	border-top: 1px dotted #bbb;
 	height: auto;
-	width: 50%;
+	width: 100%;
 	margin:auto;
 }
 
 .search{
 	width: 50px;
 	height: 100%;
-	border: 0px
-	background: white;
 	outline: none;
 	float: right;
-	color: blue;
+	background-color: black;
+	color: white;
 }
 
 .edit_btn{
 	position: relative;
 	width: 80px;
 	height: 100%;
-	border: 1px
-	background: lightgray;
+	border: 0px;
+	background-color: darkgray;
 	float: right;
-	color: blue;
+	color: white;
 }
 
 .delete_btn{
 	position: relative;
 	width: 80px;
 	height: 100%;
-	border: 1px
-	background: lightgray;
+	border: 0px;
+	background-color: darkgray;
 	float: right;
-	color: blue;
+	color: white;
 }
 
 .update_comment_btn{
@@ -234,7 +284,7 @@ hr {
 
 .downFile_table{
 	position: relative;
-	width: 750px;
+	width: 100%;
 	height: auto;
 	border: 1px;
 }
@@ -270,11 +320,11 @@ a{text-decoration:none;font-size:14px}
 }
 
 .menu > li {
-  width: 33%; 
+  width: 33.3%; 
   float: left;
   text-align: center;
   line-height: 40px;
-  background-color: #5778ff;
+  background-color: black;
 }
 
 .menu a {
@@ -283,7 +333,7 @@ a{text-decoration:none;font-size:14px}
 
 .submenu > li {
   line-height: 50px;
-  background-color: #94a9ff;
+  background-color: darkgray;
 }
 
 .submenu {
@@ -292,7 +342,7 @@ a{text-decoration:none;font-size:14px}
 }
 
 .menu > li:hover {			/* 마우스를 올렸을 때 */
-  background-color: #94a9ff;
+  background-color: darkgray;
   transition-duration: 0.5s;
   font-weight:bold;
 }
@@ -302,20 +352,85 @@ a{text-decoration:none;font-size:14px}
   transition-duration: 1s;
 }
 @media ( max-width: 720px ) {		/* 모바일 설정*/ /* 스크린 x축의 길이가 720px이하 일때 적용됨 */
+       	html, body {						
+			width: 100%;	
+			overflow-x: hidden;
+			background-color: white;
+		}
+       	/*
+       	body {
+       		max-width: 100%;
+       		overflow-x: hidden;
+       		background-color: white;
+       	}
+       */
+       	.empty_post_div{
+			background-color: white;
+			width: 100%;
+			height: auto;
+			margin: auto;	
+		}
+		
+		.total_post_div{
+			background-color: white;
+			width: 100%;
+			height: auto;
+			margin: auto;
+		}
+		
         .main-logo {
-          width: 100%;
-          height: 45px;
+	  		width: 90%;
+	  		height: 50px;
+
         }
+        .search_div {
+            position: static;
+			height: 40px;
+			width: 100%;
+			border: 1px solid black;
+			background: #ffffff;
+			margin: auto;
+			font-size: 14px;
+        }
+        .search_input{     	
+        	font-size: 14px;
+        	width: 80%;
+        	height: auto;
+        }
+        input::placeholder {
+        	font-size: 14px;
+        }
+		.search {
+			width: 50px;
+			height: 100%;
+			border-radius: 4px;
+			background-color: black;
+			outline: none;
+			float: right;
+			color: white;
+		}
+       	
+		p{
+			width: 100%;
+			text-align: center;
+			font-size:18px;
+			color:white;
+			background-color: darkgray;
+			margin: auto;
+		}
+		        
         .menu {
-          float: none;
+          padding-top: 20px;
           width: 100%;
           height: auto;
         }
+        /*
         .div {
           float: none;
           width: 100%;
           height: auto;
         }
+        */
         .write_button {
         	position: relative;
         	width: 20%;
@@ -323,18 +438,16 @@ a{text-decoration:none;font-size:14px}
 			left: 0px;	
         }
         table{
-        	float: none;
         	width: 100%;
 			height: auto;
         }
         .title_table{
-        	float: none;
         	width: 100%;
 			height: auto;
         }
         .content_table{
-        	float: none;
         	width: 100%;
+        	height: auto;
         }
         .btn_div{
         	position: relative;
@@ -362,22 +475,20 @@ a{text-decoration:none;font-size:14px}
 			left: 0px;
         }
         .comment_table{
-        	float: none;
+        	position: relative;
         	width: 100%;
 			height: auto;
         }
         .comment_main{
-        	float: none;
+        	position: relative;
         	width: 100%;
 			height: auto;
         }
 		textarea{
-			position: none;
 			width: 100%; 
 			height: 50px;
 		}
 		.write_comment_div{
-			float: none;
         	width: 100%;
 			height: auto;
 		}
@@ -385,13 +496,13 @@ a{text-decoration:none;font-size:14px}
         	position: relative;
         	width: 40%;
 			height: auto;
-			left: 0px;
+			float: right;
         }    
         .reload_btn{
         	position: relative;
         	width: 40%;
 			height: auto;
-			left: 0px;
+			float: left;
         }
         hr {
 			border-top: 1px dotted #bbb;
@@ -425,13 +536,13 @@ a{text-decoration:none;font-size:14px}
 			
 		}
 		.update_comment_textarea{
-			position: none;
+			position: relative;
 			width: 100%; 
 			height: 50px;
 		}
 		
 		.update_comment_btn{
-			position: relative;
+			border: 1px gray;
 			width: 25%;
 			height: auto;
 			background-color: darkgray;
@@ -440,13 +551,12 @@ a{text-decoration:none;font-size:14px}
 		}
 
 		.update_cancle_btn{
-			position: relative;
+			border: 1px gray;
 			width: 25%;
 			height: auto;
 			background-color: darkgray;
 			color: white;
 			float: right;
-			right: 5%;
 		}
 }
 
