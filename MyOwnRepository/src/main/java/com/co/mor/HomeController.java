@@ -499,7 +499,7 @@ public class HomeController {
     	//model.addAttribute("userNickname", loginmember.nickname);
     	
     	if(letter.title != null && letter.content != null) {
-    		if(letter.title.length() > 0 && letter.content.length() <= 1000) {
+    		if(letter.title.length() <= 50 && letter.content.length() <= 1000) {
     			logger.info("글작성 성공!");
     			letter.id = loginmember.id;			// 로그인할때 저장해놓은 사용자의 id와 nickname을 글 작성자의 개인정보로 사용 (글 작성시 사용자가 자신의 id와 nickname을 따로 작성하지 않기때문에 프로그램에서 자체적으로 저장해줌)
     			letter.nickname = loginmember.nickname;
@@ -554,7 +554,7 @@ public class HomeController {
     			
     			url = "redirect:/user/userMain";
     		}
-    		else if(letter.title.length() == 0 || letter.content.length() > 1000) {
+    		else if(letter.title.length() > 50 || letter.content.length() > 1000) {
     			logger.info("글작성 실패..");
     			model.addAttribute("b_msg", false);
     			url = "redirect:/user/write";
@@ -578,6 +578,7 @@ public class HomeController {
         	session.invalidate();
         	return "redirect:/LoginPage";
     	}
+    	boardDTO before_post = b_service.selectBoard(urlnum);		// 현재 보고있는 게시글을 수정하기 전 게시글의 정보로 저장하기 위한 변수
     	
     	// 세션에 보관한 회원 객체를 새로운 멤버 객체에 찾아 넣어준다.
     	LoginDTO loginmember = (LoginDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
@@ -585,24 +586,43 @@ public class HomeController {
     		model.addAttribute("session_msg", false);
     		return "redirect:/";
     	}
+    	else if((loginmember.id).equals(before_post.id) == false) {
+    		model.addAttribute("another_msg", false);
+    		return "redirect:/user/userMain/1";
+    	}
+    	
     	model.addAttribute("member", loginmember);
     	
-    	boardDTO before_post = b_service.selectBoard(urlnum);		// 현재 보고있는 게시글을 수정하기 전 게시글의 정보로 저장하기 위한 변수
     	
-    	before_post.setcontent(before_post.getcontent().replace("<br>", "\r\n")); 	// 게시글 수정 시 사용한 Enter(줄바꿈)이 적용 되도록 재저장. (구글링을 통해 해당 정보 습득)
+    	before_post.setcontent(before_post.getcontent().replace("\r\n", "<br>")); 	// 게시글 수정 시 사용한 Enter(줄바꿈)이 적용 되도록 재저장. (구글링을 통해 해당 정보 습득)
     	
     	// 수정하기 전 게시글의 정보를 JSP로 보냄(고유번호, 작성자, 제목, 내용)
+    	model.addAttribute("SelectPost", before_post);
     	model.addAttribute("post_num", before_post.num);
+    	model.addAttribute("post_id", before_post.id);
     	model.addAttribute("post_nickname", before_post.nickname);
     	model.addAttribute("post_title", before_post.title);
     	model.addAttribute("post_content", before_post.content);
+    	
+    	
+    	int b_num = urlnum;
+    	
+    	List<FileDTO> fileList = b_service.fileViewer(b_num);
+			
+		
+		// 이미지와 동영상 파일만 가져오는 쿼리문을 통해 가져와서 JSP로 보낸다.
+		List<FileDTO> fileViewer = b_service.viewFile(b_num);
+		model.addAttribute("fileViewer", fileViewer);
+		
+		
+		model.addAttribute("fileDown", fileList);	// 해당 게시글의 파일 전체 리스트이다. (다운로드 기능 구현때 사용할 예정) 
     	
     	
 		return "user/update_board";
     }
     
     @RequestMapping(value = "/user/update_board", method = RequestMethod.POST)
-    public String update_board(Model model, HttpServletRequest request, boardDTO letter) throws Exception {
+    public String update_board(Model model, HttpServletRequest request, boardDTO letter, FileDTO uploadfile, @RequestParam(value = "files", required = false) MultipartFile[] files) throws Exception {
     	HttpSession session = request.getSession(false);
     	
     	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
@@ -629,13 +649,64 @@ public class HomeController {
     		if(letter.title.length() <= 35 && letter.content.length() <= 1000) {
     			logger.info("글수정 성공!");
     			
+    			
+    			/*		게시판 수정 - 첨부파일 삭제 아직 미구현
+    			List<FileDTO> fileViewer = b_service.fileViewer(letter.num);
+    			
+    			
+    			for(int i=0; i<fileViewer.size(); i++) {
+    				if(fileViewer.get(i).stored_file_name == ) {
+    					
+    				}
+    			}
+    			*/
+    			
+    			
+    			// 파일 업로드 구문
+    			if(!files[0].isEmpty()) {		// 첫 번째 인덱스가 비었을 경우 실행이 되지않음(첫 번째 인덱스가 비었다 = 파일이 등록된게 하나도 없다)
+    				
+    				int b_num = letter.num;		
+    				String user_id = letter.id;
+    				
+    				for(int i=0; i<files.length; i++) {
+    					
+    					String fileName = null;
+	    	   	    	
+    					// jsp에서 가져온 파일의 이름을 가져와 용도에 맞게 처리한다.
+            	    	String originalFileName = files[i].getOriginalFilename();
+            	    	String ext = FilenameUtils.getExtension(originalFileName);
+            	    	UUID uuid = UUID.randomUUID();
+            	    	fileName = uuid + "." + ext;
+            	    		      	    		
+            	    	// 파일을 해당 경로에 저장시키는 실질적인 구문.
+            	    	files[i].transferTo(new File("D:\\MyOwnRepository_DATA\\upload\\" + fileName));
+            	    		
+            	    	// 파일 업로드용 vo(dto)에 데이터를 저장 시킨 후 파일업로드 쿼리를 실행시킨다.             	    	
+            	    	uploadfile.setb_num(b_num);
+            	    	uploadfile.setuser_id(user_id);
+            	    	uploadfile.setoriginal_file_name(originalFileName);
+            	    	uploadfile.setstored_file_name(fileName);
+            	    	uploadfile.setstored_path("D:\\MyOwnRepository_DATA\\upload\\"+fileName);
+            	    	uploadfile.setfile_size(files[i].getSize());
+            	    	
+            	    	// 파일 업로드시 파일 타입도 같이 저장하기 위해 추가했다.
+            	    	File file = new File("D:\\MyOwnRepository_DATA\\upload\\"+fileName);
+            	    	String mimeType	= new Tika().detect(file);		// 파일 다운로드 방식에 대해 알아보다가 
+																		// Apache Tika 라는 컨텐츠 분석 라이브러리를 발견하여 사용했다. 
+            	    	uploadfile.settype(mimeType);				
+            	    	
+            	    	b_service.fileUpload(uploadfile);
+    				}
+  				
+    	    	}
+    			
     			b_service.updateBoard(letter);
     			
     			url += letter.num;
     		}
     		else if(letter.title.length() > 35 || letter.content.length() > 1000) {
     			logger.info("글수정 실패..");
-    			url = "redirect:/user/update_board";
+    			url = "redirect:/user/update_board?urlnum="+letter.num;
     		}
     	}
     	
@@ -992,7 +1063,9 @@ public class HomeController {
     	String path = "";
     	  	
     	if(b_service.selectBoard(num) != null && b_service.selectBoard(num).is_exist == 1) {
-    		b_service.deleteBoard(num);
+    		b_service.allDeleteComment(num);		// 모든 댓글 삭제
+    		b_service.allDeleteFile(num);		// 모든 파일 삭제
+    		b_service.deleteBoard(num);		// 게시글 삭제
     		path = "redirect:/user/userMain";
     	}
     	else {
@@ -1019,7 +1092,7 @@ public class HomeController {
      	boardDTO pre_posts = null;
      	boardDTO next_posts = null;
      	
-     	int number = (urlnum);		// urlnum은 해당 게시글의 고유번호를 의미하는데, 이것을 정수형으로 바꿔주는 구문이다.   	     	
+     	int number = urlnum;		// urlnum은 해당 게시글의 고유번호를 의미하는데, 이것을 정수형으로 바꿔주는 구문이다.   	     	
      	
      	int pre_num=1, next_num=1;		// 열람중인 해당 게시글의 이전글과 다음글의 고유번호를 찾을때 사용 할 정수형 변수 pre_num과 next_num;
      	
@@ -1068,11 +1141,13 @@ public class HomeController {
      	
      	user_show_post.setcontent(user_show_post.getcontent().replace("\r\n", "<br>"));
      	
-     	model.addAttribute("SelectPost", user_show_post);		// 해당글의 정보를 jsp로 보내기		
-    	
+     	//System.out.println("이전글 다음글 >>>>>>>>>>>>> " + pre_posts.num + "\t" + next_posts.num);
+     			    	
     	// 이전글과 다음글의 정보를 jsp로 보내기
     	model.addAttribute("pre_post", pre_posts);
     	model.addAttribute("next_post", next_posts);
+    	
+    	model.addAttribute("SelectPost", user_show_post);		// 해당글의 정보를 jsp로 보내기
     	
     	List<commentDTO> cmt = b_service.printComment(user_show_post.num);
     	

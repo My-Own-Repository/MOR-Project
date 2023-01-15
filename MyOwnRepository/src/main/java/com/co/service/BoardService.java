@@ -26,7 +26,7 @@ public interface BoardService {
 	
 	public void updateComment(commentDTO cmt) throws Exception;		// 댓글 수정
 	public void deleteComment(int c_num) throws Exception;		// 댓글 삭제
-	
+	public void allDeleteComment(int b_num) throws Exception; 	// 특정 게시글 삭제시 모든 댓글 삭제
 	
 	
 	public void fileUpload(FileDTO fs) throws Exception;		// 파일 업로드
@@ -35,6 +35,8 @@ public interface BoardService {
 	public List<FileDTO> fileViewer(int b_num) throws Exception;	// 파일 보여주기2
 	
 	public List<FileDTO> viewFile(int b_num) throws Exception;	// 이미지, 영상 파일만 추출해서 가져온 후 보여주기
+	
+	public void allDeleteFile(int b_num) throws Exception;		// 특정 게시글 삭제시 모든 파일 삭제
 	
 	public int maxNum() throws Exception;	// 마지막 게시글의 고유번호 검색
 	

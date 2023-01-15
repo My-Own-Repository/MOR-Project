@@ -14,11 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../../../resources/css/posts.css">
 
 	<style>
-		p {
-			text-align: center;
-			font-size:25px;
-			color:blue;
-		}
+
 		.update_cmt {
 			display: none;
 		}
@@ -41,11 +37,13 @@
 <title>나만의 저장소 - MOR !</title>
 </head>
 <body>
+	<div class="empty_post_div">
+	<div class="total_post_div">
 	<a href="/user/userMain/1">
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<div class="search_div">
-		<input type="text" placeholder="검색어 입력">
+		<input type="text" class="search_input" placeholder="검색어 입력">
 		<input type="button" value="검색" class="search">
 	</div>
 	
@@ -68,8 +66,8 @@
 			<a href="/user/mypage">${member.nickname}</a>
 		</li>
 	</ul>
-		<hr>
-	<p>자유게시판</p><hr><br><br>
+		
+	<br><br><p>자유게시판</p><br>
 	
 
 	<table border="1">	
@@ -159,7 +157,9 @@
 							
 							<br>
 							<br>
-							${SelectPost.content}					
+							<div id="changed_content_div">
+							
+							</div>					
 						</td>					
 					</tr>
 				</table>
@@ -384,10 +384,36 @@
 			</tr>		
 		</table>
 		<br>
-		<input type="button" onClick="window.location.reload()" value="새로고침" class="reload_btn">
-		<input type="submit" value="작성" class="comment_btn">
+		
+			<input type="button" onClick="window.location.reload()" value="새로고침" class="reload_btn">
+			<input type="submit" value="작성" class="comment_btn">
+		<br><br>
 	</form>
 	</div>
+	</div>
+	</div>
+	
+	<script>
+	
+		function change_hyperlink_url() {		// url 주소를 인식하여 하이퍼 링크로 변환시켜주는 함수
+							// url 하이퍼링크 정규식은 구글링을 통해 복사해왔다.	https://aljjabaegi.tistory.com/280
+			var content_div = document.getElementById("changed_content_div");
+						
+			
+			var originalContent = '${SelectPost.content}';
+			
+			originalContent = originalContent.replace(/<br>/ig, '\n');		// html 태그인 <br>을 프로그래밍 언어의 줄바꿈 문자(\n)로 바꾸어 줌.
+			
+
+			var regURL = new RegExp("(http|https|ftp|telnet|news|irc)://([-/.a-zA-Z0-9_~#%$?&=:200-377()]+)","gi");
+			var changedContent = originalContent.replace(regURL, "<a href='$1://$2' target='_blank'>$1://$2</a>");
+			changedContent = changedContent.replace(/\n/ig, '<br>');		// \n을 <br>태그로 바꾸어서 html상으로 줄바꿈이 정상적으로 나오게 바꿔줌.
+			
+			content_div.innerHTML = changedContent;
+		}
+		change_hyperlink_url();
+	
+	</script>
 	
 	
 	<c:if test="${c_msg == false}">

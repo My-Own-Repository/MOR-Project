@@ -30,14 +30,16 @@
 <title>나만의 저장소 - MOR !</title>
 </head>
 <body>
+	<div class="empty_main_div">
+	<div class="total_main_div">
 	<a href="/1">
 		<img class="main-logo" src="././resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<div class="search_div">
-		<input type="text" placeholder="검색어 입력">
-		<button>검색</button>
+		<input type="text" class="search_input" placeholder="검색어 입력">
+		<input type="submit" value="검색" class="search">
 	</div>
-	
+
 	<ul class="menu">
 		<li>
 			<a href="#">게시판</a>
@@ -122,5 +124,7 @@
 	<br><br><br><br>
 	</div>
 	<hr class="bottom_hr">
+	</div>
+	</div>
 </body>
 </html>

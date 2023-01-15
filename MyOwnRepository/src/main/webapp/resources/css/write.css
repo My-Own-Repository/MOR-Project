@@ -1,5 +1,32 @@
-table {
-	width: 740px;
+body{
+	background-color: lightgray;
+}
+
+.empty_write_div{
+	background-color: white;
+	width: 60%;
+	height: auto;
+	margin: auto;	
+}
+
+.total_write_div{
+	background-color: white;
+	width: 850px;
+	height: auto;
+	margin: auto;
+}
+
+p {
+	width: 100%;
+	text-align: center;
+	font-size:25px;
+	color: white;
+	background-color: darkgray;
+	margin: auto;
+}
+
+.write_form_table {
+	width: 100%;
 	min-height: 400px;
 	height: auto;
 	margin: auto;
@@ -8,10 +35,21 @@ table {
 [contenteditable=true] {
   outline: none;
 }
+textarea {
+	width: 100%;
+}
+.search{
+	width: 50px;
+	height: 100%;
+	outline: none;
+	float: right;
+	background-color: black;
+	color: white;
+}
 
 .write_content_div {
 	text-align: left;
-	width: 640px;
+	width: 100%;
 	min-height: 400px;
 	white-space:normal;
  	padding: 0.5em;
@@ -19,8 +57,17 @@ table {
  	border: 0px solid #D6D6D6;
 }
 
+.write_form_table th{
+	padding-right: 10px;
+	width: 50px;
+}
+
+.write_form_table td{
+	padding-right: 10px;
+}
+
 #write_content_div img{
-	max-width: 100%;
+	max-width: 720px;
 }
 
 #write_content_div video{
@@ -30,32 +77,55 @@ table {
 }
 .main-logo {
 		display: block;
-  		width: 150px;
-  		height: 50px;
-  		background-position: center;
+  		width: 300px;
+  		height: 100px;
+  		background-position: left;
  		background-size: 100% 100%;
-  		margin:auto;
+  		float: left;
+  		padding: 30px;
 }
-div {
+.search_div {
+	position: relative;
+	top: 75px;
+	right: 15px;
 	height: 40px;
 	width: 350px;
-	border: 1px solid #1b5ac2;
+	border: 1px solid black;
 	background: #ffffff;
-	margin:auto;
+	float: right;
 }
-input{
+.search_input{
 	font-size: 16px;
 	width: 275px;
 	padding: 10px;
 	border: 0px;
 	outline: none;
+	float: left;	
+}
+
+.input_file{
+	font-size: 16px;
+	width: 100%;
+	height: auto;
+	padding: 10px;
+	border: 0px;
+	outline: none;
 	float: left;
 }
+
+input{
+	font-size: 16px;
+	width: 100%;
+	padding: 10px;
+	border: 0px;
+	outline: none;
+	float: left;
+}
+
 button{
 	width: 50px;
 	height: 100%;
-	border: 0px
-	background: white;
+	border: 0px;
 	outline: none;
 	float: right;
 	color: blue;
@@ -73,32 +143,126 @@ button{
 
 .small_write_btn{
 	font-size: 18px;
-	width: 100px;
-	height: 70%;
+	width: 80px;
+	height: auto;
 	border: 0px;
 	font-weight: bold;
 	float: right;
-	color:blue;
+	background-color: darkgray;
+	color:white;
 }
+
 
 .small_write_btn2{
 	font-size: 18px;
 	width: 48%;
-	height: 100%;
+	height: 40px;
 	border: 1px;
 	font-weight: bold;
 	float: left;
-	color:blue;
+	background-color: darkgray;
+	color:white;
 }
 
 .small_write_btn3{
 	font-size: 18px;
 	width: 48%;
-	height: 100%;
+	height: 40px;
 	border: 1px;
 	font-weight: bold;
 	float: right;
-	color:blue;
+	background-color: darkgray;
+	color:white;
+}
+
+.downFile_table{
+	position: relative;
+	width: 100%;
+	height: auto;
+	border: 1px;
+	margin: auto;
+}
+
+.downFile_th{
+	background: darkgray;
+	text-align: left;
+	height: 20px;
+	padding-top: 4px;
+	padding-bottom: 6px;
+	padding-right: 20px;
+}
+
+.downFile_td{
+	padding: 5px;
+	font-size: 8px;
+	height: auto;
+	text-align: left;
+}
+
+.delete_file_img{
+	width: 10px;
+	height: 10px;
+	padding-left: 10px;
+}
+
+.trash_img{
+	width: 20px;
+	height: 18px;
+	float: right;
+}
+
+
+#update_content_div img{
+	max-width: 720px;
+}
+
+#update_content_div video{
+	position: relative;
+	width: 600px;
+	height: 600px;
+}
+
+.update_upload_imgs {
+	max-width: 720px;
+}
+
+.update_upload_videos {
+	position: relative;
+	width: 600px;		/* 350 */
+	height: 600px;
+}
+
+.update_div{
+	width: 100%;
+	margin: auto;
+}
+
+.update_table{
+	width: 100%;
+	min-height: 400px;
+	height: auto;
+	margin: auto;
+	text-align: center;
+}
+
+.update_table th{
+	width: 50px;
+	padding-right: 10px;
+}
+
+.update_table td{
+	padding-right: 10px;
+}
+
+.update_content_div {
+	text-align: left;
+	width: 100%;
+	min-height: 400px;
+	height: auto;
+	white-space:normal;
+ 	padding: 0.5em;
+ 	display:inline-block;
+ 	border: 0px solid #D6D6D6;
 }
 
 .write_button{
@@ -129,7 +293,7 @@ a{text-decoration:none;font-size:14px}
   float: left;
   text-align: center;
   line-height: 40px;
-  background-color: #5778ff;
+  background-color: black;
 }
 
 .menu a {
@@ -138,7 +302,7 @@ a{text-decoration:none;font-size:14px}
 
 .submenu > li {
   line-height: 50px;
-  background-color: #94a9ff;
+  background-color: darkgray;
 }
 
 .submenu {
@@ -147,7 +311,7 @@ a{text-decoration:none;font-size:14px}
 }
 
 .menu > li:hover {			/* 마우스를 올렸을 때 */
-  background-color: #94a9ff;
+  background-color: darkgray;
   transition-duration: 0.5s;
   font-weight:bold;
 }
@@ -157,24 +321,76 @@ a{text-decoration:none;font-size:14px}
   transition-duration: 1s;
 }
 @media ( max-width: 720px ) {		/* 모바일 설정*/ /* 스크린 x축의 길이가 1024px이하 일때 적용됨 */
+       
+        body {
+			max-width: 100%;
+			overflow-x: hidden;
+			background-color: white;
+		}
+
+		.empty_write_div{
+			background-color: white;
+			width: 100%;
+			height: auto;
+			margin: auto;	
+		}
+		
+		.total_write_div{
+			background-color: white;
+			width: 100%;
+			height: auto;
+			margin: auto;
+		}
+		
         .main-logo {
-          width: 100%;
-          height: 45px;
+	  		width: 90%;
+	  		height: 50px;
+
         }
+        .search_div {
+            position: static;
+			height: 40px;
+			width: 100%;
+			border: 1px solid black;
+			background: #ffffff;
+			margin: auto;
+			font-size: 14px;
+        }
+        .search_input{     	
+        	font-size: 14px;
+        	width: 80%;
+        	height: auto;
+        }
+        input::placeholder {
+        	font-size: 14px;
+        }
+		.search {
+			width: 50px;
+			height: 100%;
+			border-radius: 4px;
+			background-color: black;
+			outline: none;
+			float: right;
+			color: white;
+		}
+        
         .menu {
-          float: none;
+          padding-top: 20px;
           width: 100%;
           height: auto;
         }
-        .div {
-          float: none;
+        div {
+          position: relative;
           width: 100%;
           height: auto;
         }
-		p{
+        p {
+			width: 100%;
 			text-align: center;
-			font-size:12px;
-			color:blue;
+			font-size:25px;
+			color:white;
+			background-color: darkgray;
+			margin: auto;
 		}
         .write_button {
         	position: relative;
@@ -182,10 +398,21 @@ a{text-decoration:none;font-size:14px}
 			height: auto;
 			left: 0px;	
         }
+        input {
+        	position: relative;
+        	width: 80%;
+			height: auto;
+        }
+        .input_file{
+        	position: relative;
+        	width: 60%;
+			height: auto;
+        }
+        
         table{
         	position: relative;
         	width: 100%;
-        	min-height: 400px;
+        	min-height: 100px;
 			height: auto;
         }
         
@@ -197,14 +424,27 @@ a{text-decoration:none;font-size:14px}
 		
 		.upload_imgs {
 			position: relative;
-			width: 100%;		/* 350 */
+			width: 90%;		/* 350 */
 			height: auto;
 		} 
+        .write_form_table {
+        	position: relative;
+			width: 100%;	
+			min-height: 400px;	
+			height: auto;
+        }
+        .write_form_table th{
+			min-width: 50px;
+		}
+		
+		.update_table th{
+			min-width: 50px;
+		}
         
         .write_content_div {
         	text-align: left;
 			position: relative;
-			width: 96%;
+			width: 100%;
 			min-height: 400px;			/* table를 auto로 두고, 길이가 늘어나도 형태 유지가 용이한 div는 최소 높이만 지정하여 */
 			table-layout : fixed;		/* div contenteditable=true를 사용해도 자연스럽게 글 작성이 되도록 했다. */
 			white-space: normal;		
@@ -213,12 +453,12 @@ a{text-decoration:none;font-size:14px}
 		}
 		
 		#write_content_div img{
-			max-width: 100%;
+			max-width: 90%;
 		}
 
 		#write_content_div video{
 			position: relative;
-			width: 100%;
+			width: 90%;
 			height: auto;
 		}
 		
@@ -227,4 +467,95 @@ a{text-decoration:none;font-size:14px}
 			height: auto;
 			width: 100%;
 		}
+		
+		.downFile_table {
+			position: relative;
+			width: 100%;
+			height: auto;
+		}
+		.downFile_th{
+			position: relative;
+			width: 100%;
+			height: auto;
+		}
+		
+		.downFile_td{
+			position: relative;
+			width: 100%;
+			height: auto;
+		}
+		
+		.update_upload_imgs {
+			position: relative;
+			max-width: 90%;
+			height: auto;
+		}
+
+		.update_upload_videos {
+			position: relative;
+			max-width: 90%;;		/* 350 */
+			min-height: 200px;
+			height: auto;
+		}
+		.update_div{
+			width: 100%;
+			height: auto;
+			margin: auto;
+		}
+		
+		.update_table{
+			position: relative;
+			width: 100%;
+			min-height: 400px;
+			height: auto;
+			text-align: center;
+		}
+		textarea{
+			position: relative;
+			width: 100%;
+			height: auto;
+		}
+		.update_content_div{
+			position: relative;
+			width: 100%;
+			height: auto;
+			white-space:normal;
+ 			padding: 0.5em;
+ 			display:inline-block;
+ 			border: 0px solid #D6D6D6;
+		}
+		.small_write_btn{
+			font-size: 18px;
+			width: 25%;
+			height: 100%;
+			border: 0px;
+			font-weight: bold;
+			float: right;
+			background-color: darkgray;
+			color:white;
+			padding-right: 10px;
+		}
+		
+		.small_write_btn2{
+			font-size: 18px;
+			width: 48%;
+			height: auto;
+			border: 1px;
+			font-weight: bold;
+			float: left;
+			background-color: darkgray;
+			color:white;
+		}
+		
+		.small_write_btn3{
+			font-size: 18px;
+			width: 48%;
+			height: auto;
+			border: 1px;
+			font-weight: bold;
+			float: right;
+			background-color: darkgray;
+			color:white;
+		}
+		
 }

@@ -150,7 +150,19 @@ public class BoardServiceImpl implements BoardService{
 		dao.deleteComment(c_num);
 	}
 
-	
+	@Override
+	public void allDeleteComment(int b_num) throws Exception {
+		// TODO Auto-generated method stub
+		dao.allDeleteComment(b_num);
+	}
 
+	@Override
+	public void allDeleteFile(int b_num) throws Exception {
+		// TODO Auto-generated method stub
+		dao.allDeleteFile(b_num);
+	}
+
+	
+	
    
 }
