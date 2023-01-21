@@ -8,6 +8,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="././resources/css/join.css">
+    <link rel="icon" type="image/jpg" href="././resources/img/MORicon.jpg">
     
     <title>회원가입</title>
     <script src='{% static "js/jquery-1.11.3.min.js" %}'></script>

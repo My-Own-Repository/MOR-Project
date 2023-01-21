@@ -37,6 +37,7 @@ public interface BoardService {
 	public List<FileDTO> viewFile(int b_num) throws Exception;	// 이미지, 영상 파일만 추출해서 가져온 후 보여주기
 	
 	public void allDeleteFile(int b_num) throws Exception;		// 특정 게시글 삭제시 모든 파일 삭제
+	public void deleteFile(int file_num) throws Exception; 		// 파일 개별삭제
 	
 	public int maxNum() throws Exception;	// 마지막 게시글의 고유번호 검색
 	

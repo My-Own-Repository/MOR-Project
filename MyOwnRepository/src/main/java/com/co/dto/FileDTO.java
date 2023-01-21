@@ -12,13 +12,14 @@ public class FileDTO {
     public String stored_path;
     public String type;
     public long file_size;
+    public String date;
     public int is_exist;			// 게시글이 지워지거나 클라이언트에서 파일이 지워지면 is_exist값이 0(false)이 되며 비활성화가 됨.
     								// 서버pc에는 파일이, db에는 파일의 정보(경로 등)을 그대로 남김.
     
     public MultipartFile uploadFile;
 
   	public FileDTO() {}
-  	public FileDTO(int file_num, int b_num, String user_id, String original_file_name, String stored_file_name, String stored_path, String type, long file_size, int is_exist, MultipartFile uploadFile) {
+  	public FileDTO(int file_num, int b_num, String user_id, String original_file_name, String stored_file_name, String stored_path, String type, long file_size, String date, int is_exist, MultipartFile uploadFile) {
   		super();
   		this.file_num = file_num;
   		this.b_num = b_num;
@@ -29,6 +30,7 @@ public class FileDTO {
   		this.type = type;
   		this.file_size = file_size;
   		this.is_exist = is_exist;
+  		this.date = date;
   		this.uploadFile = uploadFile;
   	}
     
@@ -94,6 +96,15 @@ public class FileDTO {
     public void setfile_size(long file_size) {
         this.file_size = file_size;
     }
+    
+    public String getdate() {
+    	return date;
+    }
+    
+    public void setdate(String date) {
+    	this.date = date;
+    }
+    
     public int getis_exist() {
         return is_exist;
     }

@@ -10,8 +10,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
-	<script src="https://kit.fontawesome.com/5309915bbd.js" crossorigin="anonymous" defer></script>
+	
     <link rel="stylesheet" type="text/css" href="../../../resources/css/posts.css">
+    <link rel="icon" type="image/jpg" href="../../../resources/img/MORicon.jpg">
 
 	<style>
 
@@ -24,10 +25,9 @@
 	String userNickname = (String) request.getAttribute("userNickname");  	// 로그인한 유저의 nickname
 	String page_name = (String) request.getAttribute("page_name");		// 글 작성자의 nickname
 	Integer page_num = (Integer) request.getAttribute("page_num");		// 정수형 변수는 int가 안되고 오로지 Integer로 선언해야함
-	
 %> 
 
-	<script>
+	<script
  		src="https://code.jquery.com/jquery-3.4.1.js"
  		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
  		crossorigin="anonymous"></script>
@@ -158,8 +158,8 @@
 							<br>
 							<br>
 							<div id="changed_content_div">
-							
-							</div>					
+						
+							</div>				
 						</td>					
 					</tr>
 				</table>
@@ -263,7 +263,11 @@
 		
 		<table class="comment_main">
 			<tr>
-				<td colspan="4" id="${cmt.c_num}"><br>&nbsp;${cmt.content}<br><br></td>
+				<td colspan="4" id="${cmt.c_num}"><br>
+					<div id="changed_comment_div_${cmt.c_num}">
+					
+					</div>
+				<br><br></td>
 				<td colspan="4" id="${cmt.b_num + cmt.c_num}" class="update_cmt"> 
 					<form id="${(cmt.b_num + cmt.c_num) * -1}" action="/user/posts/comment_update" method="post">
 						<textarea name="content" class="update_comment_textarea">${cmt.content}</textarea>
@@ -276,6 +280,26 @@
 				</td>
 			</tr>		
 		</table>
+		
+			<script>
+				function changeComment_hyperlink_url() {
+					var print_comment_divID = 'changed_comment_div_'+${cmt.c_num};
+					var comment_div = document.getElementById(print_comment_divID);	// 수정된 댓글 내용을 넣어줄 장소 가져오기
+							
+					var originalComment = '${cmt.content}';
+							
+					if(originalComment != null){
+								originalComment = originalComment.replace(/<br>/ig, '\n');		// html 태그인 <br>을 프로그래밍 언어의 줄바꿈 문자(\n)로 바꾸어 줌.
+								
+					var regURL = new RegExp("(http|https|ftp|telnet|news|irc)://([-/.a-zA-Z0-9_~#%$?&=:200-377()]+)","gi");
+					var changedComment = originalComment.replace(regURL, "<a href='$1://$2' target='_blank'>$1://$2</a>");
+					changedComment = changedComment.replace(/\n/ig, '<br>');		// \n을 <br>태그로 바꾸어서 html상으로 줄바꿈이 정상적으로 나오게 바꿔줌.
+								
+					comment_div.innerHTML = changedComment;
+					}
+				}
+				changeComment_hyperlink_url();
+			</script>
 		
 		<script type="text/javascript">	// HTML5에서는 디폴트 값인 text/javascript를 따로 선언할 필요는 없지만
 										// 이번 경우에는 혹시 모를 호환성을 위해 적었다.
@@ -399,7 +423,6 @@
 							// url 하이퍼링크 정규식은 구글링을 통해 복사해왔다.	https://aljjabaegi.tistory.com/280
 			var content_div = document.getElementById("changed_content_div");
 						
-			
 			var originalContent = '${SelectPost.content}';
 			
 			originalContent = originalContent.replace(/<br>/ig, '\n');		// html 태그인 <br>을 프로그래밍 언어의 줄바꿈 문자(\n)로 바꾸어 줌.

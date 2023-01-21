@@ -5,6 +5,7 @@ public class boardDTO {
 	public int num;
 	public String title;
 	public String content;
+	//public String view_content;
     public String id;
     public String nickname;
     public int comment;
@@ -24,6 +25,7 @@ public class boardDTO {
   		this.date = date;
   		this.view = view;
   		this.is_exist = is_exist;
+  		//this.view_content = view_content;
   	}
     
     public int getnum() {
@@ -48,7 +50,15 @@ public class boardDTO {
     public void setcontent(String content) {
         this.content = content;
     }
-    
+    /*
+    public String getview_content() {
+        return view_content;
+    }
+ 
+    public void setview_content(String view_content) {
+        this.view_content = view_content;
+    }
+    */
     public String getid() {
         return id;
     }

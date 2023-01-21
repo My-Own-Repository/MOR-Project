@@ -46,7 +46,7 @@
 	</select>
 	
 	<update id="upComment">		<!-- 댓글 수 1 증가 -> 게시글에 댓글이 몇개 달려있는지 표현을 위한 쿼리문 -->
-		UPDATE board SET comment=comment+1 WHERE num=#{num}
+		UPDATE board SET comment=comment+1 WHERE num=#{num} 
 	</update>
 	
 	<update id="downComment">		<!-- 댓글 수 1 감소 -> 게시글에서 댓글이 지워졌을 경우 게시글의 댓글 총 개수를 감소시킴 -->
@@ -62,20 +62,20 @@
 	</select>
 	
 	<select id="fileDownload" resultType="FileDTO">		<!-- 파일 다운로드 -->
-		SELECT b_num, file_num, original_file_name, stored_file_name, stored_path, type, file_size FROM file WHERE b_num=#{b_num}
+		SELECT b_num, file_num, original_file_name, stored_file_name, stored_path, type, file_size FROM file WHERE b_num=#{b_num} AND is_exist=1
 	</select>
 	
 	
 	<select id="fileView" resultType="FileDTO">		<!-- 특정 고유번호를 가진 파일 하나를 가져온다. (아직 사용처 없음) -->
-		SELECT b_num, original_file_name, stored_file_name, stored_path, file_size FROM file WHERE file_num=#{file_num}
+		SELECT b_num, original_file_name, stored_file_name, stored_path, file_size FROM file WHERE file_num=#{file_num} AND is_exist=1
 	</select>
 	
 	<select id="fileViewer" resultType="FileDTO">		<!-- 특정 게시글의 모든 파일들을 가져온다 -->
-		SELECT b_num, file_num, original_file_name, stored_file_name, stored_path, type, file_size FROM file WHERE b_num=#{b_num}
+		SELECT b_num, file_num, original_file_name, stored_file_name, stored_path, type, file_size FROM file WHERE b_num=#{b_num} AND is_exist=1
 	</select>
 	
 	<select id="viewFile" resultType="FileDTO">		<!-- 미리보기를 위해 특정 게시글에 등록된 이미지나 영상 파일만 가져온다. -->
-		SELECT b_num, file_num, original_file_name, stored_file_name, stored_path, type, file_size FROM file WHERE (type LIKE 'image%' OR type LIKE 'video%') AND b_num=#{b_num}
+		SELECT b_num, file_num, original_file_name, stored_file_name, stored_path, type, file_size FROM file WHERE (type LIKE 'image%' OR type LIKE 'video%') AND b_num=#{b_num} AND is_exist=1
 	</select>
 	
 	

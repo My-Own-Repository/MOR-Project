@@ -11,6 +11,8 @@
     <script src='{% static "js/jquery-1.11.3.min.js" %}'></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="icon" type="image/jpg" href="../../../resources/img/MORicon.jpg">
+    
 	<script>
  		src="https://code.jquery.com/jquery-3.4.1.js"
  		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="

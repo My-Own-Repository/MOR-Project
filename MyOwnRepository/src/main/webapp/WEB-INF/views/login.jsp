@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>나만의 저장소 MOR</title>
     <link rel="stylesheet" href="././resources/css/login.css">
+    <link rel="icon" type="image/jpg" href="././resources/img/MORicon.jpg">
     <!-- autocomplete from jQuery Ui -->
     <script src='{% static "js/jquery-1.11.3.min.js" %}'></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>

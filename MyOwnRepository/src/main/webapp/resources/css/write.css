@@ -31,6 +31,8 @@ p {
 	height: auto;
 	margin: auto;
 	text-align: center;
+	table-layout: fixed;
+	overflow: hidden;
 }
 [contenteditable=true] {
   outline: none;
@@ -52,14 +54,14 @@ textarea {
 	width: 100%;
 	min-height: 400px;
 	white-space:normal;
+	overflow: hidden;		/* 필수 - 없으면 최대너비 이상 넘어가는 글에도 안멈추고 쭉 늘어남*/
  	padding: 0.5em;
  	display:inline-block;
  	border: 0px solid #D6D6D6;
 }
 
 .write_form_table th{
-	padding-right: 10px;
-	width: 50px;
+	width: 80px;
 }
 
 .write_form_table td{
@@ -71,9 +73,7 @@ textarea {
 }
 
 #write_content_div video{
-	position: relative;
-	width: 600px;
-	height: 600px;
+	max-width: 600px;
 }
 .main-logo {
 		display: block;
@@ -112,6 +112,41 @@ textarea {
 	outline: none;
 	float: left;
 }
+.add_file_btn{
+	width:	100%;
+	height: 100%;
+	background-color: black;
+	color: white;
+}
+
+.delete_inputfilebox_btn{
+	width: 15px;
+	height: 15px;
+}
+
+.uploaded_fileList{
+	width: 100%;
+	height: auto;
+	padding: 5px;
+	float: left;
+}
+
+.attached_file{
+	width: 100%;
+	height: auto;
+	padding: 5px;
+	float: left;
+}
+
+.attached_file_line{
+	width: 80%;
+	height: auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: no-wrap;
+	border: 1px solid red;
+	float: left;
+}
 
 input{
 	font-size: 16px;
@@ -136,9 +171,7 @@ button{
 }
 
 .upload_videos {
-	position: relative;
-	width: 600px;		/* 350 */
-	height: 600px;
+	max-width: 600px;		/* 350 */
 }
 
 .small_write_btn{
@@ -184,6 +217,7 @@ button{
 }
 
 .downFile_th{
+	width: 100%;
 	background: darkgray;
 	text-align: left;
 	height: 20px;
@@ -193,6 +227,7 @@ button{
 }
 
 .downFile_td{
+	width: 100%;
 	padding: 5px;
 	font-size: 8px;
 	height: auto;
@@ -221,6 +256,14 @@ button{
 	width: 600px;
 	height: 600px;
 }
+.update_content_div img{
+	max-width: 720px;
+}
+.update_content_div video{
+	position: relative;
+	width: 600px;
+	height: 600px;
+}
 
 .update_upload_imgs {
 	max-width: 720px;
@@ -243,11 +286,12 @@ button{
 	height: auto;
 	margin: auto;
 	text-align: center;
+	table-layout: fixed;		/* table-layout: fixed; overflow: hidden; - 테이블 크기 고정시키고 넘어가는 값 숨김*/
+	overflow: hidden;
 }
 
 .update_table th{
-	width: 50px;
-	padding-right: 10px;
+	width: 80px;
 }
 
 .update_table td{
@@ -260,6 +304,7 @@ button{
 	min-height: 400px;
 	height: auto;
 	white-space:normal;
+	overflow: hidden;
  	padding: 0.5em;
  	display:inline-block;
  	border: 0px solid #D6D6D6;
@@ -485,10 +530,11 @@ a{text-decoration:none;font-size:14px}
 			height: auto;
 		}
 		
+	
 		.update_upload_imgs {
 			position: relative;
 			max-width: 90%;
-			height: auto;
+			height: auto;			
 		}
 
 		.update_upload_videos {
@@ -516,6 +562,17 @@ a{text-decoration:none;font-size:14px}
 			height: auto;
 		}
 		.update_content_div{
+        	text-align: left;
+			position: relative;
+			width: 100%;
+			min-height: 400px;			/* table를 auto로 두고, 길이가 늘어나도 형태 유지가 용이한 div는 최소 높이만 지정하여 */
+			table-layout : fixed;		/* div contenteditable=true를 사용해도 자연스럽게 글 작성이 되도록 했다. */
+			white-space: normal;		
+			overflow: hidden;
+			word-break: break-all;
+		}
+		
+		/*
 			position: relative;
 			width: 100%;
 			height: auto;
@@ -523,7 +580,41 @@ a{text-decoration:none;font-size:14px}
  			padding: 0.5em;
  			display:inline-block;
  			border: 0px solid #D6D6D6;
+		*/
+		img{
+			width: 90%;
+			height: auto;
+			object-fit: contain;
 		}
+		
+		#update_content_div img{
+			max-width: 90%;
+			height: auto;
+			object-fit: contain;
+		}
+		
+		#update_content_div videos{
+			position: relative;
+			width: 90%;
+			height: auto;
+			object-fit: contain;
+		}
+		
+		.update_content_div img{
+			position: relative;
+			max-width: 90%;
+			height: auto;
+			object-fit: contain;
+		}
+		.update_content_div video{
+			position: relative;
+			max-width: 90%;;		/* 350 */
+			min-height: 200px;
+			height: auto;			
+			object-fit: contain;
+			
+		}
+		
 		.small_write_btn{
 			font-size: 18px;
 			width: 25%;
