@@ -48,6 +48,7 @@ import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
 import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
+import com.co.dto.deleteFileDTO;
 import com.co.service.BoardService;
 import com.co.service.MemberService;
 
@@ -566,6 +567,130 @@ public class HomeController {
 		return url;	
     }
     
+    @RequestMapping(value = "/user/write_board", method = RequestMethod.GET)
+    public String write_board_page(HttpServletRequest request, Model model) throws Exception {
+    	HttpSession session = request.getSession(false);
+    	
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		model.addAttribute("session_msg", false);
+    		return "redirect:/LoginPage";
+    	}
+    	else if(session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
+    		model.addAttribute("session_msg", true);
+        	session.invalidate();
+        	return "redirect:/LoginPage";
+    	}
+    	
+    	LoginDTO loginmember = (LoginDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
+    	if (loginmember == null) {
+    		model.addAttribute("session_msg", false);
+    		return "redirect:/";
+    	}
+    	model.addAttribute("member", loginmember);
+    	
+		return "user/write_board";
+    }
+    
+    
+    @SuppressWarnings("null")
+	@RequestMapping(value = "/user/write_board", method = RequestMethod.POST)
+    public String write_board(HttpServletRequest request, boardDTO letter, Model model, FileDTO uploadfile, @RequestParam(value = "files", required = false) MultipartFile[] files) throws Exception {
+    	// HttpServletRequest request, boardDTO letter, Model model, @RequestParam(value = "file", required = false) MultipartHttpServletRequest frequest
+    	HttpSession session = request.getSession(false);
+    	
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		model.addAttribute("session_msg", false);
+    		return "redirect:/LoginPage";
+    	}
+    	else if(session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
+    		model.addAttribute("session_msg", true);
+        	session.invalidate();
+        	return "redirect:/LoginPage";
+    	}
+    	String url = "";
+    	
+    	// 세션에 보관한 회원 객체를 새로운 멤버 객체에 찾아 넣어준다.
+    	LoginDTO loginmember = (LoginDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
+    	if (loginmember == null) {
+    		model.addAttribute("session_msg", false);
+    		return "redirect:/";
+    	}
+    	model.addAttribute("member", loginmember);
+    	//model.addAttribute("userNickname", loginmember.nickname);
+    	
+    	if(letter.title != null && letter.content != null) {
+    		if(letter.title.length() <= 50 && letter.content.length() <= 1000) {
+    			logger.info("글작성 성공!");
+    			letter.id = loginmember.id;			// 로그인할때 저장해놓은 사용자의 id와 nickname을 글 작성자의 개인정보로 사용 (글 작성시 사용자가 자신의 id와 nickname을 따로 작성하지 않기때문에 프로그램에서 자체적으로 저장해줌)
+    			letter.nickname = loginmember.nickname;
+    			
+    			if(letter.nickname == null) {	// 글 작성시 세션이 만료될 경우 실행 (익명으로 글이 작성되는 오류 방지)
+    				session.invalidate();
+    	    		return "redirect:/LoginPage";
+    			}
+    			
+    			
+    			// 파일 업로드 구문
+    			
+    			if(!files[0].isEmpty()) {		// 첫 번째 인덱스가 비었을 경우 실행이 되지않음(첫 번째 인덱스가 비었다 = 파일이 등록된게 하나도 없다)
+    				
+    				int b_num = b_service.maxNum()+1;		// 파일의 정보에 게시글 고유번호를 넣어야한다.
+															// 게시글이 먼저 올라오고 파일이 올라가므로 마지막 게시글의 고유번호를 가져오는 방법을 썼다.
+															// 그다지 좋은 방법은 아니니 대안책을 고려해야할듯.
+															// (다른 사용자의 게시글이 거의 동시에 올라올경우 정보가 꼬일 가능성이 있어서 파일을 먼저 db에 등록하는 방법을 사용)
+    				
+    				for(int i=0; i<files.length; i++) {
+    					if(!files[i].isEmpty()) {			// 비어있는 것은 생략
+    						String fileName = null;
+    	    	   	    	
+        					// jsp에서 가져온 파일의 이름을 가져와 용도에 맞게 처리한다.
+                	    	String originalFileName = files[i].getOriginalFilename();
+                	    	String ext = FilenameUtils.getExtension(originalFileName);
+                	    	UUID uuid = UUID.randomUUID();
+                	    	fileName = uuid + "." + ext;
+                	    		      	    		
+                	    	// 파일을 해당 경로에 저장시키는 실질적인 구문.
+                	    	files[i].transferTo(new File("D:\\MyOwnRepository_DATA\\upload\\" + fileName));
+                	    		
+                	    	// 파일 업로드용 vo(dto)에 데이터를 저장 시킨 후 파일업로드 쿼리를 실행시킨다.             	    	
+                	    	uploadfile.setb_num(b_num);
+                	    	uploadfile.setuser_id(letter.id);
+                	    	uploadfile.setoriginal_file_name(originalFileName);
+                	    	uploadfile.setstored_file_name(fileName);
+                	    	uploadfile.setstored_path("D:\\MyOwnRepository_DATA\\upload\\"+fileName);
+                	    	uploadfile.setfile_size(files[i].getSize());
+                	    	
+                	    	// 파일 업로드시 파일 타입도 같이 저장하기 위해 추가했다.
+                	    	File file = new File("D:\\MyOwnRepository_DATA\\upload\\"+fileName);
+                	    	String mimeType	= new Tika().detect(file);		// 파일 다운로드 방식에 대해 알아보다가 
+    																		// Apache Tika 라는 컨텐츠 분석 라이브러리를 발견하여 사용했다. 
+                	    	uploadfile.settype(mimeType);				
+                	    	
+                	    	b_service.fileUpload(uploadfile);
+    					}
+    					
+    					
+    				}
+  				
+    	    	}
+    			b_service.writeBoard(letter);		// 게시글 작성 완료
+    			
+    			
+    			url = "redirect:/user/userMain";
+    		}
+    		else if(letter.title.length() > 50 || letter.content.length() > 1000) {
+    			logger.info("글작성 실패..");
+    			model.addAttribute("b_msg", false);
+    			url = "redirect:/user/write_board";
+    		}
+    	}
+    	
+    	
+    	
+		return url;	
+    }
+    
+    
     @RequestMapping(value = "/user/update_board", method = RequestMethod.GET)
     public String update_boardpage(HttpServletRequest request, Model model, @RequestParam("urlnum") int urlnum) throws Exception {
     	HttpSession session = request.getSession(false);
@@ -617,12 +742,13 @@ public class HomeController {
 		
 		model.addAttribute("fileDown", fileList);	// 해당 게시글의 파일 전체 리스트이다. (다운로드 기능 구현때 사용할 예정) 
     	
-    	
+		
 		return "user/update_board";
     }
     
-    @RequestMapping(value = "/user/update_board", method = RequestMethod.POST)
-    public String update_board(Model model, HttpServletRequest request, boardDTO letter, FileDTO uploadfile, @RequestParam(value = "files", required = false) MultipartFile[] files) throws Exception {
+    @SuppressWarnings("unlikely-arg-type")
+	@RequestMapping(value = "/user/update_board", method = RequestMethod.POST)			// , @RequestParam(value = "existing_Delete_fileNum", required = false) int[] delete_fn								, @RequestParam(value = "existing_Delete_fileNum", required = false) List<String> delete_file_str
+    public String update_board(Model model, HttpServletRequest request, HttpServletResponse response, boardDTO letter, FileDTO uploadfile, @RequestParam(value = "files", required = false) MultipartFile[] files, deleteFileDTO deletefile) throws Exception {
     	HttpSession session = request.getSession(false);
     	
     	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
@@ -645,21 +771,32 @@ public class HomeController {
     	
     	String url = "redirect:/user/posts?urlnum=";
 
-    	if(letter.title != null && letter.content != null) {
-    		if(letter.title.length() <= 35 && letter.content.length() <= 1000) {
+    	if(letter.title != null && letter.content != null && letter.title.length() != 0 && letter.content.length() != 0) {
+    		if(letter.title.length() <= 50 && letter.content.length() <= 1000) {
     			logger.info("글수정 성공!");
     			
+    			//System.out.println("hidden 값 >>>>>>"+ existing_Delete_fileNum.get(0) + existing_Delete_fileNum.get(1));
     			
-    			/*		게시판 수정 - 첨부파일 삭제 아직 미구현
-    			List<FileDTO> fileViewer = b_service.fileViewer(letter.num);
-    			
-    			
-    			for(int i=0; i<fileViewer.size(); i++) {
-    				if(fileViewer.get(i).stored_file_name == ) {
-    					
-    				}
-    			}
+    			/* form으로 삭제할 파일들의 고유번호를 배열로 받아오기 실패... 
+    			 * 현재는 자바스크립트에서 컨트롤러의 파일삭제 주소를 직접 호출하는 방식을 시도중...
+    			 * 이는 계속해서 프론트단과 백엔드단이 통신하는 방식이기에 느려지고 비효율적이므로 향후 수정요망.
+    			 * 는 이것도 안되구요 ㅎㅎ
+    			 * 
+    			 * 
+    			 * 결국 deleteFileDTO를 만들어서 해당 객체에 삭제할 파일의 번호들을 배열 형식으로 저장하는 방식으로 해결했다.
+    			 * RequestParam은 key에 매칭되는 하나의 필드값을 받을수 있다는 특성을 깨닫고, RequestParam을 사용하지않고 객체를 통해 통채로 받는 방식을 선택했다.
     			*/
+ 	 			
+    			// 개별 파일 삭제구문
+    	    	if(deletefile != null && deletefile.existing_Delete_fileNum.length != 0) {
+    	    		int[] file_num = new int[deletefile.existing_Delete_fileNum.length];
+    	    		for(int i=0; i<file_num.length; i++) {
+    	    			if(file_num[i] != -1) {
+    	    				file_num[i] = Integer.parseInt(deletefile.existing_Delete_fileNum[i]);
+        	    	    	b_service.deleteFile(file_num[i]);
+    	    			}
+    	        	}
+    	    	}
     			
     			
     			// 파일 업로드 구문
@@ -669,33 +806,35 @@ public class HomeController {
     				String user_id = letter.id;
     				
     				for(int i=0; i<files.length; i++) {
-    					
-    					String fileName = null;
-	    	   	    	
-    					// jsp에서 가져온 파일의 이름을 가져와 용도에 맞게 처리한다.
-            	    	String originalFileName = files[i].getOriginalFilename();
-            	    	String ext = FilenameUtils.getExtension(originalFileName);
-            	    	UUID uuid = UUID.randomUUID();
-            	    	fileName = uuid + "." + ext;
-            	    		      	    		
-            	    	// 파일을 해당 경로에 저장시키는 실질적인 구문.
-            	    	files[i].transferTo(new File("D:\\MyOwnRepository_DATA\\upload\\" + fileName));
-            	    		
-            	    	// 파일 업로드용 vo(dto)에 데이터를 저장 시킨 후 파일업로드 쿼리를 실행시킨다.             	    	
-            	    	uploadfile.setb_num(b_num);
-            	    	uploadfile.setuser_id(user_id);
-            	    	uploadfile.setoriginal_file_name(originalFileName);
-            	    	uploadfile.setstored_file_name(fileName);
-            	    	uploadfile.setstored_path("D:\\MyOwnRepository_DATA\\upload\\"+fileName);
-            	    	uploadfile.setfile_size(files[i].getSize());
-            	    	
-            	    	// 파일 업로드시 파일 타입도 같이 저장하기 위해 추가했다.
-            	    	File file = new File("D:\\MyOwnRepository_DATA\\upload\\"+fileName);
-            	    	String mimeType	= new Tika().detect(file);		// 파일 다운로드 방식에 대해 알아보다가 
-																		// Apache Tika 라는 컨텐츠 분석 라이브러리를 발견하여 사용했다. 
-            	    	uploadfile.settype(mimeType);				
-            	    	
-            	    	b_service.fileUpload(uploadfile);
+    					if(!files[i].isEmpty()) {		// 비어있는 것은 생략함.
+    						String fileName = null;
+    	    	   	    	
+        					// jsp에서 가져온 파일의 이름을 가져와 용도에 맞게 처리한다.
+                	    	String originalFileName = files[i].getOriginalFilename();
+                	    	String ext = FilenameUtils.getExtension(originalFileName);
+                	    	UUID uuid = UUID.randomUUID();
+                	    	fileName = uuid + "." + ext;
+                	    		      	    		
+                	    	// 파일을 해당 경로에 저장시키는 실질적인 구문.
+                	    	files[i].transferTo(new File("D:\\MyOwnRepository_DATA\\upload\\" + fileName));
+                	    		
+                	    	// 파일 업로드용 vo(dto)에 데이터를 저장 시킨 후 파일업로드 쿼리를 실행시킨다.             	    	
+                	    	uploadfile.setb_num(b_num);
+                	    	uploadfile.setuser_id(user_id);
+                	    	uploadfile.setoriginal_file_name(originalFileName);
+                	    	uploadfile.setstored_file_name(fileName);
+                	    	uploadfile.setstored_path("D:\\MyOwnRepository_DATA\\upload\\"+fileName);
+                	    	uploadfile.setfile_size(files[i].getSize());
+                	    	
+                	    	// 파일 업로드시 파일 타입도 같이 저장하기 위해 추가했다.
+                	    	File file = new File("D:\\MyOwnRepository_DATA\\upload\\"+fileName);
+                	    	String mimeType	= new Tika().detect(file);		// 파일 다운로드 방식에 대해 알아보다가 
+    																		// Apache Tika 라는 컨텐츠 분석 라이브러리를 발견하여 사용했다. 
+                	    	uploadfile.settype(mimeType);				
+                	    	
+                	    	b_service.fileUpload(uploadfile);
+    					}
+    						
     				}
   				
     	    	}
@@ -706,9 +845,11 @@ public class HomeController {
     		}
     		else if(letter.title.length() > 35 || letter.content.length() > 1000) {
     			logger.info("글수정 실패..");
+    			model.addAttribute("effectiveness_msg", false);
     			url = "redirect:/user/update_board?urlnum="+letter.num;
     		}
     	}
+    	
     	
 		return url;
     }
@@ -1009,7 +1150,7 @@ public class HomeController {
     
     @RequestMapping(value = "/loadfiles.do/{files_num}" , method = RequestMethod.GET)
     public void displayFiles(Model model, HttpServletRequest request, HttpServletResponse response, @PathVariable("files_num") int files_num) throws Exception{
-    	System.out.println("일단 실행은 됐고 files_number 값은? >>>> " + files_num);
+    	//System.out.println("일단 실행은 됐고 files_number 값은? >>>> " + files_num);
     	
     	FileDTO fileOne = b_service.fileView(files_num);
     	
@@ -1047,6 +1188,21 @@ public class HomeController {
     	InputStream inputStream = new BufferedInputStream(new FileInputStream(file));	// 파일에 대한 inputstream 객체를 생성한다.
     	FileCopyUtils.copy(inputStream, response.getOutputStream());	// 다운로드 할 파일을 복사해서 보내준다.
     }
+    
+    // 게시글 수정시 기존 파일삭제
+    @RequestMapping(value = "/deletefiles.do")
+    public void deleteFile(HttpServletRequest request, @RequestParam(value = "existing_Delete_fileNum", required = false) String[] delete_file_str) throws Exception{
+    	if(!delete_file_str[0].isEmpty()) {
+    		int[] file_num = new int[delete_file_str.length];
+    		for(int i=0; i<delete_file_str.length; i++) {
+    			file_num[i] = Integer.parseInt(delete_file_str[i]);
+    	    	b_service.deleteFile(file_num[i]);
+        	}
+    	}
+    	
+    }
+    
+    
     
     // 게시글 삭제
     @RequestMapping(value = "/user/delete_board")

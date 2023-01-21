@@ -165,6 +165,12 @@ public class boardDAOImpl implements boardDAO{
 		sqlSession.delete(Namespace+".allDeleteFile", b_num);
 	}
 
+	@Override
+	public void deleteFile(int file_num) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.delete(Namespace+".deleteFile", file_num);
+	}
+
 
 	
 }

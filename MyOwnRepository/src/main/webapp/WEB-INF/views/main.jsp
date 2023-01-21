@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/5309915bbd.js" crossorigin="anonymous" defer></script>
     <link rel="stylesheet" type="text/css" href="././resources/css/main.css">
-
+	<link rel="icon" type="image/jpg" href="././resources/img/MORicon.jpg">
 	
 	<script>
  		src="https://code.jquery.com/jquery-3.4.1.js"

@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/5309915bbd.js" crossorigin="anonymous" defer></script>
     <link rel="stylesheet" type="text/css" href="../../../resources/css/main.css">
+    <link rel="icon" type="image/jpg" href="../../../resources/img/MORicon.jpg">
 
 
 <%
@@ -90,7 +91,7 @@
 	
 	</table>
 	
-	<br><br><input type="button" onclick="location.href='/user/write'" class="write_button" value="글쓰기">
+	<br><br><input type="button" onclick="location.href='/user/write_board'" class="write_button" value="글쓰기">
 	<br><br><br><br>
 	<div class="bottom_div">
 		<c:if test="${first_page > 10}">

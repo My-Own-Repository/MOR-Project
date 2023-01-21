@@ -17,6 +17,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/5309915bbd.js" crossorigin="anonymous" defer></script>
 	<link rel="stylesheet" type="text/css" href="../../../resources/css/write.css">
+	<link rel="icon" type="image/jpg" href="../../../resources/img/MORicon.jpg">
 	
 	<%
 		//String userNickname = (String) session.getAttribute("userNickname");  
@@ -76,7 +77,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 			</tr>
 			<tr>
 				<th>제목</th>
-				<td><input type="text" name="title" size = "65"></td>
+				<td><input type="text" name="title" class="input_text_title"></td>
  			</tr>
  
 			<tr>
@@ -84,6 +85,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 				<td>
 					<div contenteditable="true" id="write_content_div" class="write_content_div"></div>
 					<textarea id="write_content_textarea" name="content" style=display:none></textarea>
+					<input type="text" id="view_content" name="view_content" style=display:none>				
 				</td>
 				
 			</tr>
@@ -105,7 +107,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 			</tr>
 			<tr>
 				<td class="downFile_td">
-					<div id="uploadFiles">
+					<div id="uploadFiles" class="uploadFiles">
 						
 					</div>
 				</td>
@@ -132,10 +134,22 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 
 		var files_index = 0;		// 파일 인덱스 선언 (파일 삭제시 사용됨)
 		//var preview_id = '';
+		var k=0;
 		
 		var preview_name = 'preview_name';
-		
+				
 		var file = f.files;
+		
+		var divAry = new Array();
+		var divId = '';
+		var divName = 'preview_files';
+		for(var i=0; i<file.length; i++){
+			divId = 'divID_'+i;
+			divAry[i] = document.createElement('div');
+			divAry[i].setAttribute("id", divId);
+			divAry[i].setAttribute("class", write_content_div);
+			divAry[i].setAttribute("name", divName);
+		}
 		
 		for(var i=0; i<file.length; i++) {
 			var fileList = f.files;		// 파일 받아와서 스크립트 내부 변수에 저장.
@@ -144,29 +158,29 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 			var fileLength = fileName.length;		// 파일명 길이 추출		
 			var fileDot = fileName.lastIndexOf(".");	// 파일의 확장자 추출		
 			var fileType = fileName.substr(fileDot+1, fileLength).toLowerCase();	// 추출한 확장자를 소문자로 변경한다.
-				
+			
             var reader = new FileReader();
 			
             
             reader.onload = function (e) {
-            	
+    	
             	// 파일이 이미지일때 수행
             	if("jpg" == fileType || "jpeg" == fileType || "gif" == fileType || "png" == fileType || "bmp" == fileType){
-            		var previewImg = document.createElement("img");
-                	previewImg.setAttribute("src", e.target.result);
-                	previewImg.setAttribute("name", preview_name);
-                	document.querySelector("div#write_content_div").appendChild(previewImg);
-                	
+					
+					// 3) 업로드 된 파일이 이미지 혹은 영상태그일 경우 새로운 div안에 img,video태그로 넣음
+					divAry[k].innerHTML = '<img src="' + e.target.result + '"><br>';
+					document.querySelector("div#write_content_div").appendChild(divAry[k]);
+              		k++;
             	}
             	// 파일이 동영상/오디오 일때 수행
 				else if("mpg" == fileType || "mpeg" == fileType || "mp4" == fileType || "ogg" == fileType || "webm" == fileType || "avi" == fileType || "wmv" == fileType || "mov" == fileType || "rm" == fileType || "ram" == fileType || 
 						"swf" == fileType || "flv" == fileType || "wav" == fileType || "mp3" == fileType){
-					preview_id = 'preview_id_'+files_index;
-					var previewVideo = document.createElement("video");
-					previewVideo.setAttribute("src", e.target.result);
-					previewVideo.setAttribute("name", preview_name);
-                	document.querySelector("div#write_content_div").appendChild(previewVideo);
-                
+					
+					// 3) 업로드 된 파일이 이미지 혹은 영상태그일 경우 새로운 div안에 img,video태그로 넣음
+					divAry[k].innerHTML = '<video src="' + e.target.result + '"><br>';
+					document.querySelector("div#write_content_div").appendChild(divAry[k]);
+					k++;
+					               
 				}
 
 				/*	 // 자유게시판, 비밀게시판에서는 오로지 이미지, 영상 파일만 업로드 할 수 있도록 하며 다운로드 기능은 제공하지 않는다.
@@ -227,21 +241,35 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		
 	}
 
-	function deleteFile(n, input_fileList){		
+	function deleteFile(n){		
 		//alert("파일 삭제 함수는 작동함");
-		var divID = 'in_js_filenum_'+n;		// 첨부된 파일 목록에서 삭제할 특정 div의 아이디 선언, ex : (in_js_filenum_0) 
+		var attached_divID = 'in_js_filenum_'+n;		// 첨부된 파일 목록에서 삭제할 특정 div의 아이디 선언, ex : (in_js_filenum_0) 
 		
 		// 첨부된 파일 목록 view에서 해당 파일을 삭제한다.
-		var delete_file_div = document.getElementById(divID);		
+		var delete_file_div = document.getElementById(attached_divID);		
 		delete_file_div.style.display = "none";
 		
-		var preview_hidden_id = 'preview_id_'+n;	// 미리보기 삭제를 위한 변수 선언	
 		
-		/*
 		// 미리보기 삭제
-		var hidden_preview = document.getElementById(preview_hidden_id);
-		hidden_preview.style.display = "none";
-		*/
+		var preview_divID = 'divID_'+n;
+		var preview_hidden_div = document.getElementById(preview_divID);
+		preview_hidden_div.style.display = "none";
+		
+		
+		// input_file 삭제
+		var dataTransfer = new DataTransfer();
+    
+    	var files = $('#input_file')[0].files;	//사용자가 입력한 파일을 변수에 할당 
+    	alert(files);
+    	var fileArray = Array.from(files);	//변수에 할당된 파일을 배열로 변환(FileList -> Array)
+    	alert(fileArray);
+    	fileArray.splice(n, 1);	//해당하는 index의 파일을 배열에서 제거
+    
+    	fileArray.forEach(file => { dataTransfer.items.add(file); });
+    	//남은 배열을 dataTransfer로 처리(Array -> FileList)
+    
+    	$('#input_file')[0].files = dataTransfer.files;	//제거 처리된 FileList를 돌려줌
+		
 	}
 	
 	function delete_allfile(){
@@ -258,16 +286,11 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 				i++;
 			}
 				
-			i = 0;
 			
 			// 파일 미리보기 전체 삭제
-			var hidden_preview = document.getElementsByName('preview_name');
-			while(true){
-				if(hidden_preview[i] == null){
-					break;
-				}
+			var hidden_preview = document.getElementsByName('preview_files');
+			for(var i=0; i<hidden_preview.length; i++){
 				hidden_preview[i].style.display = "none";
-				i++;
 			}
 				
 			
@@ -280,10 +303,11 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 	
 	function submit_btn(){
 		var copy = document.getElementById('write_content_div').innerText;
-		//var paste = document.getElementById('write_content_textarea');
+		var total_copy = document.getElementById('write_content_div').textContent;
 		
 		document.getElementById('write_content_textarea').value = copy;
-				
+		document.getElementById('view_content').value = total_copy;
+		
 		document.getElementById('write_form').submit();
 	}
 	

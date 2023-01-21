@@ -40,6 +40,7 @@ public interface boardDAO {
 	public List<FileDTO> viewFile(int b_num) throws Exception;	// 이미지, 영상 파일만 추출해서 가져온 후 보여주기
 	
 	public void allDeleteFile(int b_num) throws Exception;		// 특정 게시글 삭제시 모든 파일 삭제
+	public void deleteFile(int file_num) throws Exception; 		// 파일 개별 삭제
 	
 	public int maxNum() throws Exception;		// 마지막으로 게시 된 게시글의 고유번호 검색 (파일 업로드시 파일을 업로드한 게시글을 특정하기 위함.)
 

@@ -162,6 +162,12 @@ public class BoardServiceImpl implements BoardService{
 		dao.allDeleteFile(b_num);
 	}
 
+	@Override
+	public void deleteFile(int file_num) throws Exception {
+		// TODO Auto-generated method stub
+		dao.deleteFile(file_num);
+	}
+
 	
 	
    

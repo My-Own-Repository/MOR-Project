@@ -119,4 +119,8 @@ public class BoardMapper {
 	public void allDeleteFile(int b_num) throws Exception{
 		boardmapper.allDeleteFile(b_num);
 	}
+	
+	public void deleteFile(int file_num) throws Exception{
+		boardmapper.deleteFile(file_num);
+	}
 }

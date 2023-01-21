@@ -12,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/5309915bbd.js" crossorigin="anonymous" defer></script>
     <link rel="stylesheet" type="text/css" href="../../../resources/css/posts.css">
+    <link rel="icon" type="image/jpg" href="../../resources/img/MORicon.jpg">
 
 
 
@@ -81,10 +82,9 @@
 				<tr>
 					<td colspan="4" class="content_td">
 							<c:forEach items="${fileViewer}" var="files">
-									<img src="/loadfiles.do/${files.file_num}" class="upload_imgs" id="${files.file_num}" alt="">
-									<br>
-									<video src="/loadfiles.do/${files.file_num}" class="upload_videos" id="${files.stored_file_name}" controls></video>
+									<div id="view_content_div">
 									
+									</div>
 									<br>
 									
 									<script>								
@@ -199,9 +199,32 @@
 		</table>
 		<table class="comment_main">
 			<tr>
-				<td colspan="4">&nbsp;${cmt.content}<br></td>
+				<td colspan="4">
+					<div id="changed_comment_div_${cmt.c_num}">
+					
+					</div>
+				<br></td>
 			</tr>
 		</table>
+			<script>
+				function changeComment_hyperlink_url() {
+					var print_comment_divID = 'changed_comment_div_'+${cmt.c_num};
+					var comment_div = document.getElementById(print_comment_divID);	// 수정된 댓글 내용을 넣어줄 장소 가져오기
+							
+					var originalComment = '${cmt.content}';
+							
+					if(originalComment != null){
+								originalComment = originalComment.replace(/<br>/ig, '\n');		// html 태그인 <br>을 프로그래밍 언어의 줄바꿈 문자(\n)로 바꾸어 줌.
+								
+					var regURL = new RegExp("(http|https|ftp|telnet|news|irc)://([-/.a-zA-Z0-9_~#%$?&=:200-377()]+)","gi");
+					var changedComment = originalComment.replace(regURL, "<a href='$1://$2' target='_blank'>$1://$2</a>");
+					changedComment = changedComment.replace(/\n/ig, '<br>');		// \n을 <br>태그로 바꾸어서 html상으로 줄바꿈이 정상적으로 나오게 바꿔줌.
+								
+					comment_div.innerHTML = changedComment;
+					}
+				}
+				changeComment_hyperlink_url();
+			</script>
 		<br><br><br>
 	</c:forEach>
 	
@@ -223,25 +246,27 @@
 	</div>
 
 	
-	<script>
-	
-		function change_hyperlink_url() {		// url 주소를 인식하여 하이퍼 링크로 변환시켜주는 함수
+	<script>	
+		function changeContent_hyperlink_url() {		// url 주소를 인식하여 하이퍼 링크로 변환시켜주는 함수
 							// url 하이퍼링크 정규식은 구글링을 통해 복사해왔다.	https://aljjabaegi.tistory.com/280
-			var content_div = document.getElementById("changed_content_div");
-						
 			
-			var originalContent = '${SelectPost.content}';
+			var content_div = document.getElementById("changed_content_div");	// 수정된 게시글 내용을 넣어줄 장소 가져오기
 			
-			originalContent = originalContent.replace(/<br>/ig, '\n');		// html 태그인 <br>을 프로그래밍 언어의 줄바꿈 문자(\n)로 바꾸어 줌.
 			
-
-			var regURL = new RegExp("(http|https|ftp|telnet|news|irc)://([-/.a-zA-Z0-9_~#%$?&=:200-377()]+)","gi");
-			var changedContent = originalContent.replace(regURL, "<a href='$1://$2' target='_blank'>$1://$2</a>");
-			changedContent = changedContent.replace(/\n/ig, '<br>');		// \n을 <br>태그로 바꾸어서 html상으로 줄바꿈이 정상적으로 나오게 바꿔줌.
+			var originalContent = '${SelectPost.content}';		// 원본 게시글 내용 삽입
 			
-			content_div.innerHTML = changedContent;
+			if(originalContent != null){
+				originalContent = originalContent.replace(/<br>/ig, '\n');		// html 태그인 <br>을 프로그래밍 언어의 줄바꿈 문자(\n)로 바꾸어 줌.
+				
+				var regURL = new RegExp("(http|https|ftp|telnet|news|irc)://([-/.a-zA-Z0-9_~#%$?&=:200-377()]+)","gi");
+				var changedContent = originalContent.replace(regURL, "<a href='$1://$2' target='_blank'>$1://$2</a>");
+				changedContent = changedContent.replace(/\n/ig, '<br>');		// \n을 <br>태그로 바꾸어서 html상으로 줄바꿈이 정상적으로 나오게 바꿔줌.
+				
+				content_div.innerHTML = changedContent;
+			}
+				
 		}
-		change_hyperlink_url();
+		changeContent_hyperlink_url();
 	
 	</script>
 
