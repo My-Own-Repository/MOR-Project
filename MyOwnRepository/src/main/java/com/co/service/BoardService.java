@@ -10,6 +10,8 @@ import com.co.dto.commentDTO;
 public interface BoardService {
 	public void writeBoard(boardDTO letter) throws Exception;		// 게시글 작성
 	public List<boardDTO> printBoard() throws Exception;			// 게시글 목록
+	public List<boardDTO> printAdminBoard() throws Exception; 	// 관리자 게시글 목록
+	public List<boardDTO> limitAdminBoard() throws Exception;	// 관리자 게시글 5개 목록
 	
 	public boardDTO selectBoard(int num) throws Exception;		// 특정 게시글
 	
@@ -49,4 +51,15 @@ public interface BoardService {
 	public int selectMaxNum() throws Exception;
 	
 
+	/* 비밀 게시판 전용 */
+	
+	public int SCmaxNum() throws Exception;
+	public int SCselectMinNum() throws Exception;
+	public int SCselectMaxNum() throws Exception;
+	public int SCtotalNum() throws Exception;
+	
+	public boardDTO SCselectBoard(int num) throws Exception;
+	public List<boardDTO> SClimitBoard(int first) throws Exception;
+	
+	
 }

@@ -198,8 +198,11 @@ function checkID(){			// 아이디 중복 체크함수
 		data : {id,id},
 		success:function(result){
 			if((id.search(/\W|\s/g) > -1) || id == ""){			// id 문자열에 특수문자,공백,빈칸이 포함되어있는지 확인하는 조건문
-		    	alert("ERROR\n아이디는 한/영/숫자만 입력해주세요.");
+		    	alert("ERROR\n아이디는 영문/숫자만 입력해주세요.");
 		    }
+			else if(id.length > 16){
+				alert("ERROR\n아이디는 16자 이내로 입력해주세요.");
+			}			
 			else if(result == 0){
 				alert("SUCCESS : " + id + "\n사용 가능한 아이디입니다.");
 				$("#id").attr("readonly",true); 	// 아이디 중복 체크가 성공적으로 완료되면 악용을 방지하기위해 아이디 입력 태그를 잠금.
@@ -228,8 +231,11 @@ function checkNICKNAME(){			// 닉네임 중복 체크함수
 		data : {nickname,nickname},	
 		success:function(result){
 			if((nickname.search(/\W|\s/g) > -1) || nickname == ""){			// nickname 문자열에 특수문자,공백이 포함되어있는지 확인하는 조건문
-		    	alert("ERROR\n닉네임은 한/영/숫자만 입력해주세요.");
+		    	alert("ERROR\n닉네임은 영문/숫자만 입력해주세요.");
 		    }
+			else if(nickname.length > 16){
+				alert("ERROR\n닉네임은 16자 이내로 입력해주세요.");
+			}
 			else if(result == 0){
 				alert("SUCCESS : " + nickname + "\n사용 가능한 닉네임입니다.");
 				$("#nickname").attr("readonly",true); 	// 아이디 중복 체크가 성공적으로 완료되면 악용을 방지하기위해 아이디 입력 태그를 잠금.

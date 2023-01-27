@@ -171,6 +171,56 @@ public class boardDAOImpl implements boardDAO{
 		sqlSession.delete(Namespace+".deleteFile", file_num);
 	}
 
+	@Override
+	public List<boardDTO> printAdminBoard() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".printAdminBoard");
+	}
+
+	@Override
+	public List<boardDTO> limitAdminBoard() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".limitAdminBoard");
+	}
+
+	/* 비밀 게시판 */
+	
+	@Override
+	public int SCmaxNum() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".SCmaxNum");
+	}
+
+	@Override
+	public int SCselectMinNum() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".SCselectMinNum");
+	}
+
+	@Override
+	public int SCselectMaxNum() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".SCselectMaxNum");
+	}
+
+	@Override
+	public int SCtotalNum() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".SCtotalNum");
+	}
+
+	@Override
+	public boardDTO SCselectBoard(int num) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".SCselectBoard", num);
+	}
+
+	@Override
+	public List<boardDTO> SClimitBoard(int first) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".SClimitBoard", first);
+	}
+
 
 	
 }
