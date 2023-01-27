@@ -6,15 +6,15 @@
 <mapper namespace="com.co.mapper.boardMapper">
  
 	<select id="writeBoard">		<!-- 글작성 -->
-		INSERT INTO board (title, content, id, nickname) VALUES (#{title}, #{content}, #{id}, #{nickname}) 
+		INSERT INTO board (title, content, id, nickname, is_secret, secret_num) VALUES (#{title}, #{content}, #{id}, #{nickname}, #{is_secret}, #{secret_num}) 
 	</select>
 	
-	<select id="printBoard" resultType="boardDTO">		<!-- 모든 게시글 가져오기 -->
-		SELECT num, title, nickname, comment, date, view FROM board WHERE is_exist=1
-	</select>
+	<select id="printBoard" resultType="boardDTO">		<!-- 사용자들의 모든 게시글 가져오기 -->
+		SELECT num, title, nickname, comment, date, view FROM board WHERE is_exist=1 AND id!="admin" AND is_secret=0
+	</select>	
 	
 	<select id="selectBoard" resultType="boardDTO">		<!-- 특정 게시글 한개 가져오기 -->
-		SELECT num, title, id, nickname, comment, date, view, content, is_exist FROM board WHERE num=#{num} AND is_exist=1
+		SELECT num, title, id, nickname, comment, date, view, content, is_secret, is_exist FROM board WHERE num=#{num} AND is_exist=1 AND is_secret=0
 	</select>
 
 	<update id="addView">		<!-- 조회수 증가 -->
@@ -22,11 +22,11 @@
 	</update>
 	
 	<select id="selectMinNum" resultType="int">		<!-- 게시글 중 가장 낮은 고유번호를 가져오기 (이전글, 다음글 구현시 필요함) -->
-		SELECT MIN(num) AS "min_num" FROM board	WHERE is_exist=1
+		SELECT MIN(num) AS "min_num" FROM board	WHERE is_exist=1 AND is_secret=0
 	</select>
 	
 	<select id="selectMaxNum" resultType="int">		<!-- 게시글 중 가장 높은 고유번호를 가져오기 (이전글, 다음글 구현시 필요함) -->
-		SELECT MAX(num) AS "max_num" FROM board	WHERE is_exist=1
+		SELECT MAX(num) AS "max_num" FROM board	WHERE is_exist=1 AND is_secret=0
 	</select>
 	
 	<update id="updateBoard">		<!-- 게시글 수정 -->
@@ -58,7 +58,7 @@
 	</select>
 	
 	<select id="maxNum"	resultType="int">		<!-- 게시글 작성시 게시글의 고유번호인 b_num을 첨부파일의 게시글 번호로 정의 하기위해 가져온다. (사용시 컨트롤러에서 max(num)+1 형식으로 사용하여 마지막에서 다음 글임을 표현)(좋은 방법은 아님) -->
-		SELECT MAX(num) FROM board
+		SELECT MAX(num) FROM board WHERE is_secret=0
 	</select>
 	
 	<select id="fileDownload" resultType="FileDTO">		<!-- 파일 다운로드 -->
@@ -83,12 +83,20 @@
 		UPDATE file SET is_exist=0 WHERE file_num=#{file_num}
 	</update>
 	
-	<select id="totalNum" resultType="int">		<!-- 유효한 모든 게시글의 수 -->
-		SELECT COUNT(*) FROM board WHERE is_exist=1
+	<select id="totalNum" resultType="int">		<!-- 유효한 모든 게시글의 수 , 관리자 게시글은 제외 -->
+		SELECT COUNT(*) FROM board WHERE is_exist=1 AND id!="admin" AND is_secret=0
 	</select>
 	
 	<select id="limitBoard" resultType="boardDTO">		<!-- 메인화면에서 모든 게시글을 20개씩 나누어 페이징한 화면을 보여주기 위한 LIMIT 쿼리문 -->
-		SELECT num, title, nickname, comment, date, view FROM board WHERE is_exist=1 ORDER BY num DESC LIMIT #{first},20
+		SELECT num, title, nickname, comment, date, view FROM board WHERE is_exist=1 AND id!="admin" AND is_secret=0 ORDER BY num DESC LIMIT #{first},20
+	</select>
+	
+	<select id="printAdminBoard" resultType="boardDTO">		<!-- 관리자의 모든 게시글 가져오기 -->
+		SELECT num, title, nickname, comment, date, view FROM board WHERE is_exist=1 AND id="admin" ORDER BY num DESC
+	</select>
+	
+	<select id="limitAdminBoard" resultType="boardDTO">		<!-- 관리자의 게시글 최근 5개 가져오기 -->
+		SELECT num, title, nickname, comment, date, view FROM board WHERE is_exist=1 AND id="admin" ORDER BY num DESC LIMIT 0,5
 	</select>
 	
 	<update id="updateComment">		<!-- 댓글 수정 -->
@@ -99,13 +107,38 @@
 		UPDATE comment SET is_exist=0 WHERE c_num=#{c_num} AND is_exist=1
 	</update>
 	
-	
 	<update id="allDeleteFile">			<!-- 특정 게시글의 모든 파일 삭제 (게시글 자체를 삭제할 때 사용함) -->
 		UPDATE file SET is_exist=0 WHERE b_num=#{b_num} AND is_exist=1
 	</update>
 	
-	
 	<update id="allDeleteComment">			<!-- 특정 게시글의 모든 댓글 삭제 (게시글 자체를 삭제할 때 사용함) -->
 		UPDATE comment SET is_exist=0 WHERE b_num=#{b_num} AND is_exist=1
 	</update>
+	
+	<!-- 비밀 게시판 -->
+		
+	<select id="SCmaxNum"	resultType="int">		<!-- 게시글 작성시 게시글의 고유번호인 b_num을 첨부파일의 게시글 번호로 정의 하기위해 가져온다. (사용시 컨트롤러에서 max(num)+1 형식으로 사용하여 마지막에서 다음 글임을 표현)(좋은 방법은 아님) -->
+		SELECT MAX(num) FROM board WHERE is_secret=1
+	</select>
+	
+	<select id="SCselectMinNum" resultType="int">		<!-- 게시글 중 가장 낮은 고유번호를 가져오기 (이전글, 다음글 구현시 필요함) -->
+		SELECT MIN(num) AS "min_num" FROM board	WHERE is_exist=1 AND is_secret=1
+	</select>
+	
+	<select id="SCselectMaxNum" resultType="int">		<!-- 게시글 중 가장 높은 고유번호를 가져오기 (이전글, 다음글 구현시 필요함) -->
+		SELECT MAX(num) AS "max_num" FROM board	WHERE is_exist=1 AND is_secret=1
+	</select>
+			
+	<select id="SCselectBoard" resultType="boardDTO">		<!-- 특정 게시글 한개 가져오기 -->
+		SELECT num, title, id, nickname, comment, date, view, content, is_secret, secret_num, is_exist FROM board WHERE num=#{num} AND is_exist=1 AND is_secret=1
+	</select>
+	
+	<select id="SCtotalNum" resultType="int">		<!-- 유효한 모든 게시글의 수 , 관리자 게시글은 제외 -->
+		SELECT COUNT(*) FROM board WHERE is_exist=1 AND id!="admin" AND is_secret=1
+	</select>
+	
+	<select id="SClimitBoard" resultType="boardDTO">		<!-- 메인화면에서 모든 게시글을 20개씩 나누어 페이징한 화면을 보여주기 위한 LIMIT 쿼리문 -->
+		SELECT num, title, id, nickname, comment, date, view, secret_num FROM board WHERE is_exist=1 AND id!="admin" AND is_secret=1 ORDER BY num DESC LIMIT #{first},20
+	</select>
+	
 </mapper>

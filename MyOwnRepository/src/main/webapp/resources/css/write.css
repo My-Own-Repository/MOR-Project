@@ -1,6 +1,10 @@
 body{
 	background-color: lightgray;
 }
+.bottom_hr {
+	width: 100%;
+	border-top: 1px dotted black;
+}
 
 .empty_write_div{
 	background-color: white;
@@ -34,6 +38,11 @@ p {
 	table-layout: fixed;
 	overflow: hidden;
 }
+
+.write_form_table th{
+	background-color: lightgray;
+}
+
 [contenteditable=true] {
   outline: none;
 }
@@ -246,6 +255,63 @@ button{
 	float: right;
 }
 
+.secret_input_img_div{
+	width: 60px;
+	height: 60px;
+	float: left;
+	/* border: 1px solid black; */
+	text-align:center;
+}
+
+.lock_img{
+	width: 35%;
+	height: auto;
+	text-align:center;
+	margin: auto;
+}
+
+.secret_input_table{
+	width: 20%;
+	max-height: 28px;
+	height: auto;
+	margin: auto;
+	text-align: center;
+	float: left;
+	background-color: darkgray;
+	vertical-align : middle;
+}
+
+.secret_input_th{
+	background-color: darkgray;
+	width: 45%;
+	height: auto;
+	margin: auto;
+	text-align:	center;
+}
+
+.secret_input_td{
+	width: 35%;
+	height: auto;
+	vertical-align : middle;
+}
+
+.secretNum_input_span{
+	background-color: darkgray;
+	text-align: center;
+	font-size: 14px;
+	float: left;
+	font-weight: bold;
+	margin: auto;
+}
+
+
+.secretNum_input{
+	width: 70%;
+	background-color: #E5E5E5;
+	text-align: center;
+	float: right;
+	font-size: 14px;
+}
 
 #update_content_div img{
 	max-width: 720px;
@@ -365,9 +431,125 @@ a{text-decoration:none;font-size:14px}
   height: 100px; 			/*서브메뉴 li의 총 높이 */
   transition-duration: 1s;
 }
+
+
+/* 크레딧 섹션 css - 기존 프로젝트에서 복사해왔다. (브랜디 쇼핑몰의 css부분 긁어옴) */
+
+footer {
+  display: block;
+  width: 100%;
+  background-color: #f7f8fa;
+}
+
+.foot-sector {
+  margin: 30px auto 0 auto;
+}
+
+.footerinfo-division-top {
+  display: block;
+  padding: 15px 15px;
+  border: 1px solid #ebeef2;
+  margin: 0 auto;
+}
+
+.footerinfo-division-top > div {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link-about {
+  text-align: center;
+}
+
+.link-about a:first-child::before {
+  content: none;
+}
+
+.link-about a::before {
+  content: "|";
+  margin-right: 5px;
+}
+
+.link-social-item {
+  display: flex;
+}
+
+.link-social-item > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 7px;
+}
+
+.link-social-item > a > span {
+  margin-left: 7px;
+}
+
+.foot-sector :nth-child(2) {
+  border: none;
+}
+
+.footerinfo-division-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  margin: 50px auto 0px auto;
+  padding-bottom: 50px;
+}
+.company-info {
+  display: inline-block;
+}
+
+.company-name {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-weight: 900;
+  font-size: 25px;
+}
+
+.bundle {
+  color: #5f6773;
+  font-size: 15px;
+  font-style: normal;
+  line-height: 24px;
+}
+
+.bundle span:first-child::before {
+  content: none;
+}
+
+.bundle span::before {
+  content: "|";
+  margin-right: 5px;
+}
+
+.servicecenter {
+  font-style: normal;
+}
+
+.center-phonenumber {
+  margin-bottom: 10px;
+  font-size: 25px;
+  font-weight: inherit;
+}
+
+.center-info {
+  line-height: 30px;
+  color: #5f6773;
+}
+
+/* 크레딧 섹션 css */
+
+
 @media ( max-width: 720px ) {		/* 모바일 설정*/ /* 스크린 x축의 길이가 1024px이하 일때 적용됨 */
        
-        body {
+        html, body {
 			max-width: 100%;
 			overflow-x: hidden;
 			background-color: white;
@@ -648,5 +830,137 @@ a{text-decoration:none;font-size:14px}
 			background-color: darkgray;
 			color:white;
 		}
+		
+		.secret_input_img_div{
+			width: 30px;
+			height: 30px;
+			float: left;
+			/* border: 1px solid black; */
+			text-align:center;
+		}
+		
+		.lock_img{
+			width: 50%;
+			height: auto;
+			text-align:center;
+			margin: auto;
+		}
+		
+		
+		.secret_input_table{
+			width: 35%;
+			height: auto;
+			margin: auto;
+			text-align: center;
+			float: left;
+			background-color: darkgray;
+			vertical-align : middle;
+		}
+		
+		.secret_input_th{
+			background-color: darkgray;
+			width: 45%;
+			height: auto;
+			margin: auto;
+			text-align:	center;
+		}		
+		
+		.secret_input_td{
+			width: 35%;
+			height: auto;
+			vertical-align : middle;
+		}
+		
+		.secretNum_input_span{
+			background-color: darkgray;
+			text-align: center;
+			font-size: 11px;
+			float: left;
+			font-weight: bold;
+		}
+		
+		
+		.secretNum_input{
+			background-color: #E5E5E5;
+			width: 60%;
+			text-align: center;
+			font-size: 11px;
+			float: right;
+		}
+		
+		
+		/* 크레딧 섹션 모바일 css */
+		
+		  .footerinfo-division-top {
+		    padding-bottom: 0px;
+		  }
+		  .footerinfo-division-top .inner {
+		    display: block;
+		  }
+		  .link-about {
+		    display: block;
+		    text-align: start;
+		    font-size: 11px;
+		  }
+		  .link-about a {
+		    padding: 20px 4px 0;
+		  }
+		  .link-about a::before {
+		    content: none;
+		    margin: 0;
+		  }
+		  .link-social {
+		    display: block;
+		  }
+		  .link-about :nth-child(5) {
+		    display: none;
+		  }
+		  .link-about :nth-child(6) {
+		    display: none;
+		  }
+		
+		  .link-social-item {
+		    justify-content: start;
+		  }
+		  .link-social-item > a {
+		    width: 32px;
+		    height: 32px;
+		    padding: 20px 4px;
+		  }
+		  .link-social-item > a > span {
+		    display: none;
+		  }
+		
+		  .footerinfo-division-bottom {
+		    display: block;
+		    margin: 0 auto;
+		  }
+		  .company-info {
+		    padding: 15px 20px;
+		    margin: 0 auto;
+		  } 
+		  .company-name {
+		    font-size: 15px;
+		  }
+		  .bundle {
+		    font-size: 11px;
+		  }
+		  .bundle span {
+		    display: block;
+		  }
+		  .bundle span::before {
+		    content: none;
+		    margin: 0;
+		  }
+		  .servicecenter {
+		    padding: 15px 20px;
+		    margin: 0 auto;
+		  }
+		  .center-phonenumber {
+		    font-size: 15px;
+		  }
+		  .center-info {
+		    font-size: 11px;
+		  }
 		
 }

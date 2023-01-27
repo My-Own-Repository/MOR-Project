@@ -34,6 +34,7 @@
  		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 
+
 <title>나만의 저장소 - MOR !</title>
 </head>
 <body>
@@ -52,22 +53,25 @@
 			<a href="#">게시판</a>
 			<ul class="submenu">
 				<li><a href="/user/userMain/1">자유게시판</a></li>
-				<li><a href="/user/secret_board">비밀게시판</a></li>
+				<li><a href="/user/secretBoard/1">비밀게시판</a></li>
 			</ul>
 		</li>
 		<li>
 			<a href="#">저장소</a>
 			<ul class="submenu">
-				<li><a href="/my_repo">나만의 저장소</a></li>
-				<li><a href="/our_repo">공유 저장소</a></li>
+				<li><a href="#">공유</a></li>
+				<li><a href="#">나만의 저장소</a></li>
 			</ul>
 		</li>
 		<li>
 			<a href="/user/mypage">${member.nickname}</a>
 		</li>
 	</ul>
-		
-	<br><br><p>자유게시판</p><br>
+	<br><br>
+	<p id="user_board_p" class="user_board_p">자유게시판</p>
+	<p id="secret_board_p" class="secret_board_p">비밀게시판</p>
+	<p id="admin_board_p" class="admin_board_p">공지사항</p>	
+	<br>
 	
 
 	<table border="1">	
@@ -190,8 +194,8 @@
 	<table>	
 	
 				<tr>
-					<td>이전글&nbsp;&nbsp;<a href="/user/posts?urlnum=${pre_post.num}">${pre_post.title}</a></td>			
-					<td>다음글&nbsp;&nbsp;<a href="/user/posts?urlnum=${next_post.num}">${next_post.title}</a></td>
+					<td class="prePost_td"><div id="preANDnext_div1">이전글&nbsp;&nbsp;<a href="/user/posts?urlnum=${pre_post.num}">${pre_post.title}</a></div></td>			
+					<td class="nextPost_td"><div id="preANDnext_div2">다음글&nbsp;&nbsp;<a href="/user/posts?urlnum=${next_post.num}">${next_post.title}</a></div></td>
 				</tr>		
 
 	</table>
@@ -281,7 +285,7 @@
 			</tr>		
 		</table>
 		
-			<script>
+			<script>			
 				function changeComment_hyperlink_url() {
 					var print_comment_divID = 'changed_comment_div_'+${cmt.c_num};
 					var comment_div = document.getElementById(print_comment_divID);	// 수정된 댓글 내용을 넣어줄 장소 가져오기
@@ -414,10 +418,51 @@
 		<br><br>
 	</form>
 	</div>
+	<br><br>
 	</div>
 	</div>
 	
 	<script>
+		function is_whatBoard(){
+			var is_admin = '${SelectPost.id}';
+			var is_secret = '${what}';
+			
+			// 게시판의 종류에따라 게시판의 이름이 달라짐
+			var user_p = document.getElementById('user_board_p');		// 자유게시판
+			var secret_p = document.getElementById('secret_board_p');	// 비밀게시판
+			var admin_p = document.getElementById('admin_board_p');		// 공지사항
+			
+			// 비밀 게시판이면 이전글 다음글을 숨기기 위함
+			var hideTable1 = document.getElementById('preANDnext_div1');
+			var hideTable2 = document.getElementById('preANDnext_div2');
+			
+			if(is_admin == "admin"){
+				user_p.style.display = "none";	
+				secret_p.style.display = "none";
+				admin_p.style.display = "block";
+				hideTable1.style.display = "block";
+				hideTable2.style.display = "block";
+			}
+			else{
+				if(is_secret == 0){
+					secret_p.style.display = "none";
+					admin_p.style.display = "none";
+					user_p.style.display = "block";
+					hideTable1.style.display = "block";
+					hideTable2.style.display = "block";
+				}
+				else{
+					user_p.style.display = "none";
+					admin_p.style.display = "none";
+					secret_p.style.display = "block";
+					hideTable1.style.display = "none";
+					hideTable2.style.display = "none";
+				}		
+			}
+			
+			
+		}
+		is_whatBoard();
 	
 		function change_hyperlink_url() {		// url 주소를 인식하여 하이퍼 링크로 변환시켜주는 함수
 							// url 하이퍼링크 정규식은 구글링을 통해 복사해왔다.	https://aljjabaegi.tistory.com/280
@@ -438,6 +483,99 @@
 	
 	</script>
 	
+	
+		<br><br><br><br><br><br><br><br>
+        <footer>
+            <div class="foot-sector">
+                <div class="footer-underline">
+                <nav class="footerinfo-division-top">
+                    <div class="inner">
+                        <div class="link-about">
+                            <a href="#">이용약관</a>
+                            <a href="#"><b>개인정보처리방침</b></a>
+                            <a href="#">사업자정보확인</a>
+
+                        </div>
+                        <div class="link-social">
+                            <div class="link-social-item">
+                                <a href="#">
+                                    <img src="../../../resources/img/ic-faq-32.svg" alt="question-rogo">
+                                    <span>FAQ</span>
+                                </a>
+                                <a href="#">
+                                    <img src="../../../resources/img/ic-facebook-rogo-32.svg" alt="facebook-rogo">
+                                    <span>페이스북</span>
+                                </a>
+                                <a href="#">
+                                    <img src="../../../resources/img/ic-kakaoplus-rogo-32.svg" alt="kakaoplus-rogo">
+                                    <span>카카오플러스</span>
+                                </a>
+                                <a href="#">
+                                    <img src="../../../resources/img/ic-insta-rogo-32.svg" alt="insta-rogo">
+                                    <span>인스타그램</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+                <address class = "footerinfo-division-bottom">
+                
+                <div class="company-info">
+                    <div class="company-name">(주)MOR</div>
+                    <div class="bundle">
+                        <span>대표이사 : 주은상</span>
+                        <span>사업자등록번호 : 000-00-00000</span>
+                    </div>
+                    <div class="bundle">
+                        <span>호스팅사업자 : (주)MOR</span>
+                        <span>주소 : 안산시 단원구 MOR (호수동)</span>
+                    </div>
+                    <div class="bundle">
+                        <span>개인정보관리책임자 : 홍길동</span>
+                    </div>
+                </div>
+                
+                <div class="servicecenter">
+                    <div class="center-phonenumber">
+                        <b>고객센터 0000-0000</b>
+                    </div>
+                    <div class="center-info">
+                        <span>영업시간</span>
+                        <time>AM 00:00</time>
+                        ~
+                        <time>PM 11:59</time>
+                        (주말 및 공휴일 휴무)
+                    </div>
+                    <div class="center-info">
+                        <span>점심시간</span>
+                        <time>AM 11:00</time>
+                        ~
+                        <time>PM 01:00</time>
+                    </div>
+
+                </div>
+               
+                </address>
+                
+                <address class = "footerinfo-division-bottom">
+					<div class="company-info">               
+	                    <div class="company-name">저작권</div>
+	                    <div class="bundle">
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/" title="폐물 아이콘">폐물 아이콘  제작자: Pavel Kozlov - Flaticon</a></span>
+	                    </div>
+						<div class="bundle">
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="맹꽁이 자물쇠 아이콘">맹꽁이 자물쇠 아이콘  제작자: DinosoftLabs - Flaticon</a></span>
+	                    </div>
+	                    <div class="bundle">
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="열린 자물쇠 아이콘">열린 자물쇠 아이콘  제작자: Freepik - Flaticon</a></span>
+	                    </div>
+	                </div>
+				</address>
+
+                <div class="safety"></div>
+            </div>
+        </footer>
 	
 	<c:if test="${c_msg == false}">
 		<script>

@@ -41,7 +41,7 @@
 	
 	<ul class="menu">
 		<li>
-			<a href="#">게시판</a>
+			<a href="/1">게시판</a>
 			<ul class="submenu">
 				<li><a href="/1">자유게시판</a></li>
 				<li><a href="/LoginPage">비밀게시판</a></li>
@@ -50,16 +50,20 @@
 		<li>
 			<a href="#">저장소</a>
 			<ul class="submenu">
-				<li><a href="/LoginPage">나만의 저장소</a></li>
 				<li><a href="/LoginPage">공유 저장소</a></li>
+				<li><a href="/LoginPage">나만의 저장소</a></li>
 			</ul>
 		</li>
 		<li>
 			<a href="/LoginPage">내정보</a>
 		</li>
 	</ul>
-		
-	<br><br><p>자유게시판</p><br>
+	
+	<br><br>
+	<p id="user_board_p" class="user_board_p">자유게시판</p>
+	<p id="secret_board_p" class="secret_board_p">비밀게시판</p>
+	<p id="admin_board_p" class="admin_board_p">공지사항</p>
+	<br>
 	
 	<table border="1">
 		
@@ -246,7 +250,35 @@
 	</div>
 
 	
-	<script>	
+	<script>
+		function is_whatBoard(){
+			var is_admin = '${SelectPost.id}';
+			var is_secret = '${what}';
+			
+			var user_p = document.getElementById('user_board_p');
+			var secret_p = document.getElementById('secret_board_p');
+			var admin_p = document.getElementById('admin_board_p');
+			
+			if(is_admin == "admin"){
+				user_p.style.display = "none";
+				secret_p.style.display = "none";
+				admin_p.style.display = "block";				
+			}
+			else{
+				if(is_secret == 0){
+					secret_p.style.display = "none";
+					admin_p.style.display = "none";
+					user_p.style.display = "block";
+				}
+				else{
+					user_p.style.display = "none";
+					admin_p.style.display = "none";
+					secret_p.style.display = "block";
+				}		
+			}
+		}
+		is_whatBoard();
+	
 		function changeContent_hyperlink_url() {		// url 주소를 인식하여 하이퍼 링크로 변환시켜주는 함수
 							// url 하이퍼링크 정규식은 구글링을 통해 복사해왔다.	https://aljjabaegi.tistory.com/280
 			
@@ -275,7 +307,101 @@
 			alert('ERROR\n이미 삭제된 게시글입니다!!');
 		</script>
 	</c:if>
+	<br><br>
 	</div>
 	</div>
+	
+		<br><br><br><br><br><br><br><br>
+        <footer>
+            <div class="foot-sector">
+                <div class="footer-underline">
+                <nav class="footerinfo-division-top">
+                    <div class="inner">
+                        <div class="link-about">
+                            <a href="#">이용약관</a>
+                            <a href="#"><b>개인정보처리방침</b></a>
+                            <a href="#">사업자정보확인</a>
+
+                        </div>
+                        <div class="link-social">
+                            <div class="link-social-item">
+                                <a href="#">
+                                    <img src="../../resources/img/ic-faq-32.svg" alt="question-rogo">
+                                    <span>FAQ</span>
+                                </a>
+                                <a href="#">
+                                    <img src="../../resources/img/ic-facebook-rogo-32.svg" alt="facebook-rogo">
+                                    <span>페이스북</span>
+                                </a>
+                                <a href="#">
+                                    <img src="../../resources/img/ic-kakaoplus-rogo-32.svg" alt="kakaoplus-rogo">
+                                    <span>카카오플러스</span>
+                                </a>
+                                <a href="#">
+                                    <img src="../../resources/img/ic-insta-rogo-32.svg" alt="insta-rogo">
+                                    <span>인스타그램</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+                <address class = "footerinfo-division-bottom">
+                
+                <div class="company-info">
+                    <div class="company-name">(주)MOR</div>
+                    <div class="bundle">
+                        <span>대표이사 : 주은상</span>
+                        <span>사업자등록번호 : 000-00-00000</span>
+                    </div>
+                    <div class="bundle">
+                        <span>호스팅사업자 : (주)MOR</span>
+                        <span>주소 : 안산시 단원구 MOR (호수동)</span>
+                    </div>
+                    <div class="bundle">
+                        <span>개인정보관리책임자 : 홍길동</span>
+                    </div>
+                </div>
+                
+                <div class="servicecenter">
+                    <div class="center-phonenumber">
+                        <b>고객센터 0000-0000</b>
+                    </div>
+                    <div class="center-info">
+                        <span>영업시간</span>
+                        <time>AM 00:00</time>
+                        ~
+                        <time>PM 11:59</time>
+                        (주말 및 공휴일 휴무)
+                    </div>
+                    <div class="center-info">
+                        <span>점심시간</span>
+                        <time>AM 11:00</time>
+                        ~
+                        <time>PM 01:00</time>
+                    </div>
+
+                </div>
+               
+                </address>
+                
+                <address class = "footerinfo-division-bottom">
+					<div class="company-info">               
+	                    <div class="company-name">저작권</div>
+	                    <div class="bundle">
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/" title="폐물 아이콘">폐물 아이콘  제작자: Pavel Kozlov - Flaticon</a></span>
+	                    </div>
+						<div class="bundle">
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="맹꽁이 자물쇠 아이콘">맹꽁이 자물쇠 아이콘  제작자: DinosoftLabs - Flaticon</a></span>
+	                    </div>
+	                    <div class="bundle">
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="열린 자물쇠 아이콘">열린 자물쇠 아이콘  제작자: Freepik - Flaticon</a></span>
+	                    </div>
+	                </div>
+				</address>
+
+                <div class="safety"></div>
+            </div>
+        </footer>
 </body>
 </html>

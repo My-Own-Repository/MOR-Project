@@ -56,6 +56,104 @@ a {
     white-space: nowrap;
 }
 */
+.admin_p {
+	width: 128px;
+	text-align: center;
+	font-size:20px;
+	color:white;
+	background-color: #FF0000;
+	float: left;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+#spread_div{
+	height: auto;
+	width: 1024px;
+	margin: auto;
+	display: none;
+}
+
+.admin_div {
+	height: auto;
+	width: 1024px;
+	margin: auto;
+}
+
+.admin_table {
+	border: 1px;
+	border-color: #FFE6E6;
+	margin:auto;
+	width: 1024px;
+    height: auto;
+    text-align: center;
+}
+.admin_head {
+	background-color: #FFE6E6;
+	color:black;
+	font-weight: bold;
+}
+
+.admin_title_a{
+	text-align: left;
+	font-size: 14px;
+	height: 16px;
+	table-layout : fixed;
+	overflow: hidden;			
+    text-overflow: ellipsis;
+   	white-space: nowrap;
+   	padding-left: 10px;
+   	float: left;
+}
+
+.board_comment_font{
+	float: left;
+}
+
+.secret_password_img{
+	position: relative;
+	width: 4%;
+	height: auto;
+	float: right;
+	padding-right: 10px;
+}
+
+.tryUnlock_input{
+	position: relative;
+	width: 10%;
+	height: 6px;
+	float: right;
+	padding-right: 5px;
+	background-color: #E5E5E5;
+}
+
+.secret_unlockMode_td{
+	display: none;
+}
+
+.secret_unlockComplete_td{
+	display: none;
+}
+
+.fold_btn{
+	background-color: #FFE6E6;
+	color:red;
+	font-weight: bold;
+	width: 100%;
+	hieght: auto;
+	padding: 3px;
+	font-size: 10px;
+}
+
+.spread_btn{
+	background-color: #FFE6E6;
+	color:red;
+	font-weight: bold;
+	width: 100%;
+	hieght: auto;
+	padding: 3px;
+	font-size: 10px;
+}
 
 .main_div {
 	height: auto;
@@ -156,6 +254,11 @@ a{text-decoration:none;font-size:14px}
 	font-weight: bold;
 }
 
+.board_title_a{
+	padding-left: 10px;
+	float: left;
+}
+
 .bottom_div {
 	background-color: #FAFAFA;
 	width: 1024px;
@@ -186,9 +289,18 @@ a{text-decoration:none;font-size:14px}
 	margin: auto;
 }
 
-.bottom_hr {
-	border-top: 1px dotted black;
+.credit_session_div {
+	width: 100%;
+	background-color: white;
+	padding-left: 50px;
+	font-size: 10px;
 }
+
+.bottom_hr {
+	width: 100%;
+	border-top: 1px black;
+}
+
 
 .board_search_div {
 	padding-top: 15px;
@@ -240,6 +352,124 @@ a{text-decoration:none;font-size:14px}
   height: 100px; 			/*서브메뉴 li의 총 높이 */
   transition-duration: 1s;
 }
+
+/* 크레딧 섹션 css - 기존 프로젝트에서 복사해왔다. (브랜디 쇼핑몰의 css부분 긁어옴) */
+
+footer {
+  display: block;
+  width: 100%;
+  background-color: #f7f8fa;
+}
+
+.foot-sector {
+  margin: 30px auto 0 auto;
+}
+
+.footerinfo-division-top {
+  display: block;
+  padding: 15px 15px;
+  border: 1px solid #ebeef2;
+  margin: 0 auto;
+}
+
+.footerinfo-division-top > div {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link-about {
+  text-align: center;
+}
+
+.link-about a:first-child::before {
+  content: none;
+}
+
+.link-about a::before {
+  content: "|";
+  margin-right: 5px;
+}
+
+.link-social-item {
+  display: flex;
+}
+
+.link-social-item > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 7px;
+}
+
+.link-social-item > a > span {
+  margin-left: 7px;
+}
+
+.foot-sector :nth-child(2) {
+  border: none;
+}
+
+.footerinfo-division-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  margin: 50px auto 0px auto;
+  padding-bottom: 50px;
+}
+.company-info {
+  display: inline-block;
+}
+
+.company-name {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-weight: 900;
+  font-size: 25px;
+}
+
+.bundle {
+  color: #5f6773;
+  font-size: 15px;
+  font-style: normal;
+  line-height: 24px;
+}
+
+.bundle span:first-child::before {
+  content: none;
+}
+
+.bundle span::before {
+  content: "|";
+  margin-right: 5px;
+}
+
+.servicecenter {
+  font-style: normal;
+}
+
+.center-phonenumber {
+  margin-bottom: 10px;
+  font-size: 25px;
+  font-weight: inherit;
+}
+
+.center-info {
+  line-height: 30px;
+  color: #5f6773;
+}
+
+/* 크레딧 섹션 css */
+
+
+
+
+
 
 @media ( max-width: 720px ) {		/* 모바일 설정*/ /* 스크린 x축의 길이가 720px이하 일때 적용됨 */
 		html {						/* 와 진짜... 모바일에서 가로로 스크롤이 되는 오류가 발생해서 */
@@ -326,6 +556,95 @@ a{text-decoration:none;font-size:14px}
     		text-overflow: ellipsis;
    		 	white-space: nowrap;
 		}
+		
+		.admin_p{
+			width: 25%;
+			text-align: center;
+			font-size:16px;
+			color:white;
+			background-color: #FF0000;
+			float: left;
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+		#spread_div{
+			height: auto;
+			width: 100%;
+			margin: auto;
+			display: none;
+		}
+		
+		.admin_div{
+			height: auto;
+			width: 100%;
+			margin: auto;
+		}
+		
+		.admin_table{
+			border: 1px;
+			border-color: #FFE6E6;
+			margin:auto;
+			width: 100%;
+		    height: auto;
+		    text-align: center;
+		    font-size:12px;
+		}
+		
+		.admin_head{
+			background-color: #FFE6E6;
+			color:black;
+			font-weight: bold;
+		}
+		
+		.admin_title_a{
+			text-align: left;
+			font-size: 10px;
+			height: 16px;
+			table-layout : fixed;
+			overflow: hidden;			
+		    text-overflow: ellipsis;
+		   	white-space: nowrap;
+		   	padding-left: 10px;
+		   	float: left;
+		}
+		
+		.fold_btn{
+			background-color: #FFE6E6;
+			color:red;
+			font-weight: bold;
+			width: 100%;
+			hieght: auto;
+			padding: 3px;
+			font-size: 10px;
+		}
+		
+		.spread_btn{
+			background-color: #FFE6E6;
+			color:red;
+			font-weight: bold;
+			width: 100%;
+			hieght: auto;
+			padding: 3px;
+			font-size: 10px;
+		}
+		
+		.secret_password_img{
+			position: relative;
+			width: 6%;
+			height: auto;
+			float: right;
+			padding-right: 10px;
+		}
+		
+		.tryUnlock_input{
+			position: relative;
+			width: 20%;
+			height: 6px;
+			float: right;
+			padding-right: 5px;
+			background-color: #E5E5E5;
+		}
+		
 		p{
 			width: 100%;
 			text-align: center;
@@ -346,7 +665,8 @@ a{text-decoration:none;font-size:14px}
 			background-color: lightgray;
 			color:black;
 			font-weight: bold;
-		}
+		}	
+		
         .write_button {
         	position: relative;
         	font-size: 10px;
@@ -449,6 +769,80 @@ a{text-decoration:none;font-size:14px}
 			color: white;
 			float: right;
 		}	
+		
+		/* 크레딧 섹션 모바일 css */
+		
+		  .footerinfo-division-top {
+		    padding-bottom: 0px;
+		  }
+		  .footerinfo-division-top .inner {
+		    display: block;
+		  }
+		  .link-about {
+		    display: block;
+		    text-align: start;
+		    font-size: 11px;
+		  }
+		  .link-about a {
+		    padding: 20px 4px 0;
+		  }
+		  .link-about a::before {
+		    content: none;
+		    margin: 0;
+		  }
+		  .link-social {
+		    display: block;
+		  }
+		  .link-about :nth-child(5) {
+		    display: none;
+		  }
+		  .link-about :nth-child(6) {
+		    display: none;
+		  }
+		
+		  .link-social-item {
+		    justify-content: start;
+		  }
+		  .link-social-item > a {
+		    width: 32px;
+		    height: 32px;
+		    padding: 20px 4px;
+		  }
+		  .link-social-item > a > span {
+		    display: none;
+		  }
+		
+		  .footerinfo-division-bottom {
+		    display: block;
+		    margin: 0 auto;
+		  }
+		  .company-info {
+		    padding: 15px 20px;
+		    margin: 0 auto;
+		  } 
+		  .company-name {
+		    font-size: 15px;
+		  }
+		  .bundle {
+		    font-size: 11px;
+		  }
+		  .bundle span {
+		    display: block;
+		  }
+		  .bundle span::before {
+		    content: none;
+		    margin: 0;
+		  }
+		  .servicecenter {
+		    padding: 15px 20px;
+		    margin: 0 auto;
+		  }
+		  .center-phonenumber {
+		    font-size: 15px;
+		  }
+		  .center-info {
+		    font-size: 11px;
+		  }
 		
 }
 

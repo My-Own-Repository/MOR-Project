@@ -16,14 +16,13 @@
 
 
 <%
-	//String userNickname = (String) session.getAttribute("userNickname");  
 	int select_page = (int) request.getAttribute("select_page");		// 현재 선택한 페이지
 	int first_page = (int) request.getAttribute("first_page");			// 현재 선택한 페이지 기준에서 첫 번째 페이지
 	int last_page = (int) request.getAttribute("last_page");			// 현재 선택한 페이지 기준에서 마지막 페이지
 	int page_count = (int) request.getAttribute("page_count");			// 총 페이지 개수
 %> 
 
-	<script>
+	<script
  		src="https://code.jquery.com/jquery-3.4.1.js"
  		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
  		crossorigin="anonymous"></script>
@@ -47,8 +46,8 @@
 		<li>
 			<a href="#">게시판</a>
 			<ul class="submenu">
-				<li><a href="/user/userMain/1">자유게시판</a></li>
-				<li><a href="/user/secretBoard/1">비밀게시판</a></li>
+				<li><a href="/user/userMain">자유게시판</a></li>
+				<li><a href="/user/secretBoard">비밀게시판</a></li>
 			</ul>
 		</li>
 		<li>
@@ -114,8 +113,9 @@
 	<input type="button" value="^ 접기" id="fold_btn" class="fold_btn" onClick="admin_folding();">
 	</div>
 	
-	<br><br>
-	<p>자유게시판</p><br>
+	
+	<br><br><br><br>
+	<p>비밀게시판</p><br>
 	<div class="main_div">
 	<table border="1" class="board_table">
 		<thead class="board_head">
@@ -132,7 +132,18 @@
 			<c:forEach items="${BoardList}" var="letter">					
                 <tr>
                 	<td>${letter.num}</td>
-                    <td><a href="/user/posts?urlnum=${letter.num}" class="board_title_a">${letter.title}</a><font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[${letter.comment}]</font></td>
+                    <td id="secret_${letter.num}">
+                    	<a href="javascript:secret_unlockMode(${letter.num});" class="board_title_a">${letter.title}</a><font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[${letter.comment}]</font>
+                    	<a href="javascript:secret_unlockMode(${letter.num});"><img src="../../../resources/img/lock.png" class="secret_password_img"></a>
+                    </td>
+                    <td id="secret_unlockMode_${letter.num}" class="secret_unlockMode_td">
+                    	<a href="#" class="board_title_a">${letter.title}</a><font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[${letter.comment}]</font>
+						<input type="password" id="secret_input_${letter.num}" maxLength='4' class="tryUnlock_input" onChange="secret_tryUnlock(${letter.num})"><img src="../../../resources/img/key.png" class="secret_password_img">
+                    </td>
+                    <td id="secret_unlockComplete_${letter.num}" class="secret_unlockComplete_td">
+                    	<a href="/user/posts?urlnum=${letter.num}" class="board_title_a">${letter.title}</a><font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[${letter.comment}]</font>
+                    	<img src="../../../resources/img/unlock.png" class="secret_password_img">
+                    </td>
                     <td>${letter.nickname}</td>
                     <td>${letter.date}</td>
                     <td>${letter.view}</td>
@@ -142,11 +153,21 @@
 	
 	</table>
 	
-	<br><br><input type="button" onclick="location.href='/user/write_board/0'" class="write_button" value="글쓰기">
+	<br><br>
+	<c:choose>
+		<c:when test="${member.id == null}">
+			<input type="button" onclick="location.href='/LoginPage'" class="write_button" value="글쓰기">
+		</c:when>
+		
+		<c:when test="${member.id != null}">
+			<input type="button" onclick="location.href='/user/write_board/1'" class="write_button" value="글쓰기">
+		</c:when>
+	</c:choose>
+
 	<br><br><br><br>
 	<div class="bottom_div">
 		<c:if test="${first_page > 10}">
-			<a href="/user/userMain/${first_page-10}"><b>&lt;&nbsp;이전</b></a>&emsp;
+			<a href="/user/secretBaord/${first_page-10}"><b>&lt;&nbsp;이전</b></a>&emsp;
 		</c:if>
 		<div class="paging_div">
 			<div class="paging_div2">
@@ -156,7 +177,7 @@
 						<b class="b_sty">${p}&emsp;</b>
 					</c:when>
 					<c:when test="${p != select_page}">
-						<a href="/user/userMain/${p}">${p}</a>&emsp;
+						<a href="/user/secretBaord/${p}">${p}</a>&emsp;
 					</c:when>
 				</c:choose>
 			</c:forEach>
@@ -164,7 +185,7 @@
 		</div>
 		<c:if test="${last_page != page_count}">
 			&emsp;
-			<a href="/user/userMain/${last_page+1}"><b>다음&nbsp;&lt;</b></a>
+			<a href="/user/secretBaord/${last_page+1}"><b>다음&nbsp;&lt;</b></a>
 		</c:if>
 		<hr class="hr_sty">
 		<div class="board_search_div">		
@@ -178,7 +199,7 @@
 			<input type="text" class="in_board_search_text" placeholder="검색어를 입력해주세요.">	
 		</div>
 	</div>
-	<br><br>
+	<br><br><br><br>
 	</div>
 
 	<c:if test="${session_msg == false}">
@@ -186,6 +207,7 @@
 			alert('ERROR\n세션이 만료되었습니다.\n다시 로그인 해주세요!!');
 		</script>
 	</c:if>
+	<br><br>
 	</div>
 	</div>
 	
@@ -205,9 +227,101 @@
 			hide_div.style.display = "none";
 			show_div.style.display = "block";
 		}
+		
+		function secret_unlockMode(b_num){
+			// alert(b_num);
+			var unlockTd_ID = 'secret_'+b_num;
+			var unlockTd = document.getElementById(unlockTd_ID);
+			
+			// alert(unlockTd.innerHTML);
+			
+/*
+ 			var tryUnlock_content = '<a href="#" class="board_title_a">${letter.title}</a>';
+			tryUnlock_content += '<font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[${letter.comment}]</font>';
+			tryUnlock_content += '<input type="password" id="secret_input_'+ b_num +'" class="tryUnlock_input" onChange="secret_tryUnlock('+ b_num +')">';
+			tryUnlock_content += '<img src="../../../resources/img/key.png" class="secret_password_img">'; 
+ 
+ */
+            
+			var unlockModeTd_ID = 'secret_unlockMode_'+b_num;
+ 			var unlockModeTd = document.getElementById(unlockModeTd_ID);
+ 			
+ 			unlockTd.style.display = "none";
+ 			unlockModeTd.style.display = "block";
+			
+		}
+		
+		function secret_tryUnlock(num){
+			// 비밀번호를 입력한 input 값 가져오기
+			var unlockInput_ID = 'secret_input_'+num;
+			var unlockInput = document.getElementById(unlockInput_ID).value;
+			
+			// 초기에 잠겨있는 td 요소 가져오기
+			var unlockTd_ID = 'secret_'+num;
+			var unlockTd = document.getElementById(unlockTd_ID);			
+			
+			// 잠금을 풀기위한 td 요소 가져오기
+			var unlockModeTd_ID = 'secret_unlockMode_'+num;
+			var unlockModeTd = document.getElementById(unlockModeTd_ID);
+			
+			// 잠금이 해제된 td 요소 가져오기
+			var unlockComplete_ID = 'secret_unlockComplete_'+num;
+			var unlockComplete = document.getElementById(unlockComplete_ID);
+			// dataType : "json",  contentType: "application/json",
+			$.ajax({
+				type : 'post',
+				url : 'CheckPassword.do',
+				dataType : "json",
+				data : {num:num, input:unlockInput},				
+				success:function(result){				
+					if(result == 1){		// 비밀번호가 일치 할 경우
+						unlockTd.style.display = "none";
+						unlockModeTd.style.display = "none";
+						unlockComplete.style.display = "block";
+					}
+					else {		// 비밀번호가 일치하지 않을 경우
+						alert("ERROR\n입력한 비밀번호 : "+ unlockInput +"\n비밀번호가 일치하지 않습니다.");
+					}
+				},
+				error:function(){
+					alert("ERROR\n비밀번호 체크 에러입니다.");
+				}
+			}); 
+			
+			
+/*
+ 			var correct_num;
+			
+			$.ajax({
+				type : 'post',
+				url : 'CheckPassword.do',
+				dataType : "json",
+				data : {num:num},
+				success:function(result){
+					correct_num = result;
+					
+					if(correct_num == Number(unlockInput)){
+						unlockTd.style.display = "none";
+						unlockModeTd.style.display = "none";
+						unlockComplete.style.display = "block";
+					}
+					else {
+						alert("ERROR\n입력한 비밀번호 : "+ unlockInput +"\n비밀번호가 일치하지 않습니다.");
+					}
+				},
+				error:function(){
+					alert("ERROR\n비밀번호 체크 에러입니다.");
+				}
+			}); 
+ 
+ */
+					
+		
+		}
 	</script>
 	
-	<br><br><br><br><br><br><br><br>
+	
+		<br><br><br><br><br><br><br><br>
         <footer>
             <div class="foot-sector">
                 <div class="footer-underline">
@@ -299,6 +413,6 @@
                 <div class="safety"></div>
             </div>
         </footer>
-	
+        
 </body>
 </html>

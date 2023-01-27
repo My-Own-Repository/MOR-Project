@@ -13,7 +13,9 @@ import com.co.dto.commentDTO;
 public interface boardDAO {
 	public void writeBoard(boardDTO letter) throws Exception;		// 게시글 작성
 	public List<boardDTO> printBoard() throws Exception;		// 게시글 목록
-		
+	public List<boardDTO> printAdminBoard() throws Exception;	// 관리자 게시글 목록
+	public List<boardDTO> limitAdminBoard() throws Exception;	// 관리자 게시글 5개 목록
+	
 	public boardDTO selectBoard(int num) throws Exception;		// 특정 게시글
 	
 	public void addView(int num) throws Exception;		// 조회수 증가
@@ -46,6 +48,17 @@ public interface boardDAO {
 
 	public int totalNum() throws Exception;		// 게시글 총 개수 가져오기
 	public List<boardDTO> limitBoard(int first) throws Exception;		// first부터 20개의 게시글 목록 가져오기
+	
+	
+	/* 비밀 게시판 전용 */
+	
+	public int SCmaxNum() throws Exception;
+	public int SCselectMinNum() throws Exception;
+	public int SCselectMaxNum() throws Exception;
+	public int SCtotalNum() throws Exception;
+	
+	public boardDTO SCselectBoard(int num) throws Exception;
+	public List<boardDTO> SClimitBoard(int first) throws Exception;
 	
 	
 	

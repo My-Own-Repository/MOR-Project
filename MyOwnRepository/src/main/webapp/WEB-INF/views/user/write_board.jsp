@@ -56,54 +56,126 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		<li>
 			<a href="#">저장소</a>
 			<ul class="submenu">
-				<li><a href="/my_repo">나만의 저장소</a></li>
-				<li><a href="/our_repo">공유 저장소</a></li>
+				<li><a href="#">공유 저장소</a></li>
+				<li><a href="#">나만의 저장소</a></li>
 			</ul>
 		</li>
 		<li>
 			<a href="/user/mypage">${member.nickname}</a>
 		</li>
 	</ul>
+	
+	<br><br>	
+	<c:choose>
+		<c:when test="${what == 0}">		<!-- 자유게시판 글쓰기 -->
+			<p>자유게시판 - 글쓰기</p><br>
+			<div>
+			<form id="write_form" action="/user/write_board" method="post" enctype="multipart/form-data">
+				<table border="1" class="write_form_table">
+					<tr>
+		 				<th>작성자</th>
+		 				<td style="text-align: left">&nbsp;&nbsp;${member.nickname}</td>
+					</tr>
+					<tr>
+						<th>제목</th>
+						<td><input type="text" name="title" id="write_title" class="input_text_title"></td>
+		 			</tr>
+		 
+					<tr>
+						<th>내용</th> 
+						<td>
+							<div contenteditable="true" id="write_content_div" class="write_content_div"></div>
+							<textarea id="write_content_textarea" name="content" style=display:none></textarea>
+							<input type="hidden" name="is_secret" value="0">
+						</td>
+						
+					</tr>
 		
-		<!-- <table cellpadding="0" cellspacing="0" border="1"> -->
+					<tr>
+						<th><input type="button" id="add_file_btn" class="add_file_btn" onClick="add_inputfile();" value="Add File"></th>
+						<td>
+							<div id="input_file_divs">
+							
+							</div>
 		
-	<br><br><p>자유게시판 - 글쓰기</p><br>
-	<div>
-	<form id="write_form" action="/user/write_board" method="post" enctype="multipart/form-data">
-		<table border="1" class="write_form_table">
-			<tr>
- 				<th>작성자</th>
- 				<td style="text-align: left">&nbsp;&nbsp;${member.nickname}</td>
-			</tr>
-			<tr>
-				<th>제목</th>
-				<td><input type="text" name="title" id="write_title" class="input_text_title"></td>
- 			</tr>
- 
-			<tr>
-				<th>내용</th> 
-				<td>
-					<div contenteditable="true" id="write_content_div" class="write_content_div"></div>
-					<textarea id="write_content_textarea" name="content" style=display:none></textarea>
-								
-				</td>
+						</td>
+					</tr>
+				</table>
+						<input type="button" value="글쓰기" class="small_write_btn" onClick="submit_btn();">
+						<input type="button" value="취소" class="small_write_btn" onClick="location.href='/user/userMain/1'">	
+			</form>
+			</div>
+		</c:when>
+		
+		<c:when test="${what == 1}">		<!-- 비밀게시판 글쓰기 -->
+			<p>비밀게시판 - 글쓰기</p><br>
+			<div>
+			<form id="write_form" action="/user/write_board" method="post" enctype="multipart/form-data">
+				<table border="1" class="write_form_table">
+					<tr>
+		 				<th>작성자</th>
+		 				<td style="text-align: left">&nbsp;&nbsp;${member.nickname}</td>
+					</tr>
+					<tr>
+						<th>제목</th>
+						<td><input type="text" name="title" id="write_title" class="input_text_title"></td>
+		 			</tr>
+		 
+					<tr>
+						<th>내용</th> 
+						<td>
+							<div contenteditable="true" id="write_content_div" class="write_content_div"></div>
+							<textarea id="write_content_textarea" name="content" style=display:none></textarea>
+							<input type="hidden" name="is_secret" value="1">
+						</td>
+						
+					</tr>
+		
+					<tr>
+						<th><input type="button" id="add_file_btn" class="add_file_btn" onClick="add_inputfile();" value="Add File"></th>
+						<td>
+							<div id="input_file_divs">
+							
+							</div>
+		
+						</td>
+					</tr>
+			
+				</table>
+				<br>
+				<div class="secret_input_img_div">
+					<img src="../../../resources/img/lock.png" alt="" class="lock_img">
+				</div>
+				&nbsp;
+				<table border="1" class="secret_input_table">	
+					<tr>
+						<th class="secret_input_th">
+							<span class="secretNum_input_span">비밀번호</span>
+						</th>
+						<td class="secret_input_td">
+							<input type="password" id="pw1" name="secret_num" maxlength='4' class="secretNum_input">						
+						</td>
+					</tr>
+					<tr>
+						<th class="secret_input_th">
+							<span class="secretNum_input_span">비밀번호 확인</span>
+						</th>
+						<td class="secret_input_td">						
+							<input type="password" id="pw2" maxlength='4' class="secretNum_input">				
+						</td>
+					</tr>
+				</table>
 				
-			</tr>
+				<br><br>
+						<input type="button" value="글쓰기" class="small_write_btn" onClick="submit_btn();">
+						<input type="button" value="취소" class="small_write_btn" onClick="location.href='/user/secretBoard/1'">	
+			</form>
+			<br><br><br>
+			</div>
+		</c:when>
+	</c:choose>
+	
 
-			<tr>
-				<th><input type="button" id="add_file_btn" class="add_file_btn" onClick="add_inputfile();" value="Add File"></th>
-				<td>
-					<div id="input_file_divs">
-					
-					</div>
-
-				</td>
-			</tr>
-		</table>
-				<input type="button" value="글쓰기" class="small_write_btn" onClick="submit_btn();">
-				<input type="button" value="취소" class="small_write_btn" onClick="location.href='/user/userMain/1'">	
-	</form>
-	</div>
 	<br>
 	<div>
 		<br><br>
@@ -123,6 +195,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 	</div>
 	</div>
 	</div>
+	<br><br>
 	<script>
 	//var div_group_num = 0;
 	var add_num = 0;
@@ -340,6 +413,35 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		}
 	}
 	
+   
+	function secret_password(){
+	    var pw1 = document.getElementById("pw1").value;
+	    var pw2 = document.getElementById("pw2").value;	    
+	    
+	    var numPattern = /([^0-9])/;
+	    numPattern = pw1.match(numPattern);
+	    
+		if(pw1.length == 0 || pw1.length < 4 || numPattern != null){
+	        alert("ERROR\n숫자로 구성된 4자리 비밀번호를 입력해주세요."); 
+	        $("#pw1").focus();
+	        return false;
+	    }
+		else if(pw2.length == 0 || pw2.length < 4){       			
+    	    alert("ERROR\n비밀번호를 재확인해주세요."); 
+    	    $("#pw2").focus();
+    		return false;           	
+		}
+	    else if(pw2 != pw1){
+	        alert("ERROR\n비밀번호가 서로 다릅니다. 비밀번호를 확인해주세요."); 
+	        $("#pw2").focus();
+	        return false; 
+	    }
+	    else {
+	    	pw1 = Number(pw1);
+	    	alert(typeof pw1);
+	    }
+	}
+	
 	function submit_btn(){
 		var title = document.getElementById('write_title').value;		// 사용자가 입력한 제목의 값 가져오기
 		var content;	// 사용자가 입력한 내용의 값	
@@ -360,10 +462,12 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		content = content.replace(/&nbsp;/ig, '');
 		content = content.replace(/\s/ig, '');
 		
-		
+		var is_secret = ${what}; 
 		
 		if(title.length > 0 && title.length <= 50 && content.length > 0 && content.length <= 1000){
-			//document.getElementById('write_content_textarea').value = copy;	
+			if(is_secret == 1){
+				secret_password();
+			}
 			document.getElementById('write_form').submit();			
 		}
 		else if(title.length == 0){
@@ -395,5 +499,98 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		</script>
 	</c:if>
 	
+	<br><br><br><br><br><br><br><br>
+        <footer>
+            <div class="foot-sector">
+                <div class="footer-underline">
+                <nav class="footerinfo-division-top">
+                    <div class="inner">
+                        <div class="link-about">
+                            <a href="#">이용약관</a>
+                            <a href="#"><b>개인정보처리방침</b></a>
+                            <a href="#">사업자정보확인</a>
+
+                        </div>
+                        <div class="link-social">
+                            <div class="link-social-item">
+                                <a href="#">
+                                    <img src="../../../resources/img/ic-faq-32.svg" alt="question-rogo">
+                                    <span>FAQ</span>
+                                </a>
+                                <a href="#">
+                                    <img src="../../../resources/img/ic-facebook-rogo-32.svg" alt="facebook-rogo">
+                                    <span>페이스북</span>
+                                </a>
+                                <a href="#">
+                                    <img src="../../../resources/img/ic-kakaoplus-rogo-32.svg" alt="kakaoplus-rogo">
+                                    <span>카카오플러스</span>
+                                </a>
+                                <a href="#">
+                                    <img src="../../../resources/img/ic-insta-rogo-32.svg" alt="insta-rogo">
+                                    <span>인스타그램</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+                <address class = "footerinfo-division-bottom">
+                
+                <div class="company-info">
+                    <div class="company-name">(주)MOR</div>
+                    <div class="bundle">
+                        <span>대표이사 : 주은상</span>
+                        <span>사업자등록번호 : 000-00-00000</span>
+                    </div>
+                    <div class="bundle">
+                        <span>호스팅사업자 : (주)MOR</span>
+                        <span>주소 : 안산시 단원구 MOR (호수동)</span>
+                    </div>
+                    <div class="bundle">
+                        <span>개인정보관리책임자 : 홍길동</span>
+                    </div>
+                </div>
+                
+                <div class="servicecenter">
+                    <div class="center-phonenumber">
+                        <b>고객센터 0000-0000</b>
+                    </div>
+                    <div class="center-info">
+                        <span>영업시간</span>
+                        <time>AM 00:00</time>
+                        ~
+                        <time>PM 11:59</time>
+                        (주말 및 공휴일 휴무)
+                    </div>
+                    <div class="center-info">
+                        <span>점심시간</span>
+                        <time>AM 11:00</time>
+                        ~
+                        <time>PM 01:00</time>
+                    </div>
+
+                </div>
+               
+                </address>
+                
+                <address class = "footerinfo-division-bottom">
+					<div class="company-info">               
+	                    <div class="company-name">저작권</div>
+	                    <div class="bundle">
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/" title="폐물 아이콘">폐물 아이콘  제작자: Pavel Kozlov - Flaticon</a></span>
+	                    </div>
+						<div class="bundle">
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="맹꽁이 자물쇠 아이콘">맹꽁이 자물쇠 아이콘  제작자: DinosoftLabs - Flaticon</a></span>
+	                    </div>
+	                    <div class="bundle">
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="열린 자물쇠 아이콘">열린 자물쇠 아이콘  제작자: Freepik - Flaticon</a></span>
+	                    </div>
+	                </div>
+				</address>
+
+                <div class="safety"></div>
+            </div>
+        </footer>
+        
 </body>
 </html>

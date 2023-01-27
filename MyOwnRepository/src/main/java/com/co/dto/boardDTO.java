@@ -11,10 +11,12 @@ public class boardDTO {
     public int comment;
     public String date;
     public int view;
+    public int is_secret;
+    public int secret_num;
     public int is_exist;
 
   	public boardDTO() {}
-  	public boardDTO(int num, String title, String content, String id, String nickname, int comment, String date, int view, int is_exist) {
+  	public boardDTO(int num, String title, String content, String id, String nickname, int comment, String date, int view, int is_secret, int secret_num, int is_exist) {
   		super();
   		this.num = num;
   		this.title = title;
@@ -24,6 +26,8 @@ public class boardDTO {
   		this.comment = comment;
   		this.date = date;
   		this.view = view;
+  		this.is_secret = is_secret;
+  		this.secret_num = secret_num;
   		this.is_exist = is_exist;
   		//this.view_content = view_content;
   	}
@@ -96,6 +100,21 @@ public class boardDTO {
  
     public void setview(int view) {
         this.view = view;
+    }
+    
+    public int getis_secret() {
+    	return is_secret;
+    }
+    public void setis_secret(int is_secret) {
+    	this.is_secret = is_secret;
+    }
+    
+    public int getsecret_num() {
+    	return secret_num;
+    }
+    
+    public void setsecret_num(int secret_num) {
+    	this.secret_num = secret_num;
     }
     
     public int getis_exist() {

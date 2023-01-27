@@ -168,6 +168,56 @@ public class BoardServiceImpl implements BoardService{
 		dao.deleteFile(file_num);
 	}
 
+	@Override
+	public List<boardDTO> printAdminBoard() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.printAdminBoard();
+	}
+
+	@Override
+	public List<boardDTO> limitAdminBoard() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.limitAdminBoard();
+	}
+
+	/* 비밀 게시판 */
+	
+	@Override
+	public int SCmaxNum() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.SCmaxNum();
+	}
+
+	@Override
+	public int SCselectMinNum() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.SCselectMinNum();
+	}
+
+	@Override
+	public int SCselectMaxNum() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.SCselectMaxNum();
+	}
+
+	@Override
+	public int SCtotalNum() throws Exception {
+		// TODO Auto-generated method stub
+		return dao.SCtotalNum();
+	}
+
+	@Override
+	public boardDTO SCselectBoard(int num) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.SCselectBoard(num);
+	}
+
+	@Override
+	public List<boardDTO> SClimitBoard(int first) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.SClimitBoard(first);
+	}
+
 	
 	
    
