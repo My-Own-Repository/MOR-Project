@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.co.dto.FileDTO;
 import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
+import com.co.dto.searchVO;
 
 @Repository
 public class boardDAOImpl implements boardDAO{
@@ -221,6 +222,86 @@ public class boardDAOImpl implements boardDAO{
 		return sqlSession.selectList(Namespace+".SClimitBoard", first);
 	}
 
+	
+	/* 저장소 */
+	
+	@Override
+	public int REPOmaxNum(int sc) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".REPOmaxNum", sc);
+	}
 
+	@Override
+	public int REPOselectMinNum(int sc) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".REPOselectMinNum", sc);
+	}
+
+	@Override
+	public int REPOselectMaxNum(int sc) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".REPOselectMaxNum", sc);
+	}
+
+	@Override
+	public int REPOtotalNum(int sc) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".REPOtotalNum", sc);
+	}
+
+	
+	@Override
+	public boardDTO REPOselectBoard(int num) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".REPOselectBoard", num);
+	}
+
+	@Override
+	public boardDTO REPOSCselectBoard(int num) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".REPOSCselectBoard", num);
+	}
+
+	@Override
+	public List<boardDTO> REPOlimitBoard(int first) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".REPOlimitBoard", first);
+	}
+
+	@Override
+	public List<boardDTO> REPOSClimitBoard(int first) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".REPOSClimitBoard", first);
+	}
+
+	
+	/* 페이지 검색 */
+	
+	@Override
+	public List<boardDTO> pageTitleSearch(searchVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".pageTitleSearch", vo);
+	}
+
+	@Override
+	public List<boardDTO> pageContentSearch(searchVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".pageContentSearch", vo);
+	}
+
+	@Override
+	public List<boardDTO> pageWriterSearch(searchVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".pageWriterSearch", vo);
+	}
+
+	@Override
+	public List<boardDTO> pageTitleContentSearch(searchVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".pageTitleContentSearch", vo);
+	}
+
+
+	
 	
 }

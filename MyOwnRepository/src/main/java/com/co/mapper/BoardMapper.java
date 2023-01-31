@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.co.dto.FileDTO;
 import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
+import com.co.dto.searchVO;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -157,6 +158,50 @@ public class BoardMapper {
 	
 	public List<boardDTO> SClimitBoard(int first) throws Exception{		
 		return boardmapper.SClimitBoard(first);
+	}
+	
+	
+	/* 저장소 */
+	
+	public int REPOmaxNum(int sc) throws Exception {
+		return boardmapper.REPOmaxNum(sc);
+	}
+	public int REPOselectMinNum(int sc) throws Exception {
+		return boardmapper.REPOselectMinNum(sc);
+	}
+	public int REPOselectMaxNum(int sc) throws Exception {
+		return boardmapper.REPOselectMaxNum(sc);
+	}
+	public int REPOtotalNum(int sc) throws Exception {
+		return boardmapper.REPOtotalNum(sc);
+	}
+	
+	public boardDTO REPOselectBoard(int num) throws Exception {
+		return boardmapper.REPOselectBoard(num);
+	}
+	public boardDTO REPOSCselectBoard(int num) throws Exception {
+		return boardmapper.REPOSCselectBoard(num);
+	}
+	public List<boardDTO> REPOlimitBoard(int first) throws Exception {
+		return boardmapper.REPOlimitBoard(first);
+	}
+	public List<boardDTO> REPOSClimitBoard(int first) throws Exception {
+		return boardmapper.REPOSClimitBoard(first);
+	}
+	
+	
+	/* 페이지 검색 */
+	public List<boardDTO> pageTitleSearch(searchVO vo) throws Exception {
+		return boardmapper.pageTitleSearch(vo);
+	}
+	public List<boardDTO> pageContentSearch(searchVO vo) throws Exception {
+		return boardmapper.pageTitleSearch(vo);
+	}
+	public List<boardDTO> pageWriterSearch(searchVO vo) throws Exception {
+		return boardmapper.pageTitleSearch(vo);
+	}
+	public List<boardDTO> pageTitleContentSearch(searchVO vo) throws Exception {
+		return boardmapper.pageTitleSearch(vo);
 	}
 	
 }

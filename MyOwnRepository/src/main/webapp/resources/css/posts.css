@@ -698,21 +698,23 @@ footer {
 		}
 		
 		.update_comment_btn{
+			position: relative;
 			border: 1px gray;
 			width: 25%;
 			height: auto;
 			background-color: darkgray;
 			color: white;
-			float: right;
+			float: right;		
 		}
 
 		.update_cancle_btn{
+			position: relative;
 			border: 1px gray;
 			width: 25%;
 			height: auto;
 			background-color: darkgray;
 			color: white;
-			float: right;
+			float: right;		
 		}
 		
 				/* 农饭调 冀记 葛官老 css */

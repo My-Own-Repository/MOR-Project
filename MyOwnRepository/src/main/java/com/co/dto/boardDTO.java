@@ -11,12 +11,13 @@ public class boardDTO {
     public int comment;
     public String date;
     public int view;
-    public int is_secret;
-    public int secret_num;
-    public int is_exist;
+    public int is_secret;		// 비밀 게시글/저장소 판별
+    public int secret_num;		// 비밀 게시글의 비밀번호
+    public int is_repo;		// 저장소 판별
+    public int is_exist;	// 게시글 삭제 여부
 
   	public boardDTO() {}
-  	public boardDTO(int num, String title, String content, String id, String nickname, int comment, String date, int view, int is_secret, int secret_num, int is_exist) {
+  	public boardDTO(int num, String title, String content, String id, String nickname, int comment, String date, int view, int is_secret, int secret_num, int is_repo, int is_exist) {
   		super();
   		this.num = num;
   		this.title = title;
@@ -28,6 +29,7 @@ public class boardDTO {
   		this.view = view;
   		this.is_secret = is_secret;
   		this.secret_num = secret_num;
+  		this.is_repo = is_repo;
   		this.is_exist = is_exist;
   		//this.view_content = view_content;
   	}
@@ -115,6 +117,13 @@ public class boardDTO {
     
     public void setsecret_num(int secret_num) {
     	this.secret_num = secret_num;
+    }
+    
+    public int getis_repo() {
+    	return is_repo;
+    }
+    public void setis_repo(int is_repo) {
+    	this.is_repo = is_repo;
     }
     
     public int getis_exist() {

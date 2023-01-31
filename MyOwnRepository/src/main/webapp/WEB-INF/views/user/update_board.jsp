@@ -48,15 +48,15 @@
 		<li>
 			<a href="#">게시판</a>
 			<ul class="submenu">
-				<li><a href="/user/userMain">자유게시판</a></li>
-				<li><a href="/user/secret_board">비밀게시판</a></li>
+				<li><a href="/user/userMain/1">자유게시판</a></li>
+				<li><a href="/user/secret_board/1">비밀게시판</a></li>
 			</ul>
 		</li>
 		<li>
 			<a href="#">저장소</a>
 			<ul class="submenu">
-				<li><a href="#">공유 저장소</a></li>
-				<li><a href="#">나만의 저장소</a></li>
+				<li><a href="/user/sharingRepo/1">공유 저장소</a></li>
+				<li><a href="/user/myRepo/1">나만의 저장소</a></li>
 			</ul>
 		</li>
 		<li>

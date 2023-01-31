@@ -50,7 +50,7 @@
 		<li>
 			<a href="#">저장소</a>
 			<ul class="submenu">
-				<li><a href="/LoginPage">공유 저장소</a></li>
+				<li><a href="/user/sharingRepo/1">공유 저장소</a></li>
 				<li><a href="/LoginPage">나만의 저장소</a></li>
 			</ul>
 		</li>

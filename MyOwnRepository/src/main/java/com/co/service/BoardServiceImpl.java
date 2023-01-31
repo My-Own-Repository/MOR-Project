@@ -11,6 +11,7 @@ import com.co.dao.boardDAO;
 import com.co.dto.FileDTO;
 import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
+import com.co.dto.searchVO;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -219,6 +220,85 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	
+	
+	/* 저장소 */
+	
+	@Override
+	public int REPOmaxNum(int sc) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.REPOmaxNum(sc);
+	}
+
+	@Override
+	public int REPOselectMinNum(int sc) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.REPOselectMinNum(sc);
+	}
+
+	@Override
+	public int REPOselectMaxNum(int sc) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.REPOselectMaxNum(sc);
+	}
+
+	@Override
+	public int REPOtotalNum(int sc) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.REPOtotalNum(sc);
+	}
+
+	@Override
+	public boardDTO REPOselectBoard(int num) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.REPOselectBoard(num);
+	}
+
+	@Override
+	public boardDTO REPOSCselectBoard(int num) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.REPOSCselectBoard(num);
+	}
+
+	@Override
+	public List<boardDTO> REPOlimitBoard(int first) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.REPOlimitBoard(first);
+	}
+
+	@Override
+	public List<boardDTO> REPOSClimitBoard(int first) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.REPOSClimitBoard(first);
+	}
+
+	
+	
+	/* 페이지 검색 */
+	
+	@Override
+	public List<boardDTO> pageTitleSearch(searchVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.pageTitleSearch(vo);
+	}
+
+	@Override
+	public List<boardDTO> pageContentSearch(searchVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.pageContentSearch(vo);
+	}
+
+	@Override
+	public List<boardDTO> pageWriterSearch(searchVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.pageWriterSearch(vo);
+	}
+
+	@Override
+	public List<boardDTO> pageTitleContentSearch(searchVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.pageTitleContentSearch(vo);
+	}
+
 	
    
 }
