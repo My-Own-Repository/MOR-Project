@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.co.dto.FileDTO;
 import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
+import com.co.dto.searchVO;
 
 @Repository
 public interface boardDAO {
@@ -60,6 +61,25 @@ public interface boardDAO {
 	public boardDTO SCselectBoard(int num) throws Exception;
 	public List<boardDTO> SClimitBoard(int first) throws Exception;
 	
+	
+	/* 저장소 전용 */
+	// 인자 int sc는 비밀 저장소인지 아닌지 판별할때 사용
+	public int REPOmaxNum(int sc) throws Exception;
+	public int REPOselectMinNum(int sc) throws Exception;
+	public int REPOselectMaxNum(int sc) throws Exception;
+	public int REPOtotalNum(int sc) throws Exception;
+	
+	public boardDTO REPOselectBoard(int num) throws Exception;			// 공유 저장소에서 1개
+	public boardDTO REPOSCselectBoard(int num) throws Exception;		// 비밀 저장소에서 1개
+	public List<boardDTO> REPOlimitBoard(int first) throws Exception;		// 비밀 저장소 페이징
+	public List<boardDTO> REPOSClimitBoard(int first) throws Exception;		// 비밀 저장소 페이징
+	
+	
+	/* 페이지 검색 */
+	public List<boardDTO> pageTitleSearch(searchVO vo) throws Exception;		// 페이지내 제목 검색 
+	public List<boardDTO> pageContentSearch(searchVO vo) throws Exception;		// 페이지내 내용 검색 
+	public List<boardDTO> pageWriterSearch(searchVO vo) throws Exception;		// 페이지내 작성자 검색 
+	public List<boardDTO> pageTitleContentSearch(searchVO vo) throws Exception;		// 페이지내 제목+내용 검색 
 	
 	
 	// 첫 글과 마지막 글의 고유번호 조회(이전,다음 글 조회할때 사용)

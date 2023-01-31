@@ -49,15 +49,15 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		<li>
 			<a href="#">게시판</a>
 			<ul class="submenu">
-				<li><a href="/user/userMain">자유게시판</a></li>
-				<li><a href="/user/secret_board">비밀게시판</a></li>
+				<li><a href="/user/userMain/1">자유게시판</a></li>
+				<li><a href="/user/secret_board/1">비밀게시판</a></li>
 			</ul>
 		</li>
 		<li>
 			<a href="#">저장소</a>
 			<ul class="submenu">
-				<li><a href="#">공유 저장소</a></li>
-				<li><a href="#">나만의 저장소</a></li>
+				<li><a href="/user/sharingRepo/1">공유 저장소</a></li>
+				<li><a href="/user/myRepo/1">나만의 저장소</a></li>
 			</ul>
 		</li>
 		<li>
@@ -67,7 +67,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 	
 	<br><br>	
 	<c:choose>
-		<c:when test="${what == 0}">		<!-- 자유게시판 글쓰기 -->
+		<c:when test="${what == 's0r0'}">		<!-- 자유게시판 글쓰기 -->
 			<p>자유게시판 - 글쓰기</p><br>
 			<div>
 			<form id="write_form" action="/user/write_board" method="post" enctype="multipart/form-data">
@@ -87,6 +87,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 							<div contenteditable="true" id="write_content_div" class="write_content_div"></div>
 							<textarea id="write_content_textarea" name="content" style=display:none></textarea>
 							<input type="hidden" name="is_secret" value="0">
+							<input type="hidden" name="is_repo" value="0">
 						</td>
 						
 					</tr>
@@ -107,7 +108,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 			</div>
 		</c:when>
 		
-		<c:when test="${what == 1}">		<!-- 비밀게시판 글쓰기 -->
+		<c:when test="${what == 's1r0'}">		<!-- 비밀게시판 글쓰기 -->
 			<p>비밀게시판 - 글쓰기</p><br>
 			<div>
 			<form id="write_form" action="/user/write_board" method="post" enctype="multipart/form-data">
@@ -127,6 +128,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 							<div contenteditable="true" id="write_content_div" class="write_content_div"></div>
 							<textarea id="write_content_textarea" name="content" style=display:none></textarea>
 							<input type="hidden" name="is_secret" value="1">
+							<input type="hidden" name="is_repo" value="0">
 						</td>
 						
 					</tr>
@@ -169,6 +171,121 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 				<br><br>
 						<input type="button" value="글쓰기" class="small_write_btn" onClick="submit_btn();">
 						<input type="button" value="취소" class="small_write_btn" onClick="location.href='/user/secretBoard/1'">	
+			</form>
+			<br><br><br>
+			</div>
+		</c:when>
+		
+	
+		<c:when test="${what == 's0r1'}"> 	<!-- 공유저장소 글쓰기 -->
+			<p>공유저장소 - 글쓰기</p><br>
+			<div>
+			<form id="write_form" action="/user/write_board" method="post" enctype="multipart/form-data">
+				<table border="1" class="write_form_table">
+					<tr>
+		 				<th>작성자</th>
+		 				<td style="text-align: left">&nbsp;&nbsp;${member.nickname}</td>
+					</tr>
+					<tr>
+						<th>제목</th>
+						<td><input type="text" name="title" id="write_title" class="input_text_title"></td>
+		 			</tr>
+		 
+					<tr>
+						<th>내용</th> 
+						<td>
+							<div contenteditable="true" id="write_content_div" class="write_content_div"></div>
+							<textarea id="write_content_textarea" name="content" style=display:none></textarea>
+							<input type="hidden" name="is_secret" value="0">
+							<input type="hidden" name="is_repo" value="1">
+						</td>
+						
+					</tr>
+		
+					<tr>
+						<th><input type="button" id="add_file_btn" class="add_file_btn" onClick="add_inputfile();" value="Add File"></th>
+						<td>
+							<div id="input_file_divs">
+							
+							</div>
+		
+						</td>
+					</tr>
+			
+				</table>
+				<br>
+				<br><br>
+						<input type="button" value="글쓰기" class="small_write_btn" onClick="submit_btn();">
+						<input type="button" value="취소" class="small_write_btn" onClick="location.href='/user/sharingRepo/1'">	
+			</form>
+			<br><br><br>
+			</div>
+		</c:when>
+		
+		
+		<c:when test="${what == 's1r1'}"> <!-- 비밀저장소 글쓰기 -->
+			<p>비밀저장소 - 글쓰기</p><br>
+			<div>
+			<form id="write_form" action="/user/write_board" method="post" enctype="multipart/form-data">
+				<table border="1" class="write_form_table">
+					<tr>
+		 				<th>작성자</th>
+		 				<td style="text-align: left">&nbsp;&nbsp;${member.nickname}</td>
+					</tr>
+					<tr>
+						<th>제목</th>
+						<td><input type="text" name="title" id="write_title" class="input_text_title"></td>
+		 			</tr>
+		 
+					<tr>
+						<th>내용</th> 
+						<td>
+							<div contenteditable="true" id="write_content_div" class="write_content_div"></div>
+							<textarea id="write_content_textarea" name="content" style=display:none></textarea>
+							<input type="hidden" name="is_secret" value="1">
+							<input type="hidden" name="is_repo" value="1">
+						</td>
+						
+					</tr>
+		
+					<tr>
+						<th><input type="button" id="add_file_btn" class="add_file_btn" onClick="add_inputfile();" value="Add File"></th>
+						<td>
+							<div id="input_file_divs">
+							
+							</div>
+		
+						</td>
+					</tr>
+			
+				</table>
+				<br>
+				<div class="secret_input_img_div">
+					<img src="../../../resources/img/lock.png" alt="" class="lock_img">
+				</div>
+				&nbsp;
+				<table border="1" class="secret_input_table">	
+					<tr>
+						<th class="secret_input_th">
+							<span class="secretNum_input_span">비밀번호</span>
+						</th>
+						<td class="secret_input_td">
+							<input type="password" id="pw1" name="secret_num" maxlength='4' class="secretNum_input">						
+						</td>
+					</tr>
+					<tr>
+						<th class="secret_input_th">
+							<span class="secretNum_input_span">비밀번호 확인</span>
+						</th>
+						<td class="secret_input_td">						
+							<input type="password" id="pw2" maxlength='4' class="secretNum_input">				
+						</td>
+					</tr>
+				</table>
+				
+				<br><br>
+						<input type="button" value="글쓰기" class="small_write_btn" onClick="submit_btn();">
+						<input type="button" value="취소" class="small_write_btn" onClick="location.href='/user/sharingRepo/1'">	
 			</form>
 			<br><br><br>
 			</div>
@@ -220,8 +337,13 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		)
 	*/
 	function is_img_video(f) {
-		//var is_preview = true;		// 게시판에서는 파일이 이미지나, 동영상이 아닐 경우 미리보기를 지원하지 않는다.(다운로드도 지원x) 이를 위한 boolean
-									// 저장소에서는 모든 유형의 파일업로드, 다운로드 지원.
+		var input_fileID = document.getElementById(f.id);
+		
+		// 게시판에서는 파일이 이미지나, 동영상이 아닐 경우 미리보기를 지원하지 않는다.(다운로드도 지원x) 이를 위한 boolean
+		// 저장소에서는 모든 유형의 파일업로드, 다운로드 지원.
+		//var is_preview = false;
+		
+		
 		
 		// 파일업로드 박스 생성버튼 비활성화
 		var addFile_disa = document.getElementById('add_file_btn');		
@@ -252,27 +374,45 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		divAry.setAttribute("class", write_content_div);
 		divAry.setAttribute("name", divName);
 		
+		var fileList;
+		var fileName;
+		var fileLength;
+		var fileDot;
+		var fileType;
+		
+		var reader;
 		
 		for(var i=0; i<file.length; i++) {
-			var fileList = f.files;		// 파일 받아와서 스크립트 내부 변수에 저장.
-			var fileName = fileList[i].name;		// 파일 이름 추출
+			fileList = f.files;		// 파일 받아와서 스크립트 내부 변수에 저장.
+			fileName = fileList[i].name;		// 파일 이름 추출
 			
-			var fileLength = fileName.length;		// 파일명 길이 추출		
-			var fileDot = fileName.lastIndexOf(".");	// 파일의 확장자 추출		
-			var fileType = fileName.substr(fileDot+1, fileLength).toLowerCase();	// 추출한 확장자를 소문자로 변경한다.
+			fileLength = fileName.length;		// 파일명 길이 추출		
+			fileDot = fileName.lastIndexOf(".");	// 파일의 확장자 추출		
+			fileType = fileName.substr(fileDot+1, fileLength).toLowerCase();	// 추출한 확장자를 소문자로 변경한다.
 			
-            var reader = new FileReader();
+            reader = new FileReader();
 			
             
             reader.onload = function (e) {
-    	
+    			
+            	// 파일이 이미지나 영상/오디오가 아닐때 수행
+            	if("jpg" != fileType && "jpeg" != fileType && "gif" != fileType && "png" != fileType && "bmp" != fileType &&
+            			"mpg" != fileType && "mpeg" != fileType && "mp4" != fileType && "ogg" != fileType && "webm" != fileType && "avi" != fileType && 
+            			"wmv" != fileType && "mov" != fileType && "rm" != fileType && "ram" != fileType && 
+						"swf" != fileType && "flv" != fileType && "wav" != fileType && "mp3" != fileType){
+					// 게시판 형식의 글쓰기 일때는 이미지와 영상 파일만 올릴수있도록 제한
+            		if(${what == 's0r0'} || ${what == 's1r0'}){
+            			input_fileID.value = null;
+            			alert("ERROR\n이미지/영상 외의 다른 파일형식은 저장소를 이용해주세요!");        				
+					}
+            	}
+            	
             	// 파일이 이미지일때 수행
-            	if("jpg" == fileType || "jpeg" == fileType || "gif" == fileType || "png" == fileType || "bmp" == fileType){
-					
+            	else if("jpg" == fileType || "jpeg" == fileType || "gif" == fileType || "png" == fileType || "bmp" == fileType){
+            	
 					// 3) 업로드 된 파일이 이미지 혹은 영상태그일 경우 새로운 div안에 img,video태그로 넣음
 					divAry.innerHTML += '<img src="' + e.target.result + '"><br>';
-					document.querySelector("div#write_content_div").appendChild(divAry);
-              		
+					document.querySelector("div#write_content_div").appendChild(divAry);             		
             	}
             	
             	// 파일이 동영상/오디오 일때 수행
@@ -282,9 +422,8 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 					// 3) 업로드 된 파일이 이미지 혹은 영상태그일 경우 새로운 div안에 img,video태그로 넣음
 					divAry.innerHTML += '<video src="' + e.target.result + '"><br>';
 					document.querySelector("div#write_content_div").appendChild(divAry);
-					
-					               
 				}
+            	
             	
 
 				/*	 // 자유게시판, 비밀게시판에서는 오로지 이미지, 영상 파일만 업로드 할 수 있도록 하며 다운로드 기능은 제공하지 않는다.
@@ -297,18 +436,17 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 				}
 				*/
             }
-            /*	// 이미지,영상 파일이 아닌 다른 유형의 파일이 선택된 경우 미리보기, 다운로드 지원 x
-            if(is_preview = true){
-            	reader.readAsDataURL(f.files[i]);
-                uploadFileList(f.files[i]);
-            }
-            */
-            
+            // 이미지,영상 파일이 아닌 다른 유형의 파일이 선택된 경우 미리보기, 다운로드 지원 x
             reader.readAsDataURL(f.files[i]);
+           
+            
+            
+            // reader.readAsDataURL(f.files[i]);
            
      
         }
 		uploadFileList(f);
+		// uploadFileList(f);
         //files_index += 1;		// 파일 인덱스 추가 (파일업로드를 취소 할때 파일을 특정하기 위해 사용)
     }
 	
@@ -316,8 +454,36 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		
 		var files = f.files;
 		
+		
 		//alert("받은 넘버 >> " + f.id);
 		if(files.length != 0){
+			if(${what == 's0r0'} || ${what == 's1r0'}){		// 자유/비밀게시판 일 경우 이미지/영상만 보여줌
+				var fileList;
+				var fileName;
+				var fileLength;
+				var fileDot;
+				var fileType;
+				
+				var reader;
+				
+				for(var i=0; i<files.length; i++) {
+					fileList = f.files;		// 파일 받아와서 스크립트 내부 변수에 저장.
+					fileName = fileList[i].name;		// 파일 이름 추출
+					
+					fileLength = fileName.length;		// 파일명 길이 추출		
+					fileDot = fileName.lastIndexOf(".");	// 파일의 확장자 추출		
+					fileType = fileName.substr(fileDot+1, fileLength).toLowerCase();	// 추출한 확장자를 소문자로 변경한다.
+					
+					// 파일이 이미지나 영상/오디오가 아닐때 수행
+		        	if("jpg" != fileType && "jpeg" != fileType && "gif" != fileType && "png" != fileType && "bmp" != fileType &&
+		        			"mpg" != fileType && "mpeg" != fileType && "mp4" != fileType && "ogg" != fileType && "webm" != fileType && "avi" != fileType && 
+		        			"wmv" != fileType && "mov" != fileType && "rm" != fileType && "ram" != fileType && 
+							"swf" != fileType && "flv" != fileType && "wav" != fileType && "mp3" != fileType){
+		        		return 0;
+		        	}
+				}
+			}	
+			
 			var content = '';
 			
 			var fileName = new Array();		// 파일 이름(+확장자)
@@ -438,7 +604,6 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 	    }
 	    else {
 	    	pw1 = Number(pw1);
-	    	alert(typeof pw1);
 	    }
 	}
 	
@@ -462,10 +627,10 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		content = content.replace(/&nbsp;/ig, '');
 		content = content.replace(/\s/ig, '');
 		
-		var is_secret = ${what}; 
+		var is_secret = '${what}'; 
 		
-		if(title.length > 0 && title.length <= 50 && content.length > 0 && content.length <= 1000){
-			if(is_secret == 1){
+		if(title.length > 0 && title.length <= 40 && content.length > 0 && content.length <= 1000){
+			if(is_secret == 's1r0' || is_secret == 's1r1'){
 				secret_password();
 			}
 			document.getElementById('write_form').submit();			
@@ -473,8 +638,8 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		else if(title.length == 0){
 			alert('ERROR\n제목을 입력해주세요.');
 		}
-		else if(title.length > 50){
-			alert('ERROR\n제목은 50자 이내로 입력해주세요.');
+		else if(title.length > 40){
+			alert('ERROR\n제목은 40자 이내로 입력해주세요.');
 		}
 		else if(content.length == 0){
 			alert('ERROR\n내용을 입력해주세요.');

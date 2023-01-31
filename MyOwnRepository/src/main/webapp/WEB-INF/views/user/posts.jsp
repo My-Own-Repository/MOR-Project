@@ -59,9 +59,9 @@
 		<li>
 			<a href="#">저장소</a>
 			<ul class="submenu">
-				<li><a href="#">공유</a></li>
-				<li><a href="#">나만의 저장소</a></li>
-			</ul>
+				<li><a href="/user/sharingRepo/1">공유 저장소</a></li>
+				<li><a href="/user/myRepo/1">나만의 저장소</a></li>
+			</ul> 
 		</li>
 		<li>
 			<a href="/user/mypage">${member.nickname}</a>
@@ -70,6 +70,8 @@
 	<br><br>
 	<p id="user_board_p" class="user_board_p">자유게시판</p>
 	<p id="secret_board_p" class="secret_board_p">비밀게시판</p>
+	<p id="user_repo_p" class="user_board_p">공유저장소</p>
+	<p id="secret_repo_p" class="secret_board_p">비밀저장소</p>
 	<p id="admin_board_p" class="admin_board_p">공지사항</p>	
 	<br>
 	
@@ -172,25 +174,49 @@
 	</table>
 	
 	<br>
-
-	<div>
-		<table border="1" class="downFile_table">
-			<tr>
-				<th class="downFile_th">&nbsp;첨부파일</th>
-			</tr>
-			<tr>
-				<td class="downFile_td">
-					<c:forEach items="${fileDown}" var="list">
-						<a href="/downfiles.do/${list.file_num}"><font size="2px" color="blue">&nbsp;${list.original_file_name}</font></a>
-						<span class="downFile_span">&nbsp;&nbsp;${list.file_size}&nbsp;kb</span>
-						<br>
-					</c:forEach>
-				</td>
-			</tr>		
-		</table>
-		<br><br>
-	</div>
 	
+	<c:choose>
+		<c:when test="${what == 's0r1'}">
+			<div>
+				<table border="1" class="downFile_table">
+					<tr>
+						<th class="downFile_th">&nbsp;첨부파일</th>
+					</tr>
+					<tr>
+						<td class="downFile_td">
+							<c:forEach items="${fileDown}" var="list">
+								<a href="/downfiles.do/${list.file_num}"><font size="2px" color="blue">&nbsp;${list.original_file_name}</font></a>
+								<span class="downFile_span">&nbsp;&nbsp;${list.file_size}&nbsp;kb</span>
+								<br>
+							</c:forEach>
+						</td>
+					</tr>		
+				</table>
+				<br><br>
+			</div>
+		</c:when>
+		<c:when test="${what == 's1r1'}">
+			<div>
+				<table border="1" class="downFile_table">
+					<tr>
+						<th class="downFile_th">&nbsp;첨부파일</th>
+					</tr>
+					<tr>
+						<td class="downFile_td">
+							<c:forEach items="${fileDown}" var="list">
+								<a href="/downfiles.do/${list.file_num}"><font size="2px" color="blue">&nbsp;${list.original_file_name}</font></a>
+								<span class="downFile_span">&nbsp;&nbsp;${list.file_size}&nbsp;kb</span>
+								<br>
+							</c:forEach>
+						</td>
+					</tr>		
+				</table>
+				<br><br>
+			</div>
+		</c:when>
+	</c:choose>
+
+	<br>
 	<table>	
 	
 				<tr>
@@ -257,7 +283,7 @@
 				<th>&nbsp;&nbsp;${cmt.nickname}
 				
 				<a href="javascript:delete_cmt(${cmt.b_num}, ${cmt.c_num})"><img src="../../../resources/img/Red_X_img.png" class="imgs"></a>
-				<a href="javascript:update_cmt(${cmt.c_num}, ${cmt.b_num + cmt.c_num})"><img src="../../../resources/img/Pencil_img.png" class="imgs"></a>
+				<a href="javascript:update_cmt(${cmt.c_num})"><img src="../../../resources/img/Pencil_img.png" class="imgs"></a>
 				&nbsp;&nbsp;
 				
 				</th>
@@ -267,18 +293,18 @@
 		
 		<table class="comment_main">
 			<tr>
-				<td colspan="4" id="${cmt.c_num}"><br>
+				<td colspan="4" id="comment_td_${cmt.c_num}"><br>
 					<div id="changed_comment_div_${cmt.c_num}">
 					
 					</div>
 				<br><br></td>
-				<td colspan="4" id="${cmt.b_num + cmt.c_num}" class="update_cmt"> 
-					<form id="${(cmt.b_num + cmt.c_num) * -1}" action="/user/posts/comment_update" method="post">
+				<td colspan="4" id="update_cmt_td_${cmt.c_num}" class="update_cmt"> 
+					<form id="update_cmt_form_${cmt.c_num}" action="/user/posts/comment_update" method="post">
 						<textarea name="content" class="update_comment_textarea">${cmt.content}</textarea>
 						<input type="hidden" name="b_num" value="${cmt.b_num}">
 						<input type="hidden" name="c_num" value="${cmt.c_num}">
 						<input type="hidden" name="is_exist" value="${cmt.is_exist}">
-						<input type="button" value="수정 완료" class="update_comment_btn" onClick="submit_update_cmt(${cmt.c_num},${cmt.b_num + cmt.c_num});">
+						<input type="button" value="수정 완료" class="update_comment_btn" onClick="submit_update_cmt(${cmt.c_num});">
 						<input type="button" value="취소" class="update_cancle_btn" onClick="window.location.reload()">
 					</form>
 				</td>
@@ -307,22 +333,29 @@
 		
 		<script type="text/javascript">	// HTML5에서는 디폴트 값인 text/javascript를 따로 선언할 필요는 없지만
 										// 이번 경우에는 혹시 모를 호환성을 위해 적었다.
-			function update_cmt(view_num, form_num) {
-				var showed_updateComment = document.getElementById(view_num);		// 수정 할 댓글 가져오기
-				var updating_comment = document.getElementById(form_num);	// 댓글 수정 폼 가져오기
+			function update_cmt(num) {
+				var showed_updateCommentID = 'comment_td_'+num;
+				var updating_commentID = 'update_cmt_td_'+num;
+			
+				var showed_updateComment = document.getElementById(showed_updateCommentID);		// 수정 할 댓글 가져오기
+				var updating_comment = document.getElementById(updating_commentID);	// 댓글 수정 폼 가져오기
 								
 				showed_updateComment.style.display = "none";	// 수정 할 댓글 뷰 숨기기
 				updating_comment.style.display = "block";		// 댓글 수정 폼 보이기
 			}
 		
-			function submit_update_cmt(view_num, form_num){		
-				var form_submit_num = form_num * -1;
-				document.getElementById(form_submit_num).submit();	// 댓글 수정 폼 컨트롤러로 submit 하기
+			function submit_update_cmt(num){		
+				var form_submit_ID = 'update_cmt_form_'+num;
+				document.getElementById(form_submit_ID).submit();	// 댓글 수정 폼 컨트롤러로 submit 하기
 			}
 			
-			function viewmode_update_cmt(view_num, form_num){
-				var showed_updateComment = document.getElementById(view_num);		// 수정 할 댓글 가져오기
-				var updating_comment = document.getElementById(form_num);	// 댓글 수정 폼 가져오기
+			function viewmode_update_cmt(num){
+				
+				var showed_updateCommentID = 'comment_td_'+num;		
+				var updating_commentID = 'update_cmt_td_'+num;		
+				
+				var showed_updateComment = document.getElementById(showed_updateCommentID);		// 수정완료된 댓글 가져오기
+				var updating_comment = document.getElementById(updating_commentID);		// 수정폼 댓글 가져오기
 				
 				updating_comment.style.display = "none";		// 댓글 수정 폼 숨기기
 				showed_updateComment.style.display = "block";	// 수정한 댓글 보이기								
@@ -344,7 +377,7 @@
 			<script>	
 				// 댓글의 수정 폼을 숨기고 view 모드로 전환하기 위한 컨트롤러와의 통신수단. 
 				// 댓글의 정보를 함수 인자로 사용하기 위해 forEach문 안에 배치했다.
-				viewmode_update_cmt(${cmt.c_num}, ${cmt.b_num + cmt.c_num});
+				viewmode_update_cmt(${cmt.c_num});
 				
 			</script>
 		</c:if>
@@ -399,25 +432,46 @@
 	
 	<hr><br>
 	
-	<div class="write_comment_div">
-	<form action="/user/posts/comment" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="b_num" value="<%=page_num %>">
-		<input type="hidden" name="nickname" value="<%=userNickname %>">
-		<table border="1" class="comment_table">		
-			<tr>
-				<td colspan="4"><textarea id="comment_id" name="content"></textarea></td>
-			</tr>
-			<tr>
-				<td colspan="4"><input type="file" name="uploadfile"></td>
-			</tr>		
-		</table>
-		<br>
-		
-			<input type="button" onClick="window.location.reload()" value="새로고침" class="reload_btn">
-			<input type="submit" value="작성" class="comment_btn">
-		<br><br>
-	</form>
-	</div>
+	<c:choose>
+		<c:when test="${member == null}">
+			<div class="write_comment_div">
+				<table border="1" class="comment_table">			
+					<tr>
+						<td colspan="4"><a href="/LoginPage"><textarea name="content">로그인이 필요한 서비스입니다.</textarea></a></td>
+					</tr>
+					<tr>
+						<td colspan="4"><a href="/LoginPage"><input type="file" name="file"></a></td>
+					</tr>		
+				</table>
+				<br>
+				<input type="button" onClick="window.location.reload()" value="새로고침" class="reload_btn">
+				<input type="button" onClick="location.href='/LoginPage'" value="작성" class="comment_btn">
+				<br><br>
+			</div>
+		</c:when>
+		<c:when test="${member != null}">
+			<div class="write_comment_div">
+				<form action="/user/posts/comment" method="post" enctype="multipart/form-data">
+					<input type="hidden" name="b_num" value="<%=page_num %>">
+					<input type="hidden" name="nickname" value="<%=userNickname %>">
+					<table border="1" class="comment_table">		
+						<tr>
+							<td colspan="4"><textarea id="comment_id" name="content"></textarea></td>
+						</tr>
+						<tr>
+							<td colspan="4"><input type="file" name="uploadfile"></td>
+						</tr>		
+					</table>
+					<br>
+					
+						<input type="button" onClick="window.location.reload()" value="새로고침" class="reload_btn">
+						<input type="submit" value="작성" class="comment_btn">
+					<br><br>
+				</form>
+			</div>
+		</c:when>
+	</c:choose>	
+
 	<br><br>
 	</div>
 	</div>
@@ -430,34 +484,60 @@
 			// 게시판의 종류에따라 게시판의 이름이 달라짐
 			var user_p = document.getElementById('user_board_p');		// 자유게시판
 			var secret_p = document.getElementById('secret_board_p');	// 비밀게시판
+			var userR_p = document.getElementById('user_repo_p');		// 공유저장소
+			var secretR_p = document.getElementById('secret_repo_p');	// 비밀저장소
 			var admin_p = document.getElementById('admin_board_p');		// 공지사항
 			
 			// 비밀 게시판이면 이전글 다음글을 숨기기 위함
 			var hideTable1 = document.getElementById('preANDnext_div1');
 			var hideTable2 = document.getElementById('preANDnext_div2');
 			
-			if(is_admin == "admin"){
+			if(is_admin == "admin"){		// 공지
 				user_p.style.display = "none";	
 				secret_p.style.display = "none";
+				userR_p.style.display = "none";
+				secretR_p.style.display = "none";
 				admin_p.style.display = "block";
 				hideTable1.style.display = "block";
 				hideTable2.style.display = "block";
 			}
 			else{
-				if(is_secret == 0){
+				if(is_secret == 's0r0'){		// 자유게시판
 					secret_p.style.display = "none";
 					admin_p.style.display = "none";
+					userR_p.style.display = "none";
+					secretR_p.style.display = "none";
 					user_p.style.display = "block";
 					hideTable1.style.display = "block";
 					hideTable2.style.display = "block";
 				}
-				else{
+				else if(is_secret == 's1r0'){		// 비밀게시판
 					user_p.style.display = "none";
 					admin_p.style.display = "none";
+					userR_p.style.display = "none";
+					secretR_p.style.display = "none";
 					secret_p.style.display = "block";
 					hideTable1.style.display = "none";
 					hideTable2.style.display = "none";
-				}		
+				}	
+				else if(is_secret == 's0r1'){		// 공유저장소
+					user_p.style.display = "none";
+					admin_p.style.display = "none";					
+					secretR_p.style.display = "none";
+					secret_p.style.display = "none";
+					userR_p.style.display = "block";
+					hideTable1.style.display = "none";
+					hideTable2.style.display = "none";
+				}	
+				else if(is_secret == 's1r1'){		// 비밀저장소
+					user_p.style.display = "none";
+					admin_p.style.display = "none";
+					userR_p.style.display = "none";
+					secret_p.style.display = "none";
+					secretR_p.style.display = "block";
+					hideTable1.style.display = "none";
+					hideTable2.style.display = "none";
+				}	
 			}
 			
 			

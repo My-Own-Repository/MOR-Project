@@ -54,8 +54,8 @@
 		<li>
 			<a href="#">저장소</a>
 			<ul class="submenu">
-				<li><a href="#">공유 저장소</a></li>
-				<li><a href="#">나만의 저장소</a></li>
+				<li><a href="/user/sharingRepo/1">공유 저장소</a></li>
+				<li><a href="/user/myRepo/1">나만의 저장소</a></li>
 			</ul>
 		</li>
 		<li>
@@ -142,11 +142,11 @@
 	
 	</table>
 	
-	<br><br><input type="button" onclick="location.href='/user/write_board/0'" class="write_button" value="글쓰기">
+	<br><br><input type="button" onclick="location.href='/user/write_board/s0r0'" class="write_button" value="글쓰기">
 	<br><br><br><br>
 	<div class="bottom_div">
-		<c:if test="${first_page > 10}">
-			<a href="/user/userMain/${first_page-10}"><b>&lt;&nbsp;이전</b></a>&emsp;
+		<c:if test="${first_page > 5}">
+			<a href="/user/userMain/${first_page-5}"><b>&lt;&nbsp;이전</b></a>&emsp;
 		</c:if>
 		<div class="paging_div">
 			<div class="paging_div2">
@@ -175,7 +175,7 @@
 					<option value="search_writer">작성자</option>
 				</select>								
 			<button class="in_board_search_btn">검색</button>
-			<input type="text" class="in_board_search_text" placeholder="검색어를 입력해주세요.">	
+			<input type="text" class="in_board_search_text" placeholder="검색어를 입력해주세요.">
 		</div>
 	</div>
 	<br><br>
@@ -204,6 +204,10 @@
 			
 			hide_div.style.display = "none";
 			show_div.style.display = "block";
+		}
+		
+		function page_search(){
+			
 		}
 	</script>
 	

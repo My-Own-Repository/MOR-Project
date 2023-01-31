@@ -10,6 +10,7 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -51,6 +52,7 @@ import com.co.dto.MemberVO;
 import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
 import com.co.dto.deleteFileDTO;
+import com.co.dto.searchVO;
 import com.co.service.BoardService;
 import com.co.service.MemberService;
 
@@ -89,7 +91,10 @@ public class HomeController {
 										// = MYSQL의 쿼리문인 limitBoard의 LIMIT의 시작 인덱스가 될 값
 	
 	public int secretboard_first_index = 0;		// 비밀 게시판 페이징용 전역변수
-
+	public int repo_first_index = 0;			// 공유저장소 페이징 변수
+	public int secretRepo_first_index = 0;		// 비밀저장소 페이징 변수
+	
+	
 	
 	private static String SESSION_ID = "session_Id";
 	
@@ -578,7 +583,7 @@ public class HomeController {
     }
     
     @RequestMapping(value = "/user/write_board/{what}", method = RequestMethod.GET)
-    public String write_board_page(HttpServletRequest request, Model model, @PathVariable("what") int what) throws Exception {
+    public String write_board_page(HttpServletRequest request, Model model, @PathVariable("what") String what) throws Exception {
     	HttpSession session = request.getSession(false);
     	
     	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
@@ -640,11 +645,11 @@ public class HomeController {
     				session.invalidate();
     	    		return "redirect:/LoginPage";
     			}
-    			
-    			
+    		
+    		
     			// 파일 업로드 구문
     			
-    			if(!files[0].isEmpty()) {		// 첫 번째 인덱스가 비었을 경우 실행이 되지않음(첫 번째 인덱스가 비었다 = 파일이 등록된게 하나도 없다)
+    			if(!files[0].isEmpty() || files.length != 0) {		// 첫 번째 인덱스가 비었을 경우 실행이 되지않음(첫 번째 인덱스가 비었다 = 파일이 등록된게 하나도 없다)
     				
     				int b_num = b_service.maxNum()+1;		// 파일의 정보에 게시글 고유번호를 넣어야한다.
 															// 게시글이 먼저 올라오고 파일이 올라가므로 마지막 게시글의 고유번호를 가져오는 방법을 썼다.
@@ -687,11 +692,17 @@ public class HomeController {
     	    	}
     			b_service.writeBoard(letter);		// 게시글 작성 완료
     			
-    			if(letter.is_secret == 0) {
+    			if(letter.is_secret == 0 && letter.is_repo == 0) {
     				url = "redirect:/user/userMain";
     			}
-    			else {
+    			else if(letter.is_secret == 1 && letter.is_repo == 0){
     				url = "redirect:/user/secretBoard";
+    			}
+    			else if(letter.is_secret == 0 && letter.is_repo == 1) {
+    				url = "redirect:/user/sharingRepo";
+    			}
+    			else if(letter.is_secret == 1 && letter.is_repo == 1) {
+    				url = "redirect:/user/myRepo";
     			}
     		}
     		else if(letter.title.length() > 50 || letter.content.length() > 1000) {
@@ -721,13 +732,18 @@ public class HomeController {
     	}
     	
     	boardDTO before_post = null;		// 현재 보고있는 게시글을 수정하기 전 게시글의 정보로 저장하기 위한 변수
-    	if(b_service.selectBoard(urlnum) != null && b_service.selectBoard(urlnum).is_secret == 0) {
+    	if(b_service.selectBoard(urlnum) != null && b_service.selectBoard(urlnum).is_secret == 0 && b_service.selectBoard(urlnum).is_repo == 0) {
     		before_post = b_service.selectBoard(urlnum);
     	}
-    	else if(b_service.SCselectBoard(urlnum) != null && b_service.SCselectBoard(urlnum).is_secret == 1) {
+    	else if(b_service.SCselectBoard(urlnum) != null && b_service.SCselectBoard(urlnum).is_secret == 1 && b_service.SCselectBoard(urlnum).is_repo == 0) {
     		before_post = b_service.SCselectBoard(urlnum);
     	}
-    	
+    	else if(b_service.REPOselectBoard(urlnum) != null && b_service.REPOselectBoard(urlnum).is_secret == 0 && b_service.REPOselectBoard(urlnum).is_repo == 1) {
+    		before_post = b_service.REPOselectBoard(urlnum);
+    	}
+    	else if(b_service.REPOSCselectBoard(urlnum) != null && b_service.REPOSCselectBoard(urlnum).is_secret == 1 && b_service.REPOSCselectBoard(urlnum).is_repo == 1) {
+    		before_post = b_service.REPOSCselectBoard(urlnum);
+    	}
     	
     	// 세션에 보관한 회원 객체를 새로운 멤버 객체에 찾아 넣어준다.
     	LoginDTO loginmember = (LoginDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
@@ -823,7 +839,7 @@ public class HomeController {
     			
     			
     			// 파일 업로드 구문
-    			if(!files[0].isEmpty()) {		// 첫 번째 인덱스가 비었을 경우 실행이 되지않음(첫 번째 인덱스가 비었다 = 파일이 등록된게 하나도 없다)
+    			if(!files[0].isEmpty() || files.length != 0) {		// 첫 번째 인덱스가 비었을 경우 실행이 되지않음(첫 번째 인덱스가 비었다 = 파일이 등록된게 하나도 없다)
     				
     				int b_num = letter.num;		
     				String user_id = letter.id;
@@ -926,8 +942,10 @@ public class HomeController {
      	boardDTO next_posts = null;
     	
      	
+     	String is_what = "";
+     	
      	// 자유게시판
-    	if(b_service.selectBoard(number) != null && b_service.selectBoard(number).is_secret == 0) {
+    	if(b_service.selectBoard(number) != null && b_service.selectBoard(number).is_exist == 1 && b_service.selectBoard(number).is_secret == 0 && b_service.selectBoard(number).is_repo == 0) {
     		System.out.println("is_secret >>>>>>>> "+b_service.selectBoard(number).is_secret);
     		user_show_post = b_service.selectBoard(number);
     		
@@ -980,11 +998,12 @@ public class HomeController {
         	else {
         		b_service.addView(number);			// 조회수 증가
         	}
-        	model.addAttribute("what", user_show_post.is_secret);
+        	is_what = "s0r0";
+        	model.addAttribute("what", is_what);
     	}
     	
     	// 비밀 게시판
-    	else if(b_service.SCselectBoard(number) != null && b_service.SCselectBoard(number).is_secret == 1) {
+    	else if(b_service.SCselectBoard(number) != null && b_service.SCselectBoard(number).is_exist == 1 && b_service.SCselectBoard(number).is_secret == 1 && b_service.SCselectBoard(number).is_repo == 0) {
     		System.out.println("is_secret >>>>>>>> "+b_service.SCselectBoard(number).is_secret);
     		
     		// 해당 비밀 게시글을 열람할 수 있는 권한이 있는지 여부 검사
@@ -1048,14 +1067,138 @@ public class HomeController {
         	else {
         		b_service.addView(number);			// 조회수 증가
         	}  
-        	model.addAttribute("what", user_show_post.is_secret);
+        	is_what = "s1r0";
+        	model.addAttribute("what", is_what);
         	
     	}
-    	else {
+    	
+    	// 공유 저장소
+    	else if(b_service.REPOselectBoard(number) != null && b_service.REPOselectBoard(number).is_exist == 1 && b_service.REPOselectBoard(number).is_secret == 0 && b_service.REPOselectBoard(number).is_repo == 1){
+    		System.out.println("is_secret >>>>>>>> "+b_service.REPOselectBoard(number).is_secret);
+    		user_show_post = b_service.REPOselectBoard(number);
     		
-    		model.addAttribute("what", -1);
-    		return "redirect:/user/secretBoard/1";
+         	// 첫 게시글과 마지막 게시글의 고유 번호를 저장하는 first_num과 last_num
+         	first_num = b_service.REPOselectMinNum(0);     	 	
+         	last_num = b_service.REPOselectMaxNum(0);
+         	
+         	// 열람중인 해당 게시글이 첫 글이 아닐 경우 실행되는 조건문
+         	if(number != first_num) {		
+         		// 이전글을 찾는 반복문
+         		// 해당 글의 고유번호의 바로 이전 고유번호가 삭제된 글(번호)일때 실행된다.
+             	while(b_service.REPOselectBoard(number-pre_num) == null || b_service.REPOselectBoard(number-pre_num).is_exist == 0) {
+             		if((number-pre_num) == first_num) {		// 해당 글이 첫 게시글이면 멈춤
+                 		break;
+                 	}
+                 	pre_num++;		// 보다 더 이전의 게시글의 고유번호를 찾기 위한 연산이다. (이전글중 삭제되지 않은 고유번호를 찾기위함)           	
+         		}
+             	pre_posts = b_service.REPOselectBoard(number-pre_num);		// 이전글 저장
+             	    	
+         	}
+         	else if(number == first_num) {		// 처음 선택한 게시글이 첫 글 일경우 이전글에 해당 글이 나오도록 함. 
+         		pre_posts = b_service.REPOselectBoard(first_num);
+         	}
+         		
+         	// 열람중인 해당 게시글이 마지막 글이 아닐 경우 실행되는 조건문
+         	if(number != last_num) {
+         		// 다음글을 찾는 반복문
+         		// 해당 글의 고유번호의 바로 다음 고유번호가 삭제된 글(번호)일때 실행된다.
+             	while(b_service.REPOselectBoard(number+next_num) == null || b_service.REPOselectBoard(number+next_num).is_exist == 0 ) {
+             		if((number+next_num) == last_num) {		// 해당 글이 마지막 게시글이면 멈춤
+                 		break;
+                 	}
+                 	next_num++;		// 다음 게시글의 고유번호를 찾기 위한 연산이다. (다음글중 삭제되지 않은 고유번호를 찾기위함)           	
+         		}
+             	next_posts = b_service.REPOselectBoard(number+next_num);		// 다음글 저장
+             		
+         	}   
+         	else if(number == last_num) {		// 처음 선택한 게시글이 마지막 글 일경우 이전글에 해당 글이 나오도록 함. 
+         		next_posts = b_service.REPOselectBoard(last_num);
+         	}
+       	
+        	
+        	
+        	user_show_post.setcontent(user_show_post.getcontent().replace("\r\n", "<br>")); 	// 게시글 작성 시 사용한 Enter(줄바꿈)이 적용 되도록 재저장. (구글링을 통해 해당 정보 습득)
+        	
+        	if(user_show_post == null || b_service.REPOselectBoard(number).is_exist == 0) {				// 열람을 위해 클릭한 다른 유저의 게시글이 이미 삭제되었을 경우 실행되는 조건문 
+        		model.addAttribute("msg", false);
+        		path = "redirect:/user/userMain/1";
+        	}
+        	else {
+        		b_service.addView(number);			// 조회수 증가
+        	}
+        	is_what = "s0r1";
+        	model.addAttribute("what", is_what);
     	}
+    	
+    	// 비밀 저장소
+    	else if(b_service.REPOSCselectBoard(number) != null && b_service.REPOSCselectBoard(number).is_exist == 1 && b_service.REPOSCselectBoard(number).is_secret == 1 && b_service.REPOSCselectBoard(number).is_repo == 1) {
+    		System.out.println("is_secret >>>>>>>> "+b_service.REPOSCselectBoard(number).is_secret);
+    		
+    		// 해당 비밀 게시글을 열람할 수 있는 권한이 있는지 여부 검사
+        	String allow_post = (String) session.getAttribute(ALLOW_POST);		// 사용자 세션에 저장된 허용된 게시글 목록을 가져온다.
+        	String want_post = "n"+Integer.toString(urlnum)+",";		// 접속하려는 게시글의 번호를 용도에 맞게 변환
+       
+        	if(allow_post == null || allow_post.contains(want_post) == false) {
+        		System.out.println("해당 비밀게시글의 인가된 사용자가 아님!!!!!!!");
+        		return "redirect:/user/ERROR_PAGE";
+        	}
+    		
+        	
+        	
+    		user_show_post = b_service.REPOSCselectBoard(number);
+    		
+         	first_num = b_service.REPOselectMinNum(1);     	 	
+         	last_num = b_service.REPOselectMaxNum(1);
+         	
+         	// 열람중인 해당 게시글이 첫 글이 아닐 경우 실행되는 조건문
+         	if(number != first_num) {		
+         		// 이전글을 찾는 반복문
+         		// 해당 글의 고유번호의 바로 이전 고유번호가 삭제된 글(번호)일때 실행된다.
+             	while(b_service.REPOSCselectBoard(number-pre_num) == null || b_service.REPOSCselectBoard(number-pre_num).is_exist == 0) {
+             		if((number-pre_num) == first_num) {		// 해당 글이 첫 게시글이면 멈춤
+                 		break;
+                 	}
+                 	pre_num++;		// 보다 더 이전의 게시글의 고유번호를 찾기 위한 연산이다. (이전글중 삭제되지 않은 고유번호를 찾기위함)           	
+         		}
+             	pre_posts = b_service.REPOSCselectBoard(number-pre_num);		// 이전글 저장
+             	    	
+         	}
+         	else if(number == first_num) {		// 처음 선택한 게시글이 첫 글 일경우 이전글에 해당 글이 나오도록 함. 
+         		pre_posts = b_service.REPOSCselectBoard(first_num);
+         	}
+         		
+         	// 열람중인 해당 게시글이 마지막 글이 아닐 경우 실행되는 조건문
+         	if(number != last_num) {
+         		// 다음글을 찾는 반복문
+         		// 해당 글의 고유번호의 바로 다음 고유번호가 삭제된 글(번호)일때 실행된다.
+             	while(b_service.REPOSCselectBoard(number+next_num) == null || b_service.REPOSCselectBoard(number+next_num).is_exist == 0 ) {
+             		if((number+next_num) == last_num) {		// 해당 글이 마지막 게시글이면 멈춤
+                 		break;
+                 	}
+                 	next_num++;		// 다음 게시글의 고유번호를 찾기 위한 연산이다. (다음글중 삭제되지 않은 고유번호를 찾기위함)           	
+         		}
+             	next_posts = b_service.REPOSCselectBoard(number+next_num);		// 다음글 저장
+             		
+         	}   
+         	else if(number == last_num) {		// 처음 선택한 게시글이 마지막 글 일경우 이전글에 해당 글이 나오도록 함. 
+         		next_posts = b_service.REPOSCselectBoard(last_num);
+         	}
+       	
+        	
+        	
+        	user_show_post.setcontent(user_show_post.getcontent().replace("\r\n", "<br>")); 	// 게시글 작성 시 사용한 Enter(줄바꿈)이 적용 되도록 재저장. (구글링을 통해 해당 정보 습득)
+        	
+        	if(user_show_post == null || b_service.REPOSCselectBoard(number).is_exist == 0) {				// 열람을 위해 클릭한 다른 유저의 게시글이 이미 삭제되었을 경우 실행되는 조건문 
+        		model.addAttribute("msg", false);
+        		path = "redirect:/user/secretBoard/1";
+        	}
+        	else {
+        		b_service.addView(number);			// 조회수 증가
+        	}  
+        	is_what = "s1r1";
+        	model.addAttribute("what", is_what);
+    	}
+    	
     	
      	 /*	
      	// 열람중인 해당 게시글이 첫 글이 아닐 경우 실행되는 조건문
@@ -1319,12 +1462,33 @@ public class HomeController {
     	}
     	
     	String path = "";
-    	  	
+    	// 자유게시글 삭제
     	if(b_service.selectBoard(num) != null && b_service.selectBoard(num).is_exist == 1) {
     		b_service.allDeleteComment(num);		// 모든 댓글 삭제
     		b_service.allDeleteFile(num);		// 모든 파일 삭제
     		b_service.deleteBoard(num);		// 게시글 삭제
     		path = "redirect:/user/userMain";
+    	}
+    	// 비밀게시글 삭제
+    	else if(b_service.SCselectBoard(num) != null && b_service.SCselectBoard(num).is_exist == 1) {
+    		b_service.allDeleteComment(num);		// 모든 댓글 삭제
+    		b_service.allDeleteFile(num);		// 모든 파일 삭제
+    		b_service.deleteBoard(num);		// 게시글 삭제
+    		path = "redirect:/user/secretBoard";
+    	}
+    	// 공유저장소글 삭제
+    	else if(b_service.REPOselectBoard(num) != null && b_service.REPOselectBoard(num).is_exist == 1) {
+    		b_service.allDeleteComment(num);		// 모든 댓글 삭제
+    		b_service.allDeleteFile(num);		// 모든 파일 삭제
+    		b_service.deleteBoard(num);		// 게시글 삭제
+    		path = "redirect:/user/sharingRepo";
+    	}
+    	// 비밀저장소글 삭제
+    	else if(b_service.REPOSCselectBoard(num) != null && b_service.REPOSCselectBoard(num).is_exist == 1) {
+    		b_service.allDeleteComment(num);		// 모든 댓글 삭제
+    		b_service.allDeleteFile(num);		// 모든 파일 삭제
+    		b_service.deleteBoard(num);		// 게시글 삭제
+    		path = "redirect:/user/myRepo";
     	}
     	else {
     		path = "redirect:/user/posts?urlnum=";
@@ -1449,7 +1613,7 @@ public class HomeController {
     	HttpSession session = request.getSession(false);
     	
     	//System.out.println("비밀게시글 비밀번호 체크 ajax로 넘어온 값 >>>>>> "+ map);
-    	//System.out.println("비밀게시글 비밀번호 체크 ajax로 넘어온 값 >>>>>> "+ num + input);
+    	System.out.println("비밀게시글 비밀번호 체크 ajax로 넘어온 값 >>>>>> "+ num + input_s);
     	
     	/*
     	
@@ -1464,6 +1628,9 @@ public class HomeController {
     	System.out.println("ajax 들어온 num 값 >>>>>>>>>>>>>>>>>>>> "+ num);
     	
     	boardDTO checkSecretNum = b_service.SCselectBoard(num);		// 해당 게시글의 비밀번호를 가져온다
+    	if(checkSecretNum == null) {
+    		checkSecretNum = b_service.REPOSCselectBoard(num);	
+    	}
     	/*	세션에 맵 자체로 넣는 방안1
     	  
     	// 사용자가 입력한 비밀번호와 db에 저장된 게시글 비밀번호가 일치할 경우 실행
@@ -1493,10 +1660,130 @@ public class HomeController {
     }
     
     
-    
+   
     // 공유저장소
-    @RequestMapping(value = "/user/sharingRepo")	
+    @RequestMapping(value = "/user/sharingRepo/{page}")	
+    public String sharingRepoPage(HttpServletRequest request, Model model, @PathVariable("page") int page) throws Exception {
+    	HttpSession session = request.getSession(false);
+    	
+    	/*
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		model.addAttribute("session_msg", false);
+    		return "redirect:/LoginPage";
+    	}
+    	else if(session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
+    		model.addAttribute("session_msg", true);
+        	session.invalidate();
+        	return "redirect:/LoginPage";
+    	}
+    	*/
+        // 사용자가 선택한 페이지에 따라 sql에 보낼 파라미터 값(LIMIT 시작 인덱스)이 바뀜 (1번째 페이지 일 경우 값은 1, 2번째의 경우 값은 21 .... 20씩 증가)      
+        repo_first_index = (page-1) * 20;
+    	 
+    	
+    	return "redirect:/user/sharingRepo";
+    }
+    
+    @RequestMapping(value = "/user/sharingRepo")
     public String sharingRepo(HttpServletRequest request, Model model) throws Exception {
+    	HttpSession session = request.getSession(false);
+    	
+    	/*
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		model.addAttribute("session_msg", false);
+    		return "redirect:/LoginPage";
+    	}    
+    	
+    	if(session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
+    		model.addAttribute("session_msg", false);
+    		session.invalidate();
+    		return "redirect:/";
+    	}
+    	
+    	// 세션에 보관한 회원 객체를 새로운 멤버 객체에 찾아 넣어준다.
+    	LoginDTO loginmember = (LoginDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
+    	if (loginmember == null) {
+    		model.addAttribute("session_msg", false);
+    		return "redirect:/";
+    	}
+    	*/
+    	LoginDTO loginmember = (LoginDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
+    	model.addAttribute("member", loginmember);
+    	
+    	model.addAttribute("is_SCrepo", "0");		// 비밀 저장소가 아닌 경우 0값을 보냄
+    	
+        int total = b_service.REPOtotalNum(0);
+        int page_count=1;
+        
+        // 한 페이지에 20개의 글이 보이게 한다.
+        // 총 게시글 수의 대입해, 필요한 총 페이지 수(page_count)를 알아 내기위한 반복문.
+        while(true) {
+        	if((total != 0) && (total / 21) != 0) {
+        		page_count++;
+        		total -= 20;
+        	}
+        	else {
+        		break;
+        	}
+        }
+        
+        /* 하단에 페이지 숫자 범위지정을 위한 과정 ( ex, <이전 1 2 3 4 5 6 7 8 9 10 다음>) */
+        
+        // 현재 선택한 페이지
+        int page = repo_first_index / 20 + 1;
+        model.addAttribute("select_page", page);
+        
+        // 처음 페이지의 숫자
+        int first_page = 1;
+        if(page % 10 == 0) {
+        	first_page = page - 9;		
+        }
+        else {
+        	first_page = page - (page % 10) + 1;		
+        }
+        model.addAttribute("first_page", first_page);
+        
+        // 마지막 페이지의 숫자
+        int last_page = 10;
+        if(page % 10 == 0) {
+        	last_page = page;
+        }
+        else if((page / 10 + 1) * 10 > page_count) {		// 마지막 페이지 그룹일 경우 실행 되는 조건문
+        	last_page = page_count;
+        }
+        else {
+        	last_page = ((page / 10) + 1) * 10;
+        }
+        model.addAttribute("last_page", last_page);
+        
+        // 총 페이지의 숫자
+        model.addAttribute("page_count", page_count);
+        
+        
+        System.out.println("메인페이지 페이지수 (선택,처음,마지막,총개수) >>>> " + page + first_page + last_page + page_count);
+        
+        
+        // 처음 웹 사이트를 실행시켰을때는 페이지 디폴트값인 첫번째 페이지를 보여주도록 유도(board_first_num의 값을 선언과 동시에 1로 초기화)하고
+        // 이후에는 사용자가 고르는 페이지가 보여지도록 함.       
+        List<boardDTO> board_list = b_service.REPOlimitBoard(repo_first_index);
+        model.addAttribute("BoardList", board_list);
+    	
+        // 관리자 게시글 목록(전체-펼치기ver)
+        List<boardDTO> admin_board_list = b_service.printAdminBoard();
+        model.addAttribute("adminBoardList", admin_board_list);
+ 
+        // 관리자 게시글 목록(5개-접기ver)
+        List<boardDTO> admin_board_foldList = b_service.limitAdminBoard();
+        model.addAttribute("adminFoldList", admin_board_foldList);
+        
+        return "user/sharing_repo";
+    }
+    
+    
+    
+    // 나만의 저장소
+    @RequestMapping(value = "/user/myRepo/{page}")	
+    public String secretRepoView(HttpServletRequest request, Model model, @PathVariable("page") int page) throws Exception {
     	HttpSession session = request.getSession(false);
     	
     	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
@@ -1509,12 +1796,11 @@ public class HomeController {
         	return "redirect:/LoginPage";
     	}
     	
-    	return "";
+    	secretRepo_first_index = (page-1) * 20;
+    	  	
+    	
+    	return "redirect:/user/myRepo";
     }
-    
-    
-    
-    // 나만의 저장소
     @RequestMapping(value = "/user/myRepo")	
     public String secretRepo(HttpServletRequest request, Model model) throws Exception {
     	HttpSession session = request.getSession(false);
@@ -1529,9 +1815,77 @@ public class HomeController {
         	return "redirect:/LoginPage";
     	}
     	
-    	return "";
+    	LoginDTO loginmember = (LoginDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
+    	model.addAttribute("member", loginmember);
+    	
+    	model.addAttribute("is_SCrepo", "1");		// 비밀 저장소가 아닌 경우 0값을 보냄
+    	
+        int total = b_service.REPOtotalNum(1);
+        int page_count=1;
+        
+        // 한 페이지에 20개의 글이 보이게 한다.
+        // 총 게시글 수의 대입해, 필요한 총 페이지 수(page_count)를 알아 내기위한 반복문.
+        while(true) {
+        	if((total != 0) && (total / 21) != 0) {
+        		page_count++;
+        		total -= 20;
+        	}
+        	else {
+        		break;
+        	}
+        }
+        
+        /* 하단에 페이지 숫자 범위지정을 위한 과정 ( ex, <이전 1 2 3 4 5 6 7 8 9 10 다음>) */
+        
+        // 현재 선택한 페이지
+        int page = repo_first_index / 20 + 1;
+        model.addAttribute("select_page", page);
+        
+        // 처음 페이지의 숫자
+        int first_page = 1;
+        if(page % 10 == 0) {
+        	first_page = page - 9;		
+        }
+        else {
+        	first_page = page - (page % 10) + 1;		
+        }
+        model.addAttribute("first_page", first_page);
+        
+        // 마지막 페이지의 숫자
+        int last_page = 10;
+        if(page % 10 == 0) {
+        	last_page = page;
+        }
+        else if((page / 10 + 1) * 10 > page_count) {		// 마지막 페이지 그룹일 경우 실행 되는 조건문
+        	last_page = page_count;
+        }
+        else {
+        	last_page = ((page / 10) + 1) * 10;
+        }
+        model.addAttribute("last_page", last_page);
+        
+        // 총 페이지의 숫자
+        model.addAttribute("page_count", page_count);
+        
+        
+        System.out.println("메인페이지 페이지수 (선택,처음,마지막,총개수) >>>> " + page + first_page + last_page + page_count);
+        
+        
+        // 처음 웹 사이트를 실행시켰을때는 페이지 디폴트값인 첫번째 페이지를 보여주도록 유도(board_first_num의 값을 선언과 동시에 1로 초기화)하고
+        // 이후에는 사용자가 고르는 페이지가 보여지도록 함.       
+        List<boardDTO> board_list = b_service.REPOSClimitBoard(repo_first_index);
+        model.addAttribute("BoardList", board_list);
+    	
+        // 관리자 게시글 목록(전체-펼치기ver)
+        List<boardDTO> admin_board_list = b_service.printAdminBoard();
+        model.addAttribute("adminBoardList", admin_board_list);
+ 
+        // 관리자 게시글 목록(5개-접기ver)
+        List<boardDTO> admin_board_foldList = b_service.limitAdminBoard();
+        model.addAttribute("adminFoldList", admin_board_foldList);
+    	
+    	return "user/my_repo";
     }
-    
     
     // unlogin_post, unlogin_main_posts는 비로그인 사용자를 위한 게시글 열람을 위한 함수이다. (조회수 증가 및 각종 로그인 사용자 기능 제한됨)
     
@@ -1635,6 +1989,78 @@ public class HomeController {
     	return "/unlogin_posts";  	
      }
 
+    
+    // 페이지내 검색   
+    @ResponseBody
+    @SuppressWarnings("null")
+	@RequestMapping(value="/pageSearch.do", method = RequestMethod.POST)
+    public Object pageSearch(HttpServletRequest request, 
+    		@RequestParam(value="search_filter") String search_filter, 
+    		@RequestParam(value="content", required=false) String content, 
+    		@RequestParam(value="is_secret") int is_secret,
+    		@RequestParam(value="is_repo") int is_repo) throws Exception{
+    	HttpSession session = request.getSession(false);
+    	
+    	
+    	searchVO vo = new searchVO();
+    	vo.setsearch_filter(search_filter);
+    	vo.setcontent(content);
+    	vo.setis_secret(is_secret);
+    	vo.setis_repo(is_repo);
+    	
+    /*
+    @RequestMapping(value="/pageSearch.do", method = RequestMethod.POST)
+    public Object pageSearch(searchVO vo) throws Exception{
+    	//HttpServletRequest request, 
+    	//HttpSession session = request.getSession(false);
+    */
+    
+    	List<boardDTO> searchList = null;
+    	Map<String, Object> result = new HashMap<String, Object>();
+    	
+    	System.out.println("검색 타입 >>>>>>>>>>>>>>>>>> "+ vo.search_filter);
+    	System.out.println("검색 내용 >>>>>>>>>>>>>>>>>> "+ vo.content);
+    	System.out.println("검색 secret >>>>>>>>>>>>>>>>>> "+ vo.is_secret);
+    	System.out.println("검색 repo >>>>>>>>>>>>>>>>>> "+ vo.is_repo);
+    	
+    	
+    	if(vo != null && vo.content.isEmpty() == false && vo.content.isBlank() == false) {
+        	if(vo.search_filter.equals("search_title") == true) {	
+        		searchList = b_service.pageTitleSearch(vo);
+        	}
+        	else if(vo.search_filter.equals("search_content") == true) {
+        		searchList = b_service.pageContentSearch(vo);
+        	}
+        	else if(vo.search_filter.equals("search_tit_cot") == true) {
+        		searchList = b_service.pageTitleContentSearch(vo);
+        	}
+        	else if(vo.search_filter.equals("search_writer") == true) {    
+        		searchList = b_service.pageWriterSearch(vo);
+        	}
+        	else {
+        		System.out.println("문자열 비교가 잘못됐음!!!!!!!!!!!!!!!!!");      		
+        	}
+        	
+        	// 검색 결과가 존재하지 않을 경우 NO 코드를 보냄
+        	if(searchList == null) {
+        		result.put("check", "NO");
+        	}
+        	// 검색 결과가 정상적으로 도출됏을 경우 OK 코드를 보냄
+        	else {
+        		result.put("search", searchList);
+            	result.put("check", "OK");
+        	}
+    	}
+    	// 빈 내용을 검색하거나 공백만 있을 경우 ERROR 코드를 보냄
+    	else {
+    		result.put("check", "ERROR");
+    	}
+    	
+    	//result.put("check", "NO");
+    	return result;
+    }
+    
+    
     @RequestMapping(value="/user/ERROR_PAGE")
     public String errorPage(HttpServletRequest request, Model model, Locale locale) throws Exception{
     	HttpSession session = request.getSession(false);

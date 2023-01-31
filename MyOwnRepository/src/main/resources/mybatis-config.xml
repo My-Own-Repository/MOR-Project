@@ -4,12 +4,14 @@
     "http://mybatis.org/dtd/mybatis-3-config.dtd">
     <configuration>
     
+
         <typeAliases>
             <typeAlias type="com.co.dto.MemberVO" alias="MemberVO"/>
             <typeAlias type="com.co.dto.LoginDTO" alias="LoginDTO"/>
             <typeAlias type="com.co.dto.boardDTO" alias="boardDTO"/>
             <typeAlias type="com.co.dto.commentDTO" alias="commentDTO"/>
             <typeAlias type="com.co.dto.FileDTO" alias="FileDTO"/>
+            <typeAlias type="com.co.dto.searchVO" alias="searchVO"/>
         </typeAliases>
           
        

@@ -46,15 +46,15 @@
 		<li>
 			<a href="#">게시판</a>
 			<ul class="submenu">
-				<li><a href="/user/userMain">자유게시판</a></li>
-				<li><a href="/user/secretBoard">비밀게시판</a></li>
+				<li><a href="/user/userMain/1">자유게시판</a></li>
+				<li><a href="/user/secretBoard/1">비밀게시판</a></li>
 			</ul>
 		</li>
 		<li>
 			<a href="#">저장소</a>
 			<ul class="submenu">
-				<li><a href="#">공유 저장소</a></li>
-				<li><a href="#">나만의 저장소</a></li>
+				<li><a href="/user/sharingRepo/1">공유 저장소</a></li>
+				<li><a href="/user/myRepo/1">나만의 저장소</a></li>
 			</ul>
 		</li>
 		<li>
@@ -160,14 +160,14 @@
 		</c:when>
 		
 		<c:when test="${member.id != null}">
-			<input type="button" onclick="location.href='/user/write_board/1'" class="write_button" value="글쓰기">
+			<input type="button" onclick="location.href='/user/write_board/s1r0'" class="write_button" value="글쓰기">
 		</c:when>
 	</c:choose>
 
 	<br><br><br><br>
 	<div class="bottom_div">
-		<c:if test="${first_page > 10}">
-			<a href="/user/secretBaord/${first_page-10}"><b>&lt;&nbsp;이전</b></a>&emsp;
+		<c:if test="${first_page > 5}">
+			<a href="/user/secretBaord/${first_page-5}"><b>&lt;&nbsp;이전</b></a>&emsp;
 		</c:if>
 		<div class="paging_div">
 			<div class="paging_div2">
@@ -233,15 +233,6 @@
 			var unlockTd_ID = 'secret_'+b_num;
 			var unlockTd = document.getElementById(unlockTd_ID);
 			
-			// alert(unlockTd.innerHTML);
-			
-/*
- 			var tryUnlock_content = '<a href="#" class="board_title_a">${letter.title}</a>';
-			tryUnlock_content += '<font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[${letter.comment}]</font>';
-			tryUnlock_content += '<input type="password" id="secret_input_'+ b_num +'" class="tryUnlock_input" onChange="secret_tryUnlock('+ b_num +')">';
-			tryUnlock_content += '<img src="../../../resources/img/key.png" class="secret_password_img">'; 
- 
- */
             
 			var unlockModeTd_ID = 'secret_unlockMode_'+b_num;
  			var unlockModeTd = document.getElementById(unlockModeTd_ID);
