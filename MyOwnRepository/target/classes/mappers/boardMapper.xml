@@ -181,16 +181,16 @@
 	<!-- 검색 -->
 	
 	<select id="pageTitleSearch" parameterType="searchVO" resultType="boardDTO">
-		SELECT num, title, id, nickname, comment, date, view, secret_num FROM board WHERE is_exist=1 AND is_secret=#{is_secret} AND is_repo=#{is_repo} AND title LIKE concat('%',#{content},'%')
+		SELECT num, title, id, nickname, comment, date, view, secret_num FROM board WHERE is_exist=1 AND id!="admin" AND is_secret=#{is_secret} AND is_repo=#{is_repo} AND title LIKE concat('%',#{content},'%') ORDER BY num DESC
 	</select>
 	<select id="pageContentSearch" parameterType="searchVO" resultType="boardDTO">
-		SELECT num, title, id, nickname, comment, date, view, secret_num FROM board WHERE is_exist=1 AND is_secret=#{is_secret} AND is_repo=#{is_repo} AND content LIKE concat('%',#{content},'%')
+		SELECT num, title, id, nickname, comment, date, view, secret_num FROM board WHERE is_exist=1 AND id!="admin" AND is_secret=#{is_secret} AND is_repo=#{is_repo} AND content LIKE concat('%',#{content},'%') ORDER BY num DESC
 	</select>
 	<select id="pageWriterSearch" parameterType="searchVO" resultType="boardDTO">
-		SELECT num, title, id, nickname, comment, date, view, secret_num FROM board WHERE is_exist=1 AND is_secret=#{is_secret} AND is_repo=#{is_repo} AND nickname LIKE concat('%',#{content},'%')
+		SELECT num, title, id, nickname, comment, date, view, secret_num FROM board WHERE is_exist=1 AND id!="admin" AND is_secret=#{is_secret} AND is_repo=#{is_repo} AND nickname LIKE concat('%',#{content},'%') ORDER BY num DESC
 	</select>
 	<select id="pageTitleContentSearch" parameterType="searchVO"  resultType="boardDTO">
-		SELECT num, title, id, nickname, comment, date, view, secret_num FROM board WHERE is_exist=1 AND is_secret=#{is_secret} AND is_repo=#{is_repo} AND (title LIKE concat('%',#{content},'%')) OR (content LIKE concat('%',#{content},'%'))
+		SELECT num, title, id, nickname, comment, date, view, secret_num FROM board WHERE is_exist=1 AND id!="admin" AND is_secret=#{is_secret} AND is_repo=#{is_repo} AND ((title LIKE concat('%',#{content},'%')) OR (content LIKE concat('%',#{content},'%'))) ORDER BY num DESC
 	</select>
 	
 </mapper>

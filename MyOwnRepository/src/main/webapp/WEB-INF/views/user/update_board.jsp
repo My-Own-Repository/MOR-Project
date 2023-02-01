@@ -76,7 +76,7 @@
 				</tr>
 				<tr>
 					<th>제목</th>
-					<td> <input type="text" name="title" size = "65" value="<%=post_title %>"></td>
+					<td> <input type="text" id="update_title" name="title" size = "65" value="<%=post_title %>"></td>
 	 			</tr>
 	 
 			<tr>
@@ -496,6 +496,7 @@
 	
 	function submit_btn(){	// existing_file_num_
 		if(confirm('수정사항을 저장 하시겠습니까?')){
+			var title = document.getElementById('update_title').value;		// 사용자가 입력한 제목의 값 가져오기
 			var content;	// 사용자가 입력한 내용의 값	
 			
 			var copy = document.getElementById('update_content_div').innerText;		// 사용자가 div에 입력한 내용의 값을 form으로 전송할 textarea에 복사. 이를 위한 변수 copy 선언
@@ -509,9 +510,15 @@
 			content = content.replace(/\s/ig, '');
 			
 			
-			if(content.length > 0 && content.length <= 1000){
+			if(title.length > 0 && title.length <= 40 && content.length > 0 && content.length <= 1000){
 				//document.getElementById('delete_file_form').submit();
 				document.getElementById('update_form').submit();		
+			}
+			else if(title.length == 0){
+				alert('ERROR\n제목을 입력해주세요.');
+			}
+			else if(title.length > 40){
+				alert('ERROR\n제목은 40자 이내로 입력해주세요.');
 			}
 			else if(content.length == 0){
 				alert('ERROR\n내용을 입력해주세요.');

@@ -1993,7 +1993,7 @@ public class HomeController {
     // 페이지내 검색   
     @ResponseBody
     @SuppressWarnings("null")
-	@RequestMapping(value="/pageSearch.do", method = RequestMethod.POST)
+	@RequestMapping(value="/user/pageSearch.do", method = RequestMethod.POST)
     public Object pageSearch(HttpServletRequest request, 
     		@RequestParam(value="search_filter") String search_filter, 
     		@RequestParam(value="content", required=false) String content, 

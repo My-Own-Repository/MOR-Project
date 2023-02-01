@@ -254,6 +254,22 @@ a{text-decoration:none;font-size:14px}
 	font-weight: bold;
 }
 
+.No_headTd{
+	width: 4%;
+}
+.title_headTd{
+	width: 70%;
+}
+.nickname_headTd{
+	width: 7%;
+}
+.date_headTd{
+	width: 15%;
+}
+.view_headTd{
+	width: 4%;
+}
+
 .board_title_a{
 	padding-left: 10px;
 	float: left;
