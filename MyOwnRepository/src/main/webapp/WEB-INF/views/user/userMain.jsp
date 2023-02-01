@@ -23,7 +23,7 @@
 	int page_count = (int) request.getAttribute("page_count");			// 총 페이지 개수
 %> 
 
-	<script>
+	<script
  		src="https://code.jquery.com/jquery-3.4.1.js"
  		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
  		crossorigin="anonymous"></script>
@@ -120,15 +120,15 @@
 	<table border="1" class="board_table">
 		<thead class="board_head">
 			<tr>
-				<td>No</td>
-				<td>제목</td>
-				<td>닉네임</td>
-				<td>등록일</td>
-				<td>조회</td>
+				<td class="No_headTd">No</td>
+				<td class="title_headTd">제목</td>
+				<td class="nickname_headTd">닉네임</td>
+				<td class="date_headTd">등록일</td>
+				<td class="view_headTd">조회</td>
 			</tr>
 		</thead>
 		
-		<tbody>
+		<tbody id="boardList_tbody">
 			<c:forEach items="${BoardList}" var="letter">					
                 <tr>
                 	<td>${letter.num}</td>
@@ -145,6 +145,7 @@
 	<br><br><input type="button" onclick="location.href='/user/write_board/s0r0'" class="write_button" value="글쓰기">
 	<br><br><br><br>
 	<div class="bottom_div">
+		<div id="bottom_paging_div">
 		<c:if test="${first_page > 5}">
 			<a href="/user/userMain/${first_page-5}"><b>&lt;&nbsp;이전</b></a>&emsp;
 		</c:if>
@@ -162,21 +163,26 @@
 			</c:forEach>
 			</div>
 		</div>
+		</div>
 		<c:if test="${last_page != page_count}">
 			&emsp;
 			<a href="/user/userMain/${last_page+1}"><b>다음&nbsp;&lt;</b></a>
 		</c:if>
 		<hr class="hr_sty">
-		<div class="board_search_div">		
-				<select name='search_filter' class="in_board_search_menu">
-					<option value="search_title">제목</option>
-					<option value="search_cotent">내용</option>
-					<option value="search_tit_cot">제목 + 내용</option>
-					<option value="search_writer">작성자</option>
-				</select>								
-			<button class="in_board_search_btn">검색</button>
-			<input type="text" class="in_board_search_text" placeholder="검색어를 입력해주세요.">
-		</div>
+		<form id="page_search_form" name="vo">
+			<div class="board_search_div">		
+					<select name="search_filter" class="in_board_search_menu">
+						<option value="search_title">제목</option>
+						<option value="search_content">내용</option>
+						<option value="search_tit_cot">제목 + 내용</option>
+						<option value="search_writer">작성자</option>
+					</select>								
+				<input type="button" class="in_board_search_btn" value="검색" onClick="page_search();">
+				<input type="text" name="content" class="in_board_search_text" placeholder="검색어를 입력해주세요.">	
+			</div>
+			<input type="hidden" name="is_secret" value="0">
+			<input type="hidden" name="is_repo" value="0">
+		</form>
 	</div>
 	<br><br>
 	</div>
@@ -207,7 +213,55 @@
 		}
 		
 		function page_search(){
+			var searchForm = document.getElementById("page_search_form");		// 검색 form 가져오기
+			var Tbody = document.getElementById("boardList_tbody");		// 게시글 tbody 가져오기
+			var pagingDiv = document.getElementById("bottom_paging_div");		// 페이징 div 가져오기
 			
+			var searchTbody_content = '';
+			
+			
+			$.ajax({
+				type : 'post',
+				url : 'pageSearch.do',
+				dataType : "json",
+				data : $('#page_search_form').serialize(),				
+				success:function(result){				
+					if(result.check == "OK"){												
+						pagingDiv.style.visibility = "hidden";			
+					
+						var list = result.search;
+						
+						$.each(list, function(index, list){
+							searchTbody_content += '<tr><td>'+list.num+'</td><td>';
+							searchTbody_content += '<a href="/unlogin_posts?urlnum='+list.num+'" class="board_title_a">';
+							searchTbody_content += list.title+'</a>';
+							searchTbody_content += '<font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[';
+							searchTbody_content += list.comment+']</font></td>';
+							searchTbody_content += '<td>'+list.nickname+'</td>';
+							searchTbody_content += '<td>'+list.date+'</td>';
+							searchTbody_content += '<td>'+list.view+'</td></tr>';
+						});
+
+						Tbody.innerHTML = searchTbody_content;					
+					}
+					else if(result.check == "NO"){		
+						Tbody.innerHTML = searchTbody_content;
+						alert("FAIL\n검색 결과가 존재하지 않습니다.");
+					}
+					else{
+						searchTbody_content += '<c:forEach items="${BoardList}" var="letter"><tr><td>${letter.num}</td>';
+						searchTbody_content += '<td><a href="/unlogin_posts?urlnum=${letter.num}" class="board_title_a">${letter.title}</a>';
+						searchTbody_content += '<font size="2px" color="red" class="board_comment_font">&nbsp;&nbsp;[${letter.comment}]</font></td>';
+						searchTbody_content += '<td>${letter.nickname}</td><td>${letter.date}</td><td>${letter.view}</td></tr></c:forEach>';
+						
+						Tbody.innerHTML = searchTbody_content;
+						pagingDiv.style.visibility = "visible";			
+					}
+				},
+				error:function(){
+					alert("ERROR\n페이지 검색 에러입니다.");
+				}
+			}); 
 		}
 	</script>
 	

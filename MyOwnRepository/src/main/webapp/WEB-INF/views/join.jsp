@@ -233,8 +233,8 @@ function checkNICKNAME(){			// 닉네임 중복 체크함수
 			if((nickname.search(/\W|\s/g) > -1) || nickname == ""){			// nickname 문자열에 특수문자,공백이 포함되어있는지 확인하는 조건문
 		    	alert("ERROR\n닉네임은 영문/숫자만 입력해주세요.");
 		    }
-			else if(nickname.length > 16){
-				alert("ERROR\n닉네임은 16자 이내로 입력해주세요.");
+			else if(nickname.length > 8){
+				alert("ERROR\n닉네임은 8자 이내로 입력해주세요.");
 			}
 			else if(result == 0){
 				alert("SUCCESS : " + nickname + "\n사용 가능한 닉네임입니다.");

@@ -116,11 +116,11 @@
 	<table border="1" class="board_table">
 		<thead class="board_head">
 			<tr>
-				<td>No</td>
-				<td>제목</td>
-				<td>닉네임</td>
-				<td>등록일</td>
-				<td>조회</td>
+				<td class="No_headTd">No</td>
+				<td class="title_headTd">제목</td>
+				<td class="nickname_headTd">닉네임</td>
+				<td class="date_headTd">등록일</td>
+				<td class="view_headTd">조회</td>
 			</tr>
 		</thead>
 		<tbody id="boardList_tbody">
@@ -205,8 +205,6 @@
 		function page_search(){
 			var searchForm = document.getElementById("page_search_form");		// 검색 form 가져오기
 			var Tbody = document.getElementById("boardList_tbody");		// 게시글 tbody 가져오기
-			//var normalTbody = document.getElementById("normal_boardList_tbody");	// 기본 게시글 목록 가져오기
-			//var searchTbody = document.getElementById("search_boardList_tbody");	// 검색 게시글 결과목록 가져오기
 			var pagingDiv = document.getElementById("bottom_paging_div");		// 페이징 div 가져오기
 			
 			var searchTbody_content = '';
@@ -214,7 +212,7 @@
 			
 			$.ajax({
 				type : 'post',
-				url : 'pageSearch.do',
+				url : 'user/pageSearch.do',
 				dataType : "json",
 				data : $('#page_search_form').serialize(),				
 				success:function(result){				
@@ -248,7 +246,6 @@
 						
 						Tbody.innerHTML = searchTbody_content;
 						pagingDiv.style.visibility = "visible";			
-						alert("ERROR\n검색어를 입력해주세요!");
 					}
 				},
 				error:function(){
