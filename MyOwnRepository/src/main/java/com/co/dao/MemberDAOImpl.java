@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.co.dto.FindIDPWDTO;
 import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
 
@@ -52,4 +53,16 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlSession.selectOne(Namespace+".nicknameCheck", nickname);
 	}
 
+	@Override
+	public List<FindIDPWDTO> findIDPW(FindIDPWDTO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".findIDPW", vo);
+	}
+/*
+	@Override
+	public MemberVO findPW(FindIDPWDTO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".findPW", vo);
+	}
+*/
 }

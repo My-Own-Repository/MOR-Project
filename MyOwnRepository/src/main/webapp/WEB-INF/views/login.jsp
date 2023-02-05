@@ -34,8 +34,8 @@
                 <div class="input_wrap"><input type="password" name="pw" placeholder="비밀번호 입력"></div>
                 <div class="login_btn_area"><input type="submit" class="login_btn" value="로그인"></div>
                 <div class="find_area">
-                    <a href="#">아이디찾기</a>
-                    <a href="#">비밀번호 찾기</a>
+                    <a href="javascript:idpw_window()">아이디찾기</a>
+                    <a href="javascript:idpw_window()">비밀번호 찾기</a>
                     <a href="javascript:join_window()">회원가입</a>
                 </div>
             </div>
@@ -69,6 +69,9 @@
 		function join_window(){
 			// resizable은 더이상 지원을 안하네요...
 			window.open("<%= request.getContextPath()%>/join", "", "width=640, height=800, resizable=no, fullscreen=no scrollbars=no, status=yes, left=600, top=100");
+		}
+		function idpw_window(){
+			window.open("<%= request.getContextPath()%>/find_Info", "", "width=720, height=820, resizable=no, fullscreen=no scrollbars=no, status=yes, left=600, top=100");
 		}
 	</script>
   

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.co.dto.FindIDPWDTO;
 import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
 
@@ -19,4 +20,8 @@ public interface MemberDAO {
 	public void joinMember(MemberVO member) throws Exception;		// 회원가입
 	public LoginDTO selectPerson(String sessionID) throws Exception;		// 로그인
 			 
+	// 아이디/비밀번호 찾기
+	public List<FindIDPWDTO> findIDPW(FindIDPWDTO vo) throws Exception;		// 아이디 찾기
+	//public MemberVO findPW(FindIDPWDTO vo) throws Exception;		// 비밀번호 찾기
+	
 }

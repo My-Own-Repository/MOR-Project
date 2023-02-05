@@ -2,6 +2,7 @@ package com.co.service;
 
 import java.util.List;
 
+import com.co.dto.FindIDPWDTO;
 import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
 
@@ -19,5 +20,8 @@ public interface MemberService {
 
 	public LoginDTO selectPerson(String sessionID) throws Exception;	 // 세션에 저장 된 아이디가 DB에 등록되어 있는지 조회
 
-	 
+	// 아이디/비밀번호 찾기
+	public List<FindIDPWDTO> findIDPW(FindIDPWDTO vo) throws Exception;		// 아이디 찾기
+	//public MemberVO findPW(FindIDPWDTO vo) throws Exception;		// 비밀번호 찾기
+
 }

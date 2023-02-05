@@ -1,11 +1,14 @@
 package com.co.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.co.dto.FindIDPWDTO;
 import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
 
@@ -33,8 +36,17 @@ public class MemberMapper {
 		
 	}
 	
-
 	public int nicknameCheck(String nickname) throws Exception{		// 닉네임 체크
 		return membermapper.nicknameCheck(nickname);
 	}
+	
+	// 아이디/비밀번호 찾기
+	public List<FindIDPWDTO> findIDPW(FindIDPWDTO vo) throws Exception{
+		return membermapper.findIDPW(vo);
+	}
+	/*
+	public MemberVO findPW(FindIDPWDTO vo) throws Exception{
+		return membermapper.findPW(vo);
+	}
+	*/
 }

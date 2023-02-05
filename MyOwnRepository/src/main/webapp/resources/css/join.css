@@ -31,6 +31,10 @@
 	height: 25px;
 	margin:auto
 }
+.mail_confirm_b{
+	width: 25px;
+	height: auto;
+}
 @media ( max-width: 1024px ) {
         .main-logo {
         	position: relation;

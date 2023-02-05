@@ -1,31 +1,34 @@
 package com.co.dto;
 
-public class MemberVO {
-	 
+public class FindIDPWDTO {
+	public String which;
     public String id;
     public String pw;
     public String name;
-    public String nickname;
-    public String phone_number;
     public String email;
-    public String is_admin;
     public int is_exist;
     public String sign_day;
 
-  	public MemberVO() {}
-  	public MemberVO(String id, String pw, String name, String nickname, String phone_number, String email, String is_admin, int is_exist, String sign_day) {
+  	public FindIDPWDTO() {}
+  	public FindIDPWDTO(String which, String id, String pw, String name, String email, int is_exist, String sign_day) {
   		super();
+  		this.which = which;
   		this.id = id;
   		this.pw = pw;
   		this.name = name;
-  		this.nickname = nickname;
-  		this.phone_number = phone_number;
   		this.email = email;
-  		this.is_admin = is_admin;
   		this.is_exist = is_exist;
   		this.sign_day = sign_day;
   	}
     
+    public String getwhich() {
+        return which;
+    }
+ 
+    public void setwhich(String which) {
+        this.which = which;
+    }
+  	
     public String getid() {
         return id;
     }
@@ -50,20 +53,6 @@ public class MemberVO {
         this.name = name;
     }
 
-    public String getnickname() {
-        return nickname;
-    }
-   
-    public void setnickname(String nickname) {
-        this.nickname = nickname;
-    }
-    public String getphone_number() {
-        return phone_number;
-    }
- 
-    public void setphone_number(String phone_number) {
-        this.phone_number = phone_number;
-    }
     
     public String getemail() {
         return email;
@@ -71,13 +60,6 @@ public class MemberVO {
  
     public void setemail(String email) {
         this.email = email;
-    }
-    public String getis_admin() {
-        return is_admin;
-    }
- 
-    public void setis_admin(String is_admin) {
-        this.is_admin = is_admin;
     }
     
     public int getis_exist() {
