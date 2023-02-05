@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.co.dao.MemberDAO;
 import com.co.dao.loginDAO;
+import com.co.dto.FindIDPWDTO;
 import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
 import com.co.mapper.MemberMapper;
@@ -66,4 +67,18 @@ public class MemberServiceImpl implements MemberService {
 		return dao.nicknameCheck(nickname);
 	}
 
+
+	@Override
+	public List<FindIDPWDTO> findIDPW(FindIDPWDTO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.findIDPW(vo);
+	}
+
+/*
+	@Override
+	public MemberVO findPW(FindIDPWDTO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.findPW(vo);
+	}
+*/
 }

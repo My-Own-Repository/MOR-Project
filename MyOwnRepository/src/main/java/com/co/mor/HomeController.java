@@ -8,26 +8,35 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+// import javax.mail.MessagingException;
+// import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -47,6 +56,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.co.dto.FileDTO;
+import com.co.dto.FindIDPWDTO;
 import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
 import com.co.dto.boardDTO;
@@ -70,6 +80,10 @@ public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
+	@Autowired
+	private JavaMailSenderImpl mailSender;
+	
+	
 	// 스프링 서블릿이 제공하는 HttpSession에 데이터를 보관하고 조회할 때 이용하기 위한 상수
 	public abstract class SessionConst {	
 	    public static final String LOGIN_MEMBER = "loginMember";
@@ -77,6 +91,35 @@ public class HomeController {
 
 	}
 	
+	// 게시글이 현재날짜 기준으로 1일이상 지난 게시글인지 판별하는 함수
+	public String compareDate(String b_date) {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date currentTime = new Date();
+		String date = format.format(currentTime);
+		
+		// 같은 년도에 같은 날짜이면 "HH:mm" 형식으로 몇시 몇분인지 리턴 
+		if(date.substring(0, 10).equals(b_date.substring(0, 10)) == true) {
+			return b_date.substring(11, 16);
+		}
+		// 같은 년도지만 다른 날짜이면 "MM-dd" 형식으로 몇월 며칠인지 리턴
+		else if(date.substring(0, 4).equals(b_date.substring(0, 4)) == true && date.substring(5, 10).equals(b_date.substring(5, 10)) == false) {
+			return b_date.substring(5, 10);
+		}
+		// 같은 년도가 아닐 경우 "yyyy-MM-dd" 형식으로 몇년도 몇월 며칠인지 리턴
+		else {
+			return b_date.substring(0, 10);
+		}
+			
+	}
+	
+	// 이메일 인증번호 난수 발생함수
+	public int makeRandomNum() {
+		// 난수의 범위 111111 ~ 999999 (6자리 난수)
+		Random r = new Random();
+		int randomNum = r.nextInt(899999) + 100000;
+		System.out.println("인증번호 >>>>>>>>> " + randomNum);
+		return randomNum;
+	}
 	
 	public int integration_id = -1;		// 회원가입 할 때 무결성 검사용 전역변수
 	public int integration_nickname = -1;	// 회원가입 할 때 무결성 검사용 전역변수
@@ -179,6 +222,16 @@ public class HomeController {
         // 처음 웹 사이트를 실행시켰을때는 페이지 디폴트값인 첫번째 페이지를 보여주도록 유도(board_first_num의 값을 선언과 동시에 1로 초기화)하고
         // 이후에는 사용자가 고르는 페이지가 보여지도록 함.       
         List<boardDTO> board_list = b_service.limitBoard(board_first_index);
+        String dateResult = null;
+        // 게시글의 날짜를 현재시간을 기준으로 판별하여
+        // 1. 같은 날짜의 게시글 			>> 몇시:몇분
+        // 2. 같은 년도의 다른 날짜의 게시글 	>> 몇월-며칠
+        // 3. 다른 년도의 게시글				>> 몇년도-몇월-며칠
+        // 형식으로 바꾸어 JSP로 보낸다.
+        for(int i=0; i<board_list.size(); i++) {
+        	dateResult = compareDate(board_list.get(i).date);
+        	board_list.get(i).setdate(dateResult);
+        }
         model.addAttribute("BoardList", board_list);
         
         
@@ -228,6 +281,40 @@ public class HomeController {
 		return integration_nickname;   	
     }
     
+    
+    // 이메일 인증
+    @ResponseBody
+    @RequestMapping(value="/checkEmail.do",method=RequestMethod.GET)
+    public int emailCheck(HttpSession session, @RequestParam("userEmail") String userEmail) throws Exception {
+    	System.out.println("이메일 >>>>>>> " + userEmail);
+		
+    	// 인증번호 만들기
+    	int confirmNum = makeRandomNum();
+    	
+    	// 이메일로 보낼 양식
+    	String sender = "ajkl12345@naver.com";
+    	String receiver = userEmail;
+    	String title = "MOR 회원가입 인증번호 입니다.";
+    	String content = "홈페이지를 방문 해주셔서 감사합니다."+"<br><br>"+"인증 번호는 " + confirmNum + "입니다.";
+    	
+    	MimeMessage message = mailSender.createMimeMessage();
+		try {
+			MimeMessageHelper helper = new MimeMessageHelper(message,true,"utf-8");
+			helper.setFrom(sender);
+			helper.setTo(receiver);
+			helper.setSubject(title);
+			// true 전달 > html 형식으로 전송 , 작성하지 않으면 단순 텍스트로 전달.
+			helper.setText(content,true);
+			mailSender.send(message);
+			return confirmNum;
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			return -1;
+		}
+    	
+		
+    }
+    
     @RequestMapping(value = "/join", method = RequestMethod.GET)
     public String join(HttpSession session, MemberVO member, Model model, HttpServletRequest request, HttpServletResponse response, RedirectAttributes rttr) throws Exception{
     	// System.out.println("memberVO : " + member.id);
@@ -255,6 +342,104 @@ public class HomeController {
     	return "join";
     }
 
+    // 아이디/비밀번호 찾기 view
+    @RequestMapping(value = "/find_Info")
+    public String viewFindIDPW(HttpServletRequest request) throws Exception{
+    	
+    	return "find_IDPW";
+    }
+    
+    // 아이디/비밀번호 찾기
+    @ResponseBody
+    @RequestMapping(value = "/findIDPW.do", method = RequestMethod.POST)
+    public Object findIDPW(FindIDPWDTO find) throws Exception{
+    	
+    	
+    	System.out.println("찾기 이름 >>>>>>>>>>>>>>>>>> "+ find.name);
+    	System.out.println("찾기 아이디 >>>>>>>>>>>>>>>>>> "+ find.id);
+    	System.out.println("찾기 찾으려는것 >>>>>>>>>>>>>>>>>> "+ find.which);
+    	System.out.println("찾기 이메일 >>>>>>>>>>>>>>>>>> "+ find.email); 	
+    	
+    	
+    	List<FindIDPWDTO> findUser = service.findIDPW(find);		// ajax로 받은 데이터와 일치하는 회원이 있는지 찾는 쿼리문.
+    	Map<String, Object> result = new HashMap<String, Object>();		// ajax로 보낼 데이터 저장할 map
+    	
+    	// 일치하는 회원(아이디)이 없을 경우 실행 (db와 비교해서 이름이 다르거나, 이메일이 다르거나 등)
+    	if(findUser == null || findUser.size() == 0) {
+    		//System.out.println("일치하는 아이디가 없습니다@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+    		result.put("check", "NO");
+    		return result;
+    	}
+    	// 회원을 찾았을 경우 인증 이메일 발송
+    	else {
+        	// 인증번호 만들기
+        	int confirmNum = makeRandomNum();
+        	
+        	// 이메일로 보낼 양식
+        	String sender = "ajkl12345@naver.com";
+        	String receiver = find.email;
+        	String title = "MOR 아이디/비밀번호 찾기 인증번호 입니다.";
+        	String content = "홈페이지를 방문 해주셔서 감사합니다."+"<br><br>"+"인증 번호는 " + confirmNum + "입니다.";
+        	
+        	MimeMessage message = mailSender.createMimeMessage();
+    		try {
+    			MimeMessageHelper helper = new MimeMessageHelper(message,true,"utf-8");
+    			helper.setFrom(sender);
+    			helper.setTo(receiver);
+    			helper.setSubject(title);
+    			// true 전달 > html 형식으로 전송 , 작성하지 않으면 단순 텍스트로 전달.
+    			helper.setText(content,true);
+    			mailSender.send(message);
+    			result.put("check", "OK");
+    			result.put("confirmNum", confirmNum);
+    			return result;
+    		} catch (MessagingException e) {
+    			e.printStackTrace();
+    			return -1;
+    		}
+    	}
+    	
+    }
+
+    @SuppressWarnings("null")
+	@RequestMapping(value = "/show_myIDPW/{user}/{email}/{which}")
+    public String show_myIDPW(Model model, @PathVariable("which") String which, @PathVariable("user") String user, @PathVariable("email") String email) throws Exception{
+    	
+    	FindIDPWDTO find = new FindIDPWDTO();
+    	
+    	find.setwhich(which);
+        if(which.equals("id") == true) {
+        	find.setid("-1");
+            find.setname(user);
+            find.setemail(email);
+        }
+        else if(which.equals("pw") == true) {
+        	find.setname("-1");
+        	find.setid(user);
+            find.setemail(email);
+        }
+        if(find != null) {
+        	System.out.println("찾는 이름 >>>>>>>>>>>>>>>>>> "+ find.name);
+        	System.out.println("찾는 이메일 >>>>>>>>>>>>>>>>>> "+ find.email);
+        	System.out.println("찾는 것 >>>>>>>>>>>>>>>>>> "+ find.which);
+        	System.out.println("찾는 아이디 >>>>>>>>>>>>>>>>>> "+ find.id);
+        }
+        
+        List<FindIDPWDTO> findUser = service.findIDPW(find);
+        
+        if(findUser == null) {
+        	System.out.println("findUser값이 NULL이야 @@@@@@@@@@@@@@@@@ ");
+        }
+        else {
+        	System.out.println("찾은 객체 >>>>>>>>>>>>>>>>>> "+ findUser.size());
+        }
+        
+        model.addAttribute("userInfo", findUser);
+    	model.addAttribute("which", which);
+    	
+    	return "show_IDPW";
+    }
+    
     
     @RequestMapping(value = "/LoginPage", method = RequestMethod.GET)
     public String loginPage() throws Exception {
@@ -432,6 +617,16 @@ public class HomeController {
         // 처음 웹 사이트를 실행시켰을때는 페이지 디폴트값인 첫번째 페이지를 보여주도록 유도(board_first_num의 값을 선언과 동시에 1로 초기화)하고
         // 이후에는 사용자가 고르는 페이지가 보여지도록 함.       
         List<boardDTO> board_list = b_service.limitBoard(board_first_index);
+        String dateResult = null;
+        // 게시글의 날짜를 현재시간을 기준으로 판별하여
+        // 1. 같은 날짜의 게시글 			>> 몇시:몇분
+        // 2. 같은 년도의 다른 날짜의 게시글 	>> 몇월-며칠
+        // 3. 다른 년도의 게시글				>> 몇년도-몇월-며칠
+        // 형식으로 바꾸어 JSP로 보낸다.
+        for(int i=0; i<board_list.size(); i++) {
+        	dateResult = compareDate(board_list.get(i).date);
+        	board_list.get(i).setdate(dateResult);
+        }
         model.addAttribute("BoardList", board_list);
     	
         // 관리자 게시글 목록(전체-펼치기ver)
@@ -1595,6 +1790,16 @@ public class HomeController {
         List<boardDTO> board_list = b_service.SClimitBoard(secretboard_first_index);
         model.addAttribute("BoardList", board_list);
         
+        String dateResult = null;
+        // 게시글의 날짜를 현재시간을 기준으로 판별하여
+        // 1. 같은 날짜의 게시글 			>> 몇시:몇분
+        // 2. 같은 년도의 다른 날짜의 게시글 	>> 몇월-며칠
+        // 3. 다른 년도의 게시글				>> 몇년도-몇월-며칠
+        // 형식으로 바꾸어 JSP로 보낸다.
+        for(int i=0; i<board_list.size(); i++) {
+        	dateResult = compareDate(board_list.get(i).date);
+        	board_list.get(i).setdate(dateResult);
+        }
         
         // 관리자 게시글 목록(전체-펼치기ver)
         List<boardDTO> admin_board_list = b_service.printAdminBoard();
@@ -1768,6 +1973,17 @@ public class HomeController {
         List<boardDTO> board_list = b_service.REPOlimitBoard(repo_first_index);
         model.addAttribute("BoardList", board_list);
     	
+        String dateResult = null;
+        // 게시글의 날짜를 현재시간을 기준으로 판별하여
+        // 1. 같은 날짜의 게시글 			>> 몇시:몇분
+        // 2. 같은 년도의 다른 날짜의 게시글 	>> 몇월-며칠
+        // 3. 다른 년도의 게시글				>> 몇년도-몇월-며칠
+        // 형식으로 바꾸어 JSP로 보낸다.
+        for(int i=0; i<board_list.size(); i++) {
+        	dateResult = compareDate(board_list.get(i).date);
+        	board_list.get(i).setdate(dateResult);
+        }
+        
         // 관리자 게시글 목록(전체-펼치기ver)
         List<boardDTO> admin_board_list = b_service.printAdminBoard();
         model.addAttribute("adminBoardList", admin_board_list);
@@ -1876,6 +2092,17 @@ public class HomeController {
         List<boardDTO> board_list = b_service.REPOSClimitBoard(repo_first_index);
         model.addAttribute("BoardList", board_list);
     	
+        String dateResult = null;
+        // 게시글의 날짜를 현재시간을 기준으로 판별하여
+        // 1. 같은 날짜의 게시글 			>> 몇시:몇분
+        // 2. 같은 년도의 다른 날짜의 게시글 	>> 몇월-며칠
+        // 3. 다른 년도의 게시글				>> 몇년도-몇월-며칠
+        // 형식으로 바꾸어 JSP로 보낸다.
+        for(int i=0; i<board_list.size(); i++) {
+        	dateResult = compareDate(board_list.get(i).date);
+        	board_list.get(i).setdate(dateResult);
+        }
+        
         // 관리자 게시글 목록(전체-펼치기ver)
         List<boardDTO> admin_board_list = b_service.printAdminBoard();
         model.addAttribute("adminBoardList", admin_board_list);
@@ -2021,7 +2248,7 @@ public class HomeController {
     	System.out.println("검색 타입 >>>>>>>>>>>>>>>>>> "+ vo.search_filter);
     	System.out.println("검색 내용 >>>>>>>>>>>>>>>>>> "+ vo.content);
     	System.out.println("검색 secret >>>>>>>>>>>>>>>>>> "+ vo.is_secret);
-    	System.out.println("검색 repo >>>>>>>>>>>>>>>>>> "+ vo.is_repo);
+    	System.out.println("검색 repo >>>>>>>>>>>>>>>>>> "+ vo.is_repo); 	
     	
     	
     	if(vo != null && vo.content.isEmpty() == false && vo.content.isBlank() == false) {
@@ -2047,6 +2274,16 @@ public class HomeController {
         	}
         	// 검색 결과가 정상적으로 도출됏을 경우 OK 코드를 보냄
         	else {
+        	    String dateResult = null;
+        	    // 게시글의 날짜를 현재시간을 기준으로 판별하여
+        	    // 1. 같은 날짜의 게시글 			>> 몇시:몇분
+        	    // 2. 같은 년도의 다른 날짜의 게시글 	>> 몇월-며칠
+        	    // 3. 다른 년도의 게시글				>> 몇년도-몇월-며칠
+        	    // 형식으로 바꾸어 JSP로 보낸다.
+        	    for(int i=0; i<searchList.size(); i++) {
+        	        dateResult = compareDate(searchList.get(i).date);
+        	        searchList.get(i).setdate(dateResult);
+        	    }
         		result.put("search", searchList);
             	result.put("check", "OK");
         	}

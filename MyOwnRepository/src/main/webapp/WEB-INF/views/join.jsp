@@ -55,6 +55,10 @@
 			width: 100px;
 			height: 25px;
 		}
+		.mail_confirm_b{
+			width: 25px;
+			height: auto;
+		}
 	}
    </style>
    
@@ -78,13 +82,13 @@
 		<tr>
 			<th>* 비밀번호<br><br></th>
 			<td>
-				<input type="password" title="비밀번호" id="pw" name="pw" class="input_info"/><br><br>
+				<input type="password" title="비밀번호" id="pw" name="pw" class="input_info" placeholder="비밀번호"/><br><br>
 			</td>
 		</tr>
 		<tr>
 			<th>* 비밀번호 확인<br><br></th>
 			<td>
-				<input type="password" id="pw2" title="비밀번호" class="input_info"/><br><br>
+				<input type="password" id="pw2" title="비밀번호" class="input_info" placeholder="비밀번호 재확인"/><br><br>
 			</td>
 			
 		</tr>
@@ -97,20 +101,24 @@
 		<tr>
 			<th>* 닉네임<br><br></th>
 			<td>
-				<input type="text" title="닉네임" id="nickname" name="nickname" class="input_info"/>
+				<input type="text" title="닉네임" id="nickname" name="nickname" class="input_info" placeholder="영문,숫자 8자이내"/>
 				<input type="button" class="nick_issame" value="닉네임 확인"/><br><br>
+			</td>
+		</tr>
+		<tr>
+			<th>* 이메일<br><br></th>
+			<td>
+				<input type="text" title="이메일" id="email" name="email" class="input_info" placeholder="example@example.com"/>		
+				<input type="button" class="email_check_btn" value="인증번호 전송" onClick="CheckEmail();"><br>
+				<input type="text" id="email_checkNum" class="email_checkNum" placeholder="인증번호 6자리" disabled="disabled" maxLength="6" onChange="CheckConfirmNum(this.value);">
+				<span id="checkNum_span"></span>
+				<br><br>
 			</td>
 		</tr>
 		<tr>
 			<th>전화번호<br><br></th>
 			<td>
-				<input type="text" title="전화번호" id="phone_number" name="phone_number" class="input_info"/><br><br>
-			</td>
-		</tr>
-		<tr>
-			<th>이메일<br><br></th>
-			<td>
-				<input type="text" title="이메일" id="email" name="email" class="input_info"/><br><br>
+				<input type="text" title="전화번호" id="phone_number" name="phone_number" class="input_info" placeholder="EX) 01012345678" maxLength="11"/><br><br>
 			</td>
 		</tr>
 	</table>
@@ -132,6 +140,9 @@ var keep_nickname = null;	// 닉네임 중복검사에 사용 되는 전역변�
 							
 var is_not_error = false;	// (수정 요망) 입력 조건에 맞지 않으면 회원가입 불가능의 기능을 구현할 수 있는 대체용 전역변수 선언. 
 							
+var email_confirm_num = -1;		// 생성된 이메일 인증번호를 저장하는 전역변수
+var email_confirm = false; 
+							
 function effectiveness() {			// 사용자 회원 가입 정보 유효성 및 무결성 검사 함수
     var pw = $("#pw").val();
     var pw2 = $("#pw2").val();
@@ -147,6 +158,11 @@ function effectiveness() {			// 사용자 회원 가입 정보 유효성 및 무
         $("#pw").focus();
         return false;
     }
+    else if(pw.length > 20){
+        alert("ERROR\n비밀번호는 20자 이내로 입력해주세요."); 
+        $("#pw").focus();
+        return false;
+    }
  
     else if(pw2 != pw){
         alert("ERROR\n비밀번호가 서로 다릅니다. 비밀번호를 확인해주세요."); 
@@ -158,7 +174,12 @@ function effectiveness() {			// 사용자 회원 가입 정보 유효성 및 무
         alert("ERROR\n이름을 입력해주세요.");
         $("#name").focus();
         return false;
-    }	
+    }
+    else if(name.length > 30){
+        alert("ERROR\n이름은 30자 이내로 입력해주세요.");
+        $("#name").focus();
+        return false;
+    }
     
     else if(keep_nickname == null){			
 		alert("ERROR\n닉네임 입력 및 중복 확인을 해주세요.");
@@ -175,14 +196,19 @@ function effectiveness() {			// 사용자 회원 가입 정보 유효성 및 무
 			alert("ERROR\n닉네임 중복 확인을 해주세요.");
     		return false;  	
     }
+    else if(email_confirm == false){
+    	alert("ERROR\n이메일 인증을 완료 해주세요.");
+    	return false;
+    }
 
-    else if(integration_id == true && integration_nickname == true){		// (fin) 모든 양식과 무결성을 만족했을 때 실행되는 조건문
+    else if(integration_id == true && integration_nickname == true && email_confirm == true){		// (fin) 모든 양식과 무결성을 만족했을 때 실행되는 조건문
     	if(confirm("회원가입을 하시겠습니까?")){
-            if(integration_id = true && integration_nickname == true) {
+            if(integration_id = true && integration_nickname == true && email_confirm == true) {
             	alert("회원가입을 축하합니다");
             	is_not_error = true;		
             	interation_id = false;
             	integration_nickname = false;
+            	email_confirm = false;
         	}
     	}
     }
@@ -252,6 +278,54 @@ function checkNICKNAME(){			// 닉네임 중복 체크함수
 		}
 	});
 	
+}
+
+function CheckEmail(){
+	//alert("함수는 실행되는데");
+	var userEmail = document.getElementById("email").value;
+	var checkNum = document.getElementById("email_checkNum");
+	
+	if(userEmail.length == 0){
+		alert("ERROR\n이메일을 입력해주세요.");
+	}
+	else{
+		$.ajax({
+			type : 'get',
+			url : "checkEmail.do?userEmail="+userEmail,
+			success:function(result){
+				checkNum.disabled = false;
+				email_confirm_num = result;
+				alert("인증번호가 전송되었습니다.");
+			},
+			error:function(){	
+				alert("이메일 인증 에러입니다.");
+			}
+		});
+	}	
+}
+
+function CheckConfirmNum(inputNum){
+	var checkNum = document.getElementById("email_checkNum");		// 인증번호 입력칸
+	
+	// 인증 성공
+	if(email_confirm_num == inputNum){
+		$("#email").attr("readonly",true); 	// 이메일 인증이 성공적으로 완료되면 악용을 방지하기위해 이메일 입력 태그를 잠금.
+		checkNum.disabled = true;	// 인증번호는 컨트롤러로 재차 넘길 필요가 없기때문에 disabled로 입력태그 잠금
+		email_confirm = true;	// 인증성공을 알리기 위한 전역변수
+		var checkNum_span = document.getElementById("checkNum_span");
+		var checkNum_span_content = '<b style="color:green" class="mail_confirm_b">이메일 인증완료</b>';
+		checkNum_span.innerHTML = checkNum_span_content;
+	}
+	
+	//인증 실패
+	else{
+		$("#email").attr("readonly",false);
+		checkNum.disabled = false;
+		email_confirm = false;
+		var checkNum_span = document.getElementById("checkNum_span");
+		var checkNum_span_content = '<b style="color:red" class="mail_confirm_b">인증번호 불일치</b>';
+		checkNum_span.innerHTML = checkNum_span_content;
+	}
 }
 	
 	$(document).ready(function(){	

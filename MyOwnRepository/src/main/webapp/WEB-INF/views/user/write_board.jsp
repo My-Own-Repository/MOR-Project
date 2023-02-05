@@ -629,7 +629,9 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		
 		var is_secret = '${what}'; 
 		
-		if(title.length > 0 && title.length <= 40 && content.length > 0 && content.length <= 1000){
+		var TitleByteLength = title.replace(/[\0-\x7f]|([0-\u07ff]|(.))/g,"$&$1$2").length;
+		
+		if(title.length > 0 && title.length <= 35 && TitleByteLength <= 90 && content.length > 0 && content.length <= 1000){
 			if(is_secret == 's1r0' || is_secret == 's1r1'){
 				secret_password();
 			}
@@ -638,9 +640,12 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		else if(title.length == 0){
 			alert('ERROR\n제목을 입력해주세요.');
 		}
-		else if(title.length > 40){
-			alert('ERROR\n제목은 40자 이내로 입력해주세요.');
+		else if(title.length > 35){
+			alert('ERROR\n제목이 너무 깁니다.\n공백포함 35자 이내로 입력해주세요.');
 		}
+		else if(TitleByteLength > 90){
+			alert('ERROR\n도배성 지나친 제목입니다.\n띄어쓰기 사용을 권장 드립니다.');
+		}		
 		else if(content.length == 0){
 			alert('ERROR\n내용을 입력해주세요.');
 		}

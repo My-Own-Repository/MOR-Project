@@ -67,7 +67,7 @@
 			<tr>
 				<td>No</td>
 				<td>제목</td>
-				<td>닉네임</td>
+				<td>작성자</td>
 				<td>조회</td>
 			</tr>
 		</thead>
@@ -92,7 +92,7 @@
 			<tr>
 				<td>No</td>
 				<td>제목</td>
-				<td>닉네임</td>
+				<td>작성자</td>
 				<td>조회</td>
 			</tr>
 		</thead>
@@ -118,7 +118,7 @@
 			<tr>
 				<td class="No_headTd">No</td>
 				<td class="title_headTd">제목</td>
-				<td class="nickname_headTd">닉네임</td>
+				<td class="nickname_headTd">작성자</td>
 				<td class="date_headTd">등록일</td>
 				<td class="view_headTd">조회</td>
 			</tr>
