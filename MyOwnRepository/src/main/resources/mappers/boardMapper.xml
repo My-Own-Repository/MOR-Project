@@ -194,6 +194,14 @@
    </select>
    
    
-
+	<!-- 전체 검색 - 컨트롤러에서 각각 s0r0 s0r1 s1r0 s1r1값을 가진 searchVO 4개를 인자로 이용하여 쿼리문을 4번 실행해야함 -->
+	<!-- EX) 자유게시판 검색목록 = b_service.TotalSearch(s0r0속성의 vo) -->
+	<select id="TotalSearch" parameterType="searchVO" resultType="boardDTO">
+   		SELECT * FROM board WHERE is_exist=1 AND id!="admin" AND is_secret=#{is_secret} AND is_repo=#{is_repo} AND ((title LIKE concat('%',#{content},'%')) OR (content LIKE concat('%',#{content},'%')) OR (is_repo=#{is_repo} AND nickname LIKE concat('%',#{content},'%'))) ORDER BY num DESC
+   	</select>
+   	<!-- 접기 - 전체검색ver -->
+   	<select id="foldTotalSearch" parameterType="searchVO" resultType="boardDTO">
+   		SELECT * FROM board WHERE is_exist=1 AND id!="admin" AND is_secret=#{is_secret} AND is_repo=#{is_repo} AND ((title LIKE concat('%',#{content},'%')) OR (content LIKE concat('%',#{content},'%')) OR (is_repo=#{is_repo} AND nickname LIKE concat('%',#{content},'%'))) ORDER BY num DESC LIMIT 0,5
+   	</select>
    
 </mapper>

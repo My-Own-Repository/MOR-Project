@@ -22,7 +22,7 @@
 	</style>
 
 <%
-	String userNickname = (String) request.getAttribute("userNickname");  	// 로그인한 유저의 nickname
+	//String userNickname = (String) request.getAttribute("userNickname");  	// 로그인한 유저의 nickname
 	String page_name = (String) request.getAttribute("page_name");		// 글 작성자의 nickname
 	Integer page_num = (Integer) request.getAttribute("page_num");		// 정수형 변수는 int가 안되고 오로지 Integer로 선언해야함
 %> 
@@ -44,8 +44,8 @@
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<div class="search_div">
-		<input type="text" class="search_input" placeholder="검색어 입력">
-		<input type="button" value="검색" class="search">
+		<input type="text" id="total_search_input" class="search_input" placeholder="검색어 입력">
+		<input type="button" value="검색" class="search" onClick="total_search();">
 	</div>
 	
 	<ul class="menu">
@@ -64,7 +64,14 @@
 			</ul> 
 		</li>
 		<li>
-			<a href="/user/mypage">${member.nickname}</a>
+			<c:choose>
+				<c:when test="${member != null}">
+					<a href="/user/mypage">${member.nickname}</a>
+				</c:when>
+				<c:when test="${member == null}">
+					<a href="/LoginPage">내정보</a>
+				</c:when>
+			</c:choose>
 		</li>
 	</ul>
 	<br><br>
@@ -177,54 +184,95 @@
 	
 	<c:choose>
 		<c:when test="${what == 's0r1'}">
-			<div>
-				<table border="1" class="downFile_table">
-					<tr>
-						<th class="downFile_th">&nbsp;첨부파일</th>
-					</tr>
-					<tr>
-						<td class="downFile_td">
-							<c:forEach items="${fileDown}" var="list">
-								<a href="/downfiles.do/${list.file_num}"><font size="2px" color="blue">&nbsp;${list.original_file_name}</font></a>
-								<span class="downFile_span">&nbsp;&nbsp;${list.file_size}&nbsp;kb</span>
-								<br>
-							</c:forEach>
-						</td>
-					</tr>		
-				</table>
-				<br><br>
-			</div>
+			<c:choose>
+				<c:when test="${member != null}">
+					<div>
+						<table border="1" class="downFile_table">
+							<tr>
+								<th class="downFile_th">&nbsp;첨부파일</th>
+							</tr>
+							<tr>
+								<td class="downFile_td">
+									<c:forEach items="${fileDown}" var="list">
+										<a href="/downfiles.do/${list.file_num}"><font size="2px" color="blue">&nbsp;${list.original_file_name}</font></a>
+										<span class="downFile_span">&nbsp;&nbsp;${list.file_size}&nbsp;kb</span>
+										<br>
+									</c:forEach>
+								</td>
+							</tr>		
+						</table>
+						<br><br>
+					</div>
+				</c:when>
+				<c:when test="${member == null}">
+					<div>
+						<table border="1" class="downFile_table">
+							<tr>
+								<th class="downFile_th">&nbsp;첨부파일</th>
+							</tr>
+							<tr>
+								<td class="downFile_td">
+									<a href="/LoginPage"><input type="text" class="file_down_login" value="로그인이 필요한 서비스입니다."></a>
+								</td>
+							</tr>		
+						</table>
+						<br><br>
+					</div>
+				</c:when>
+			</c:choose>
 		</c:when>
 		<c:when test="${what == 's1r1'}">
-			<div>
-				<table border="1" class="downFile_table">
-					<tr>
-						<th class="downFile_th">&nbsp;첨부파일</th>
-					</tr>
-					<tr>
-						<td class="downFile_td">
-							<c:forEach items="${fileDown}" var="list">
-								<a href="/downfiles.do/${list.file_num}"><font size="2px" color="blue">&nbsp;${list.original_file_name}</font></a>
-								<span class="downFile_span">&nbsp;&nbsp;${list.file_size}&nbsp;kb</span>
-								<br>
-							</c:forEach>
-						</td>
-					</tr>		
-				</table>
-				<br><br>
-			</div>
+			<c:choose>
+				<c:when test="${member != null}">
+					<div>
+						<table border="1" class="downFile_table">
+							<tr>
+								<th class="downFile_th">&nbsp;첨부파일</th>
+							</tr>
+							<tr>
+								<td class="downFile_td">
+									<c:forEach items="${fileDown}" var="list">
+										<a href="/downfiles.do/${list.file_num}"><font size="2px" color="blue">&nbsp;${list.original_file_name}</font></a>
+										<span class="downFile_span">&nbsp;&nbsp;${list.file_size}&nbsp;kb</span>
+										<br>
+									</c:forEach>
+								</td>
+							</tr>		
+						</table>
+						<br><br>
+					</div>
+				</c:when>
+				<c:when test="${member == null}">
+					<div>
+						<table border="1" class="downFile_table">
+							<tr>
+								<th class="downFile_th">&nbsp;첨부파일</th>
+							</tr>
+							<tr>
+								<td class="downFile_td">
+									<a href="/LoginPage"><input type="text" class="file_down_login" value="로그인이 필요한 서비스입니다."></a>
+								</td>
+							</tr>		
+						</table>
+						<br><br>
+					</div>
+				</c:when>
+			</c:choose>
 		</c:when>
 	</c:choose>
 
 	<br>
-	<table>	
 	
+
+			<table>	
 				<tr>
 					<td class="prePost_td"><div id="preANDnext_div1">이전글&nbsp;&nbsp;<a href="/user/posts?urlnum=${pre_post.num}">${pre_post.title}</a></div></td>			
 					<td class="nextPost_td"><div id="preANDnext_div2">다음글&nbsp;&nbsp;<a href="/user/posts?urlnum=${next_post.num}">${next_post.title}</a></div></td>
 				</tr>		
+			</table>
 
-	</table>
+
+
 	
 	<br><br>
 	
@@ -241,7 +289,7 @@
 			const delete_btn = document.getElementById('delete_btn');
 			
 			var page_id = '${page_name}';
-			var session_id = '${userNickname}';
+			var session_id = '${member.nickname}';
 			
 			
 			if(page_id != session_id){
@@ -389,7 +437,7 @@
 				const control_imgs = document.getElementsByClassName('imgs');
 		
 				var comment_id = '${cmt.nickname}';
-				var session_id = '${userNickname}';				
+				var session_id = '${member.nickname}';				
 				
 				/*
 					forEach문안에 있기 때문에 댓글이 작성 될때마다 is_mine_img() 함수가 호출된다.
@@ -453,7 +501,7 @@
 			<div class="write_comment_div">
 				<form action="/user/posts/comment" method="post" enctype="multipart/form-data">
 					<input type="hidden" name="b_num" value="<%=page_num %>">
-					<input type="hidden" name="nickname" value="<%=userNickname %>">
+					<input type="hidden" name="nickname" value="${member.nickname}">
 					<table border="1" class="comment_table">		
 						<tr>
 							<td colspan="4"><textarea id="comment_id" name="content"></textarea></td>
@@ -526,8 +574,8 @@
 					secretR_p.style.display = "none";
 					secret_p.style.display = "none";
 					userR_p.style.display = "block";
-					hideTable1.style.display = "none";
-					hideTable2.style.display = "none";
+					hideTable1.style.display = "block";
+					hideTable2.style.display = "block";
 				}	
 				else if(is_secret == 's1r1'){		// 비밀저장소
 					user_p.style.display = "none";
@@ -561,6 +609,19 @@
 		}
 		change_hyperlink_url();
 	
+		
+		
+		function total_search(){
+			var search = document.getElementById("total_search_input").value;
+
+			if(search != ''){
+				var path = 'totalSearch?search='+search;
+				window.location.href = path;
+			}
+			else{
+				alert("검색어를 입력해주세요!");
+			}
+		}
 	</script>
 	
 	

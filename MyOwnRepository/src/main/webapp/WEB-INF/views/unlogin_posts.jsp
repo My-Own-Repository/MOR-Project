@@ -35,8 +35,8 @@
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<div class="search_div">
-		<input type="text" class="search_input" placeholder="검색어 입력">
-		<input type="button" value="검색" class="search">
+		<input type="text" id="total_search_input" class="search_input" placeholder="검색어 입력">
+		<input type="button" value="검색" class="search" onClick="total_search();">
 	</div>
 	
 	<ul class="menu">
@@ -300,6 +300,17 @@
 		}
 		changeContent_hyperlink_url();
 	
+		function total_search(){
+			var search = document.getElementById("total_search_input").value;
+
+			if(search != ''){
+				var path = 'user/totalSearch?search='+search;
+				window.location.href = path;
+			}
+			else{
+				alert("검색어를 입력해주세요!");
+			}
+		}
 	</script>
 
 	<c:if test="${msg == false}">
