@@ -83,4 +83,9 @@ public interface BoardService {
 	public List<boardDTO> pageWriterSearch(searchVO vo) throws Exception;		// 페이지내 작성자 검색 
 	public List<boardDTO> pageTitleContentSearch(searchVO vo) throws Exception;		// 페이지내 제목+내용 검색 
 	
+	
+	/* 전체 검색 */
+	
+	public List<boardDTO> TotalSearch(searchVO vo) throws Exception;		// 전체 검색
+	public List<boardDTO> foldTotalSearch(searchVO vo) throws Exception;	// 전체 검색 5개 접기
 }

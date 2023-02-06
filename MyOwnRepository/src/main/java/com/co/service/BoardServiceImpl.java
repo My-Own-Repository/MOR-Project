@@ -300,5 +300,21 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	
+	/* 전체 검색 */
+	
+	@Override
+	public List<boardDTO> TotalSearch(searchVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.TotalSearch(vo);
+	}
+	// 5개 접기
+	@Override
+	public List<boardDTO> foldTotalSearch(searchVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.foldTotalSearch(vo);
+	}
+
+	
+	
    
 }

@@ -38,8 +38,8 @@
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<div class="search_div">
-		<input type="text" class="search_input" placeholder="검색어 입력">
-		<input type="button" value="검색" class="search">
+		<input type="text" id="total_search_input" class="search_input" placeholder="검색어 입력">
+		<input type="button" value="검색" class="search" onClick="total_search();">
 	</div>
 	
 	<ul class="menu">
@@ -114,7 +114,7 @@
 	</div>
 	
 	
-	<br><br><br><br>
+	<br><br><br><br><br>
 	<p>비밀게시판</p><br>
 	<div class="main_div">
 	<table border="1" class="board_table">
@@ -351,6 +351,18 @@
 					alert("ERROR\n페이지 검색 에러입니다.");
 				}
 			}); 
+		}
+		
+		function total_search(){
+			var search = document.getElementById("total_search_input").value;
+
+			if(search != ''){
+				var path = 'totalSearch?search='+search;
+				window.location.href = path;
+			}
+			else{
+				alert("검색어를 입력해주세요!");
+			}
 		}
 	</script>
 	

@@ -82,6 +82,10 @@ public interface boardDAO {
 	public List<boardDTO> pageTitleContentSearch(searchVO vo) throws Exception;		// 페이지내 제목+내용 검색 
 	
 	
+	/* 전체 검색 */
+	public List<boardDTO> TotalSearch(searchVO vo) throws Exception;	// 전체 검색
+	public List<boardDTO> foldTotalSearch(searchVO vo) throws Exception; 	// 전체 검색 - 접기(5개)
+	
 	// 첫 글과 마지막 글의 고유번호 조회(이전,다음 글 조회할때 사용)
 	public int selectMinNum() throws Exception;	
 	public int selectMaxNum() throws Exception;

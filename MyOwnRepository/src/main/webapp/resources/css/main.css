@@ -297,6 +297,51 @@ a{text-decoration:none;font-size:14px}
 	font-size: 18px;
 }
 
+.totalPost_p{
+	width: 25%;
+	text-align: center;
+	font-size:20px;
+	color:white;
+	background-color: darkgray;
+	float: left;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.totalpost_spread_btn{
+	background-color: darkgray;
+	color:white;
+	font-weight: bold;
+	width: 100%;
+	hieght: auto;
+	padding: 3px;
+	font-size: 10px;
+}
+
+.totalpost_fold_btn{
+	background-color: darkgray;
+	color:white;
+	font-weight: bold;
+	width: 100%;
+	hieght: auto;
+	padding: 3px;
+	font-size: 10px;
+}
+
+#s0r0_spread_div{
+	display: none;	
+}
+
+#s0r1_spread_div{
+	display: none;	
+}
+
+#s1r0_spread_div{
+	display: none;	
+}
+#s1r1_spread_div{
+	display: none;	
+}
 
 .hr_sty {
 	border-top: 1px dotted #bbb;
@@ -501,6 +546,16 @@ footer {
 			overflow-x: hidden;
 			background-color: white;
 		}
+		input, button{			
+			/* ios 기본 스타일 제거 */
+			appearance: none;
+		    -moz-appearance: none;
+		    -webkit-appearance: none;
+		    border-radius: 0;
+		    -webkit-border-radius: 0;
+		    -moz-border-radius: 0;
+		}
+		
 
 		.empty_main_div{
 			background-color: white;
@@ -654,7 +709,7 @@ footer {
 		
 		.secret_password_img{
 			position: relative;
-			width: 4%;
+			width: 12px;
 			height: auto;
 			float: right;
 			padding-right: 10px;
@@ -674,6 +729,17 @@ footer {
 		}
 		.tryUnlock_input input{
 			font-size:4px;
+		}
+		
+		.totalPost_p{
+			width: 25%;
+			text-align: center;
+			font-size:16px;
+			color:white;
+			background-color: darkgray;
+			float: left;
+			padding-left: 5px;
+			padding-right: 5px;
 		}
 		
 		p{

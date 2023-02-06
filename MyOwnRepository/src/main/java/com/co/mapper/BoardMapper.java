@@ -203,5 +203,14 @@ public class BoardMapper {
 	public List<boardDTO> pageTitleContentSearch(searchVO vo) throws Exception {
 		return boardmapper.pageTitleSearch(vo);
 	}
+
 	
+	/* 전체 검색 */
+	public List<boardDTO> TotalSearch(searchVO vo) throws Exception {
+		return boardmapper.TotalSearch(vo);
+	}
+	// 5개 접기
+	public List<boardDTO> foldTotalSearch(searchVO vo) throws Exception {
+		return boardmapper.foldTotalSearch(vo);
+	}
 }

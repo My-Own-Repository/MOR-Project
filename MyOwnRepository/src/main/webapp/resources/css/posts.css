@@ -495,6 +495,15 @@ footer {
 			overflow-x: hidden;
 			background-color: white;
 		}
+		input, button{			
+			/* ios 기본 스타일 제거 */
+			appearance: none;
+		    -moz-appearance: none;
+		    -webkit-appearance: none;
+		    border-radius: 0;
+		    -webkit-border-radius: 0;
+		    -moz-border-radius: 0;
+		}
 
        	.empty_post_div{
 			background-color: white;

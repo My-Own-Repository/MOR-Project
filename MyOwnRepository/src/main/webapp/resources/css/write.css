@@ -626,10 +626,27 @@ footer {
 			left: 0px;	
         }
         input {
+        	/* ios 기본 스타일 제거 */
+			appearance: none;
+		    -moz-appearance: none;
+		    -webkit-appearance: none;
+		    border-radius: 0;
+		    -webkit-border-radius: 0;
+		    -moz-border-radius: 0;
         	position: relative;
         	width: 80%;
 			height: auto;
         }
+        button{			
+			/* ios 기본 스타일 제거 */
+			appearance: none;
+		    -moz-appearance: none;
+		    -webkit-appearance: none;
+		    border-radius: 0;
+		    -webkit-border-radius: 0;
+		    -moz-border-radius: 0;
+		}
+        
         .input_file{
         	position: relative;
         	width: 60%;

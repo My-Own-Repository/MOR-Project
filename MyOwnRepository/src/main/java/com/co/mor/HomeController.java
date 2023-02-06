@@ -1103,25 +1103,29 @@ public class HomeController {
 	@RequestMapping(value = "/user/posts", method = RequestMethod.GET)		// 게시글에 대한 내용을 jsp에서 받아오고 연산하는곳
     public String posts(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam("urlnum") int urlnum, commentDTO letter) throws Exception {
     	HttpSession session = request.getSession(false);
+    	
+    	/*
     	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
     		model.addAttribute("session_msg", false);
     		return "redirect:/LoginPage";
     	}
     	else if(session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
-    		model.addAttribute("session_msg", true);
-        	session.invalidate();
-        	return "redirect:/LoginPage";
+    		model.addAttribute("session_msg", false);
     	}
-    	
+    	 */
     	// 세션에 보관한 회원 객체를 새로운 멤버 객체에 찾아 넣어준다.
     	LoginDTO loginmember = (LoginDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
+    	/*
     	if (loginmember == null) {
     		model.addAttribute("session_msg", false);
     		return "redirect:/";
     	}
-    	
-    	model.addAttribute("member", loginmember);
-    	model.addAttribute("userNickname", loginmember.nickname);
+    	*/
+        model.addAttribute("member", loginmember);
+    	if (loginmember != null) {
+    		model.addAttribute("userNickname", loginmember.nickname);
+    	}
+        
     	
     	String path = "redirect:/user/posts";
     	
@@ -1195,6 +1199,7 @@ public class HomeController {
         	}
         	is_what = "s0r0";
         	model.addAttribute("what", is_what);
+        	
     	}
     	
     	// 비밀 게시판
@@ -1213,6 +1218,7 @@ public class HomeController {
         	
         	
     		user_show_post = b_service.SCselectBoard(number);
+    		
     		
          	first_num = b_service.SCselectMinNum();     	 	
          	last_num = b_service.SCselectMaxNum();
@@ -1250,7 +1256,7 @@ public class HomeController {
          	else if(number == last_num) {		// 처음 선택한 게시글이 마지막 글 일경우 이전글에 해당 글이 나오도록 함. 
          		next_posts = b_service.SCselectBoard(last_num);
          	}
-       	
+       		
         	
         	
         	user_show_post.setcontent(user_show_post.getcontent().replace("\r\n", "<br>")); 	// 게시글 작성 시 사용한 Enter(줄바꿈)이 적용 되도록 재저장. (구글링을 통해 해당 정보 습득)
@@ -1323,6 +1329,7 @@ public class HomeController {
         	}
         	is_what = "s0r1";
         	model.addAttribute("what", is_what);
+        	
     	}
     	
     	// 비밀 저장소
@@ -1341,6 +1348,7 @@ public class HomeController {
         	
         	
     		user_show_post = b_service.REPOSCselectBoard(number);
+    		
     		
          	first_num = b_service.REPOselectMinNum(1);     	 	
          	last_num = b_service.REPOselectMaxNum(1);
@@ -1392,6 +1400,7 @@ public class HomeController {
         	}  
         	is_what = "s1r1";
         	model.addAttribute("what", is_what);
+        	
     	}
     	
     	
@@ -1450,9 +1459,11 @@ public class HomeController {
 		
 		model.addAttribute("SelectPost", user_show_post);		// 해당 게시글의 모든 정보(댓글 제외)를 JSP에 보내는 구문.    
 		
+		
 		// 이전글과 다음글의 정보를 jsp로 보내기
 		model.addAttribute("pre_post", pre_posts);
 		model.addAttribute("next_post", next_posts);
+		
 		
 		List<commentDTO> cmt = b_service.printComment(user_show_post.num);
 		
@@ -2297,6 +2308,153 @@ public class HomeController {
     	return result;
     }
     
+    @RequestMapping(value="/user/totalSearch")
+    public String TotalSearch(HttpServletRequest request, Model model, @RequestParam("search") String search) throws Exception{
+    	HttpSession session = request.getSession(false);
+
+    	if(session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
+    		model.addAttribute("login", false);
+    		session.invalidate();
+    	}
+    	else {
+    		model.addAttribute("login", true);
+        	// 세션에 보관한 회원 객체를 새로운 멤버 객체에 찾아 넣어준다.
+        	LoginDTO loginmember = (LoginDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);      	
+        	model.addAttribute("member", loginmember);
+    	}
+    	
+    	searchVO vo = new searchVO();
+    	vo.setcontent(search);
+    	
+    	// 자유게시판 리스트
+    	List<boardDTO> freeB_searchList = null;
+    	List<boardDTO> fold_freeB_searchList = null;
+    	
+    	// 비밀게시판 리스트
+    	List<boardDTO> secretB_searchList = null;
+    	List<boardDTO> fold_secretB_searchList = null;
+    	
+    	// 공유저장소 리스트
+    	List<boardDTO> sharingR_searchList = null;
+    	List<boardDTO> fold_sharingR_searchList = null;
+    	
+    	// 비밀저장소 리스트
+    	List<boardDTO> secretR_searchList = null;
+    	List<boardDTO> fold_secretR_searchList = null;
+    	
+    	System.out.println("검색 내용 >>>>>>>>>>>>>>>>>> "+ vo.content);
+    	
+    	
+    	if(vo != null && vo.content.isEmpty() == false && vo.content.isBlank() == false) {
+        	
+    		// 자유게시판 검색
+    		vo.setis_secret(0);
+    		vo.setis_repo(0);
+    		freeB_searchList = b_service.TotalSearch(vo);
+    		fold_freeB_searchList = b_service.foldTotalSearch(vo);
+        	
+        	// 비밀게시판 검색
+    		vo.setis_secret(1);
+    		vo.setis_repo(0);
+    		secretB_searchList = b_service.TotalSearch(vo);
+    		fold_secretB_searchList = b_service.foldTotalSearch(vo);
+    		
+        	// 공유저장소 검색
+    		vo.setis_secret(0);
+    		vo.setis_repo(1);
+    		sharingR_searchList = b_service.TotalSearch(vo);
+    		fold_sharingR_searchList = b_service.foldTotalSearch(vo);
+    		
+        	// 비밀저장소 검색
+    		vo.setis_secret(1);
+    		vo.setis_repo(1);
+    		secretR_searchList = b_service.TotalSearch(vo);
+    		fold_secretR_searchList = b_service.foldTotalSearch(vo);
+    		
+        	
+        	// 검색 결과가 존재하지 않을 경우
+        	if(freeB_searchList == null && secretB_searchList == null && sharingR_searchList == null && secretR_searchList == null) {
+        		System.out.println("검색 결과가 없음@@@@@@@@@@@@@@@@@@");
+        		model.addAttribute("notPost", false);
+        	}
+        	// 검색 결과가 정상적으로 도출됐을 경우
+        	else {
+        	    String dateResult = null;
+        	    // 게시글의 날짜를 현재시간을 기준으로 판별하여
+        	    // 1. 같은 날짜의 게시글 			>> 몇시:몇분
+        	    // 2. 같은 년도의 다른 날짜의 게시글 	>> 몇월-며칠
+        	    // 3. 다른 년도의 게시글				>> 몇년도-몇월-며칠
+        	    // 형식으로 바꾸어 JSP로 보낸다.
+        	    
+        	    // 자유게시판 작성일 보기 용이하게 수정
+        	    for(int i=0; i<freeB_searchList.size(); i++) {
+        	        dateResult = compareDate(freeB_searchList.get(i).date);
+        	        freeB_searchList.get(i).setdate(dateResult);
+        	    }	// 접기
+        	    for(int i=0; i<fold_freeB_searchList.size(); i++) {
+        	        dateResult = compareDate(fold_freeB_searchList.get(i).date);
+        	        fold_freeB_searchList.get(i).setdate(dateResult);
+        	    }
+        		
+        		
+        		// 비밀게시판 작성일 보기 용이하게 수정
+        	    for(int i=0; i<secretB_searchList.size(); i++) {
+        	        dateResult = compareDate(secretB_searchList.get(i).date);
+        	        secretB_searchList.get(i).setdate(dateResult);
+        	    }	// 접기
+        	    for(int i=0; i<fold_secretB_searchList.size(); i++) {
+        	        dateResult = compareDate(fold_secretB_searchList.get(i).date);
+        	        fold_secretB_searchList.get(i).setdate(dateResult);
+        	    }
+        	    
+        	    
+        	    // 공유저장소 작성일 보기 용이하게 수정
+        	    for(int i=0; i<sharingR_searchList.size(); i++) {
+        	        dateResult = compareDate(sharingR_searchList.get(i).date);
+        	        sharingR_searchList.get(i).setdate(dateResult);
+        	    }	// 접기
+        	    for(int i=0; i<fold_sharingR_searchList.size(); i++) {
+        	        dateResult = compareDate(fold_sharingR_searchList.get(i).date);
+        	        fold_sharingR_searchList.get(i).setdate(dateResult);
+        	    }
+
+        	    
+        	    // 비밀저장소 작성일 보기 용이하게 수정
+        	    for(int i=0; i<secretR_searchList.size(); i++) {
+        	        dateResult = compareDate(secretR_searchList.get(i).date);
+        	        secretR_searchList.get(i).setdate(dateResult);
+        	    }	// 접기
+        	    for(int i=0; i<fold_secretR_searchList.size(); i++) {
+        	        dateResult = compareDate(fold_secretR_searchList.get(i).date);
+        	        fold_secretR_searchList.get(i).setdate(dateResult);
+        	    }
+        	   
+        	    
+        	    // 전체검색 게시판별 리스트 - 펼치기ver
+        	    model.addAttribute("freeB_List", freeB_searchList);
+        	    model.addAttribute("secretB_List", secretB_searchList);
+        	    model.addAttribute("sharingR_List", sharingR_searchList);
+        	    model.addAttribute("secretR_List", secretR_searchList);
+        	    
+        	    // 전체검색 게시판별 리스트 - 접기ver
+        	    model.addAttribute("fold_freeB_List", fold_freeB_searchList);
+        	    model.addAttribute("fold_secretB_List", fold_secretB_searchList);
+        	    model.addAttribute("fold_sharingR_List", fold_sharingR_searchList);
+        	    model.addAttribute("fold_secretR_List", fold_secretR_searchList);
+        	}
+        
+    	}
+    	
+        // 관리자 게시글 목록(전체-펼치기ver)
+        List<boardDTO> admin_board_list = b_service.printAdminBoard();
+        model.addAttribute("adminBoardList", admin_board_list);
+ 
+        // 관리자 게시글 목록(5개-접기ver)
+        List<boardDTO> admin_board_foldList = b_service.limitAdminBoard();
+        model.addAttribute("adminFoldList", admin_board_foldList);
+    	
+    	return "user/totalpost";
+    }
     
     @RequestMapping(value="/user/ERROR_PAGE")
     public String errorPage(HttpServletRequest request, Model model, Locale locale) throws Exception{

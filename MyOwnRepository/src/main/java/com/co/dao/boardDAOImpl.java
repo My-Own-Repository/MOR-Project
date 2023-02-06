@@ -301,6 +301,21 @@ public class boardDAOImpl implements boardDAO{
 		return sqlSession.selectList(Namespace+".pageTitleContentSearch", vo);
 	}
 
+	
+	/* 전체 검색 */
+	
+	@Override
+	public List<boardDTO> TotalSearch(searchVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".TotalSearch", vo);
+	}
+	// 접기 5개
+	@Override
+	public List<boardDTO> foldTotalSearch(searchVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".foldTotalSearch", vo);
+	}
+
 
 	
 	
