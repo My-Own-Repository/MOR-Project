@@ -59,7 +59,11 @@
 			</ul>
 		</li>
 		<li>
-			<a href="/user/mypage">${member.nickname}</a>
+			<a href="#">${member.nickname}</a>
+			<ul class="submenu">
+				<li><a href="/user/mypage">마이페이지</a></li>
+				<li><a href="/logout">로그아웃</a></li>
+			</ul>
 		</li>
 	</ul>
 	
@@ -362,6 +366,18 @@
 	                    </div>
 	                    <div class="bundle">
 	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="열린 자물쇠 아이콘">열린 자물쇠 아이콘  제작자: Freepik - Flaticon</a></span>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="사진술 아이콘">사진술 아이콘  제작자: Good Ware - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="비디오 아이콘">비디오 아이콘  제작자: Iconjam - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="폴더 아이콘">폴더 아이콘  제작자: Freepik - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="파일 아이콘">파일 아이콘  제작자: DinosoftLabs - Flaticon</a>
 	                    </div>
 	                </div>
 				</address>

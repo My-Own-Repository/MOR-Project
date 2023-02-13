@@ -1,0 +1,823 @@
+
+.total_div{
+	width: 100%;
+	height: 100%;
+	margin: auto;
+	text-align: center;
+}
+.total_content_div{
+	width: 80%;
+	height: auto;
+	margin: auto;
+	text-align: center;
+}
+#file_total_content_div{
+	display: none;
+}
+
+
+/* 마이페이지 - 상단 */
+.mypage_top{
+	background-color: black;
+	width: 100%;
+	height: 60px;
+}
+.go_main_MOR{
+	position: relative;
+	font-size: 40px;
+	float: left;
+	font-weight: bold;
+	color: white;
+	padding-left: 20px;
+}
+.go_board_OR_repo{
+	position: flex;
+	padding-right: 35px;
+	font-size: 20px;
+	font-weight: bold;
+	color: white;
+	text-align: center;
+	align-items:center;
+	justify-content: center;
+}
+
+
+/* 마이페이지 - 중단 */
+.mypage_middle{
+	padding: 20px;
+	width: 97%;
+	height: 100px;
+	margin: auto;
+	text-align: center;
+	border: 1px solid black;
+}
+.mypage_title{
+	width: 60%;
+	height: 40%;
+	margin: auto;
+	text-align: center;
+	padding: 20px;
+}
+.mypage_select{
+	width: 200px;
+	height: auto;
+	margin: auto;
+	text-align: center;
+}
+.my_info_AND_file_span{
+	margin-top: 20px;
+	width: 100%;
+	height: auto;
+	font-size: 14px;
+}
+.mypage_title_b{
+	width: 100px;
+	font-size: 36px;
+}
+/*
+.my_info_span_btn{
+	font-size: 18px;
+	color:blue;
+	border: 0px;
+	background-color: white;
+	border-bottom: 1px solid blue;
+	margin: auto;
+}
+.my_file_span_btn{
+	font-size: 18px;
+	margin: auto;
+	border: 0px;
+	background-color: white;
+}
+*/
+.noneClicked_btn{
+	font-size: 18px;
+	margin: auto;
+	border: 0px;
+	background-color: white;
+}
+.clicked_btn{
+	font-size: 18px;
+	color:blue;
+	border: 0px;
+	background-color: white;
+	border-bottom: 1px solid blue;
+	margin: auto;
+}
+
+
+/* 마이페이지 - 하단 */
+/* 마이페이지 하단 - 내정보 */
+.mypage_bottom{
+	width: 100%;
+	height: 720px;
+	margin: auto;
+	text-align: center;
+	background-color: lightgray;
+}
+.mypage_bottom_div{
+	width: 80%;
+	height: 600px;
+	margin: auto;
+	text-align: center;
+	background-color: lightgray;
+}
+.my_info_div{
+	background-color: white;
+	width: 98%;
+	height: 40%;
+	padding: 10px;
+	border: 1px solid black;
+}
+.my_info_div_top{
+	width: 50%;
+	height: auto;
+	padding: 5px;
+	float: left;
+}
+.MOR_logo{
+	float: left;
+	width: 100px;
+	height: auto;
+	padding-right: 5px;
+	margin-bottom: 20px;
+}
+.my_info_div_bottom{
+	width: 50%;
+	height: 20%;
+	padding: 5px;
+	float: left;
+}
+.my_info_div_bottom_table{
+	width: 100%;
+	height: auto;
+	float: left;
+}
+table th{
+	float: left;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #bbb;
+}
+table td{
+	float: left;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #bbb;
+}
+.my_info_edit_btn{
+	width: auto;
+	height: auto;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	background-color: darkgray;
+	border: 0px;
+	color: white;
+	float: right;
+}
+.my_info_unregister_btn{
+	width: auto;
+	height: auto;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+	background-color: black;
+	border: 0px;
+	color: white;
+	margin-top: 10%;
+	float: right;
+}
+
+/* 마이페이지 하단 - 내가 쓴 글/댓글 */
+.my_post_div{
+	background-color: white;
+	border: 1px solid black;
+	width: 45%;
+	height: 50%;
+	padding-bottom: 5px;
+	float: left;
+}
+.my_comment_div{
+	background-color: white;
+	border: 1px solid black;
+	width: 45%;
+	height: 50%;
+	padding-bottom: 5px;
+	float: right;
+}
+.my_post_AND_comment_title_p{
+	padding-left: 10px;
+	font-size: 18px;
+	font-weight: bold;
+	float: left;
+}
+.my_post_AND_comment_hr{
+	width: 100%;
+	height: auto;
+	border-top: 1px dotted #bbb;
+	margin-bottom: 20px;
+}
+.my_post_AND_comment_div_content{
+	width: 80%;
+	height: 60%;
+	margin: 10px;
+	padding: 10px;
+	margin: auto;
+	background-color: #FAFAFA;
+}
+.my_posts_AND_comments_List_div{
+	width: 100%;
+	height: 100%;
+	text-align: left;
+	background-color: #FAFAFA;
+	overflow-x: hidden;
+	overflow: scroll;
+}
+.my_posts_AND_comments_p{
+	font-size: 12px;	
+}
+.my_posts_AND_comments_List_div_hr{
+	width: 96%;
+	height: auto;
+	border-top: 1px dotted #bbb;
+	margin-bottom: 5px;
+}
+
+/* 마이페이지 - 내파일 */
+.mypage_file_bottom_div{
+	width: 80%;
+	height: 600px;
+	margin: auto;
+	text-align: center;
+	background-color: lightgray;
+}
+.myfile_img_video_file_div{
+	margin: auto;
+	width: 80%;
+	height: 27%;
+	background-color: white;
+	padding: 10px;
+}
+.myfile_img{
+	width: 50px;
+	height: auto;
+	float: left;
+}
+.myfile_video{
+	width: 35px;
+	height: auto;
+	float: left;
+	padding: 5px;
+}
+.myfile_file{
+	width: 35px;
+	height: auto;
+	float: left;
+	padding: 5px;
+}
+.myfile_content{
+	width: 80%;	
+	margin: 15px;					/* 모두받기 있는버전 - margin: 10px; height: 70% */
+	height: 80%;
+	border: 1px solid black;
+	background-color: #FAFAFA;
+	float: right;
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+.myfile_download_btn{
+	width: auto;
+	height: auto;
+	background-color: darkgray;
+	color: white;
+	float: right;
+}
+.files_view_div{
+	width: 20%;
+	height: 60%;
+	margin-top: 10px;			
+	margin-left: 2%;
+	margin-right: 3%;
+	margin-bottom: 70px;
+	float: left;
+}
+.files_view_div_download{
+	width: 40%;
+	height: 20%;
+}
+.myfile_imgs{
+	width: 40%;
+	height: 60%;
+	padding-top: 10px;
+	padding-right: 3%;
+	padding-bottom: 10px;
+}
+.myfile_videos{
+	width: 65%;
+	height: 85%;
+	padding-top: 10px;
+	padding-right: 2%;
+	padding-bottom: 10px;
+}
+.myfile_excepts{
+	width: 25%;
+	height: auto;
+	padding-top: 10px;
+	padding-right: 3%;
+	padding-bottom: 10px;
+}
+
+
+/* 크레딧 섹션 css - 기존 프로젝트에서 복사해왔다. (브랜디 쇼핑몰의 css부분 긁어옴) */
+
+footer {
+  display: block;
+  width: 100%;
+  background-color: #f7f8fa;
+}
+
+.foot-sector {
+  margin: 30px auto 0 auto;
+}
+
+.footerinfo-division-top {
+  display: block;
+  padding: 15px 15px;
+  border: 1px solid #ebeef2;
+  margin: 0 auto;
+}
+
+.footerinfo-division-top > div {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.link-about {
+  text-align: center;
+}
+
+.link-about a:first-child::before {
+  content: none;
+}
+
+.link-about a::before {
+  content: "|";
+  margin-right: 5px;
+}
+
+.link-social-item {
+  display: flex;
+}
+
+.link-social-item > a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 7px;
+}
+
+.link-social-item > a > span {
+  margin-left: 7px;
+}
+
+.foot-sector :nth-child(2) {
+  border: none;
+}
+
+.footerinfo-division-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+  margin: 50px auto 0px auto;
+  padding-bottom: 50px;
+}
+.company-info {
+  display: inline-block;
+}
+
+.company-name {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-weight: 900;
+  font-size: 25px;
+}
+
+.bundle {
+  color: #5f6773;
+  font-size: 15px;
+  font-style: normal;
+  line-height: 24px;
+}
+
+.bundle span:first-child::before {
+  content: none;
+}
+
+.bundle span::before {
+  content: "|";
+  margin-right: 5px;
+}
+
+.servicecenter {
+  font-style: normal;
+}
+
+.center-phonenumber {
+  margin-bottom: 10px;
+  font-size: 25px;
+  font-weight: inherit;
+}
+
+.center-info {
+  line-height: 30px;
+  color: #5f6773;
+}
+
+/* 크레딧 섹션 css */
+
+
+	@media ( max-width: 720px ) {		/* 모바일 설정*/ /* 스크린 x축의 길이가 720px이하 일때 적용됨 */
+		html {					
+			max-width: 100%;		
+			overflow-x: hidden;
+		}
+		body {
+			max-width: 100%;
+			overflow-x: hidden;
+			background-color: white;
+			/* ios 기본 스타일 제거 */
+			appearance: none;
+			-moz-appearance: none;
+			-webkit-appearance: none;
+			border-radius: 0;
+			-webkit-border-radius: 0;
+			-moz-border-radius: 0;
+		}
+	
+	
+		.total_div{
+			width: 100%;
+			height: 100%;
+			margin: auto;
+			text-align: center;
+		}
+		.total_content_div{
+			width: 100%;
+			height: auto;
+			margin: auto;
+			text-align: center;
+		}
+		
+		/* 마이페이지 - 상단 */
+		.mypage_top{
+			background-color: black;
+			width: 100%;
+			height: 30px;
+		}
+		.go_main_MOR{
+			position: relative;
+			font-size: 24px;
+			float: left;
+			font-weight: bold;
+			color: white;
+			padding-left: 5px;
+			padding-right: 5px;
+		}
+		.go_board_OR_repo{
+			position: flex;
+			padding-right: 12px;
+			font-size: 12px;
+			font-weight: bold;
+			color: white;
+			text-align: center;
+			align-items:center;
+			justify-content: center;
+		}
+		
+		/* 마이페이지 - 중단 */
+		.mypage_middle{		
+			width: 80%;
+			height: 80px;
+			margin: auto;
+			text-align: center;
+			border: 1px solid black;
+		}
+		.mypage_title{
+			width: 100%;
+			height: 45%;
+			margin: auto;
+			text-align: center;
+			padding: 5px;
+		}
+		.mypage_select{
+			width: 100%;
+			height: auto;
+			margin: auto;
+			text-align: center;
+		}
+		.mypage_title_b{
+			width: 100%;
+			font-size: 24px;
+		}
+		.noneClicked_btn{
+			font-size: 14px;
+			margin: auto;
+			border: 0px;
+			background-color: white;
+		}
+		.clicked_btn{
+			font-size: 14px;
+			color:blue;
+			border: 0px;
+			background-color: white;
+			border-bottom: 1px solid blue;
+			margin: auto;
+		}
+		
+		/* 마이페이지 - 하단 */
+		/* 마이페이지 하단 - 내정보 */
+		.mypage_bottom{
+			width: 100%;
+			height: 720px;
+			margin: auto;
+			text-align: center;
+			background-color: lightgray;
+		}
+		.mypage_bottom_div{
+			width: 100%;
+			height: 600px;
+			margin: auto;
+			text-align: center;
+			background-color: lightgray;
+		}
+		.my_info_div{
+			background-color: white;
+			width: 80%;
+			height: 40%;
+			border: 1px solid black;
+			margin: auto;
+		}
+		.my_info_div_top{
+			width: 100%;
+			height: auto;
+			padding: 5px;
+			float: left;
+		}
+		.MOR_logo{
+			float: left;
+			width: 40px;
+			height: auto;
+			padding-right: 1px;
+			margin-bottom: 20px;
+		}
+		h4{
+			font-size: 10px;
+		}
+		.my_info_div_bottom{
+			width: 100%;
+			height: 50%;
+			padding: 5px;
+			float: left;
+		}
+		.my_info_div_bottom_table{
+			width: 100%;
+			height: auto;
+			float: left;
+		}
+		table th{
+			float: left;
+			margin-bottom: 10px;
+			border-bottom: 1px solid #bbb;
+		}
+		table td{
+			float: left;
+			margin-bottom: 10px;
+			border-bottom: 1px solid #bbb;
+		}
+		.my_info_edit_btn{
+			width: auto;
+			height: auto;
+			padding-right: 40px;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			background-color: darkgray;
+			border: 0px;
+			color: white;
+			float: right;
+		}
+		.my_info_unregister_btn{
+			width: auto;
+			height: auto;
+			padding-top: 5px;
+			padding-bottom: 5px;
+			background-color: black;
+			border-top: 20%;
+			border: 0px;
+			color: white;
+			float: left;
+		}
+
+		/* 마이페이지 하단 - 내가 쓴 글/댓글 */
+		.my_post_div{
+			background-color: white;
+			border: 1px solid black;
+			width: 45%;
+			height: 50%;
+			padding-bottom: 5px;
+			float: left;
+			margin: 2%;
+		}
+		.my_comment_div{
+			background-color: white;
+			border: 1px solid black;
+			width: 45%;
+			height: 50%;
+			padding-bottom: 5px;
+			float: right;
+			margin: 2%;
+		}
+		.my_post_AND_comment_title_p{
+			padding-left: 10px;
+			font-size: 16px;
+			font-weight: bold;
+			float: left;
+		}
+		.my_posts_AND_comments_List_div{
+			width: 100%;
+			height: 100%;
+			text-align: left;
+			background-color: #FAFAFA;
+			overflow-x: hidden;
+			overflow-y: scroll;
+		}
+		
+		
+		/* 마이페이지 - 내파일 */
+		.mypage_file_bottom_div{
+			width: 100%;
+			height: 600px;
+			margin: auto;
+			text-align: center;
+			background-color: lightgray;
+		}
+		.myfile_img_video_file_div{
+			margin: auto;
+			width: 80%;
+			height: 27%;
+			background-color: white;
+			padding: 10px;
+		}
+		.myfile_img{
+			width: 35px;				/* 모두받기 있는버전 - width: 50px; */
+			height: auto;
+			float: left;
+		}
+		.myfile_video{
+			width: 25px;				/* 모두받기 있는버전 - width: 35px; */
+			height: auto;
+			float: left;
+			padding: 5px;
+		}
+		.myfile_file{
+			width: 25px;				/* 모두받기 있는버전 - width: 35px; */
+			height: auto;
+			float: left;
+			padding: 5px;
+		}
+		.myfile_content{
+			width: 80%;
+			margin-left: 10px;					/* 모두받기 있는버전 - margin: 10px; height: 60% */
+			margin-right: 10px;
+			margin-top: 20px;
+			margin-bottom: 15px;
+			height: 70%;
+			border: 1px solid black;
+			background-color: #FAFAFA;
+			float: right;
+			overflow-x: hidden;
+			overflow-y: scroll;
+		}
+		.myfile_download_btn{
+			width: auto;
+			height: auto;
+			background-color: darkgray;
+			color: white;
+			float: right;
+		}
+		.files_view_div{
+			width: 20%;
+			height: 60%;
+			margin-top: 10px;
+			margin-left: 2%;
+			margin-right: 3%;
+			margin-bottom: 60px;
+			float: left;
+		}
+		.files_view_div_download{
+			width: 10%;
+			height: auto;
+			font-size: 8px;
+		}
+		.myfile_imgs{
+			width: 60%;
+			height: 60%;
+			padding-top: 10px;
+			padding-right: 3%;
+			padding-bottom: 10px;
+		}
+		.myfile_videos{
+			width: 80%;
+			height: 40%;
+			padding-top: 10px;
+			padding-right: 2%;
+			padding-bottom: 10px;
+		}
+		.myfile_excepts{
+			width: 35%;						/* 모두받기 있는버전 - width: 25%; */
+			height: auto;
+			padding-top: 10px;
+			padding-right: 3%;
+			padding-bottom: 10px;
+		}
+				/* 크레딧 섹션 모바일 css */
+			
+			  .footerinfo-division-top {
+			    padding-bottom: 0px;
+			  }
+			  .footerinfo-division-top .inner {
+			    display: block;
+			  }
+			  .link-about {
+			    display: block;
+			    text-align: start;
+			    font-size: 11px;
+			  }
+			  .link-about a {
+			    padding: 20px 4px 0;
+			  }
+			  .link-about a::before {
+			    content: none;
+			    margin: 0;
+			  }
+			  .link-social {
+			    display: block;
+			  }
+			  .link-about :nth-child(5) {
+			    display: none;
+			  }
+			  .link-about :nth-child(6) {
+			    display: none;
+			  }
+			
+			  .link-social-item {
+			    justify-content: start;
+			  }
+			  .link-social-item > a {
+			    width: 32px;
+			    height: 32px;
+			    padding: 20px 4px;
+			  }
+			  .link-social-item > a > span {
+			    display: none;
+			  }
+			
+			  .footerinfo-division-bottom {
+			    display: block;
+			    margin: 0 auto;
+			  }
+			  .company-info {
+			    padding: 15px 20px;
+			    margin: 0 auto;
+			  } 
+			  .company-name {
+			    font-size: 15px;
+			  }
+			  .bundle {
+			    font-size: 11px;
+			  }
+			  .bundle span {
+			    display: block;
+			  }
+			  .bundle span::before {
+			    content: none;
+			    margin: 0;
+			  }
+			  .servicecenter {
+			    padding: 15px 20px;
+			    margin: 0 auto;
+			  }
+			  .center-phonenumber {
+			    font-size: 15px;
+			  }
+			  .center-info {
+			    font-size: 11px;
+			  }
+	}
+

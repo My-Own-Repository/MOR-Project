@@ -30,7 +30,7 @@
    </select>
    
    <update id="updateBoard">      <!-- 게시글 수정 -->
-      UPDATE board SET title=#{title}, content=#{content} WHERE num=#{num}
+      UPDATE board SET title=#{title}, content=#{content}, secret_num=#{secret_num} WHERE num=#{num}
    </update>
    
    <update id="deleteBoard">      <!-- 게시글 삭제 -->
@@ -44,6 +44,7 @@
    <select id="printComment" resultType="commentDTO">      <!-- 모든 댓글 가져오기 -->
       SELECT * FROM comment WHERE b_num=#{b_num} AND is_exist=1
    </select>
+
    
    <update id="upComment">      <!-- 댓글 수 1 증가 -> 게시글에 댓글이 몇개 달려있는지 표현을 위한 쿼리문 -->
       UPDATE board SET comment=comment+1 WHERE num=#{num} 
@@ -203,5 +204,18 @@
    	<select id="foldTotalSearch" parameterType="searchVO" resultType="boardDTO">
    		SELECT * FROM board WHERE is_exist=1 AND id!="admin" AND is_secret=#{is_secret} AND is_repo=#{is_repo} AND ((title LIKE concat('%',#{content},'%')) OR (content LIKE concat('%',#{content},'%')) OR (is_repo=#{is_repo} AND nickname LIKE concat('%',#{content},'%'))) ORDER BY num DESC LIMIT 0,5
    	</select>
+   
+   
+   <!-- 마이페이지 - 내 게시글/댓글 리스트 -->
+   
+   <select id="myPost" resultType="boardDTO">
+   		SELECT * FROM board WHERE is_exist=1 AND id=#{id} ORDER BY num DESC
+   </select>
+   <select id="myComment" resultType="commentDTO">
+   		SELECT * FROM comment WHERE is_exist=1 AND nickname=#{nickname} ORDER BY b_num DESC
+   </select>
+   
+   
+   
    
 </mapper>

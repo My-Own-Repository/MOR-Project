@@ -61,7 +61,11 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 			</ul>
 		</li>
 		<li>
-			<a href="/user/mypage">${member.nickname}</a>
+			<a href="#">${member.nickname}</a>
+			<ul class="submenu">
+				<li><a href="/user/mypage">마이페이지</a></li>
+				<li><a href="/logout">로그아웃</a></li>
+			</ul>
 		</li>
 	</ul>
 	
@@ -315,6 +319,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 	<br><br>
 	<script>
 	//var div_group_num = 0;
+	//var confirm_secretNum = false;
 	var add_num = 0;
 	//var files_index = 0;		// 파일 인덱스 선언 (파일 삭제시 사용됨)
 	// 파일을 업로드 할 수 있는 file 타입의 input을 하나 추가한다.
@@ -530,6 +535,8 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		var beforeFiles = document.getElementById(input_filesID);
 		beforeFiles.value = null;
 		
+		$("#uploadFiles").focus();
+		
 		// 파일을 삭제했으므로 파일 인덱스도 감소
 		//files_index -= 1;
 	}
@@ -590,19 +597,23 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		if(pw1.length == 0 || pw1.length < 4 || numPattern != null){
 	        alert("ERROR\n숫자로 구성된 4자리 비밀번호를 입력해주세요."); 
 	        $("#pw1").focus();
+	        //confirm_secretNum = false;
 	        return false;
 	    }
 		else if(pw2.length == 0 || pw2.length < 4){       			
     	    alert("ERROR\n비밀번호를 재확인해주세요."); 
     	    $("#pw2").focus();
+    	    //confirm_secretNum = false;
     		return false;           	
 		}
 	    else if(pw2 != pw1){
 	        alert("ERROR\n비밀번호가 서로 다릅니다. 비밀번호를 확인해주세요."); 
 	        $("#pw2").focus();
+	        //confirm_secretNum = false;
 	        return false; 
 	    }
 	    else {
+	    	//confirm_secretNum = true;
 	    	pw1 = Number(pw1);
 	    }
 	}
@@ -634,8 +645,9 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 		if(title.length > 0 && title.length <= 35 && TitleByteLength <= 90 && content.length > 0 && content.length <= 1000){
 			if(is_secret == 's1r0' || is_secret == 's1r1'){
 				secret_password();
-			}
-			document.getElementById('write_form').submit();			
+			}		
+			document.getElementById('write_form').submit();
+				
 		}
 		else if(title.length == 0){
 			alert('ERROR\n제목을 입력해주세요.');
@@ -766,6 +778,18 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 	                    </div>
 	                    <div class="bundle">
 	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="열린 자물쇠 아이콘">열린 자물쇠 아이콘  제작자: Freepik - Flaticon</a></span>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="사진술 아이콘">사진술 아이콘  제작자: Good Ware - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="비디오 아이콘">비디오 아이콘  제작자: Iconjam - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="폴더 아이콘">폴더 아이콘  제작자: Freepik - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="파일 아이콘">파일 아이콘  제작자: DinosoftLabs - Flaticon</a>
 	                    </div>
 	                </div>
 				</address>

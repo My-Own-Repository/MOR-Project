@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.co.dao.MemberDAO;
 import com.co.dao.loginDAO;
+import com.co.dto.FileDTO;
 import com.co.dto.FindIDPWDTO;
 import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
@@ -74,11 +75,43 @@ public class MemberServiceImpl implements MemberService {
 		return dao.findIDPW(vo);
 	}
 
-/*
+
+	
+	/* 회원정보 수정 */
+	
+	// 비밀번호 변경
 	@Override
-	public MemberVO findPW(FindIDPWDTO vo) throws Exception {
+	public void editInfoPw(MemberVO vo) throws Exception {
 		// TODO Auto-generated method stub
-		return dao.findPW(vo);
+		dao.editInfoPw(vo);
 	}
-*/
+	// 이메일 변경
+	@Override
+	public void editInfoEmail(MemberVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		dao.editInfoEmail(vo);
+	}
+	// 전화번호 변경
+	@Override
+	public void editInfoPhone(MemberVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		dao.editInfoPhone(vo);
+	}
+
+
+	// 마이페이지 - 내 파일 리스트
+	@Override
+	public List<FileDTO> myFile(String user_id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.myFile(user_id);
+	}
+
+	// 마이페이지 - 회원탈퇴
+	@Override
+	public void unRegister(String id) throws Exception {
+		// TODO Auto-generated method stub
+		dao.unRegister(id);
+	}
+
+
 }

@@ -66,7 +66,11 @@
 		<li>
 			<c:choose>
 				<c:when test="${member != null}">
-					<a href="/user/mypage">${member.nickname}</a>
+					<a href="#">${member.nickname}</a>
+					<ul class="submenu">
+						<li><a href="/user/mypage">마이페이지</a></li>
+						<li><a href="/logout">로그아웃</a></li>
+					</ul>
 				</c:when>
 				<c:when test="${member == null}">
 					<a href="/LoginPage">내정보</a>
@@ -331,7 +335,7 @@
 				<th>&nbsp;&nbsp;${cmt.nickname}
 				
 				<a href="javascript:delete_cmt(${cmt.b_num}, ${cmt.c_num})"><img src="../../../resources/img/Red_X_img.png" class="imgs"></a>
-				<a href="javascript:update_cmt(${cmt.c_num})"><img src="../../../resources/img/Pencil_img.png" class="imgs"></a>
+				<a href="javascript:update_cmt(${cmt.c_num}, '${cmt.content}')"><img src="../../../resources/img/Pencil_img.png" class="imgs"></a>
 				&nbsp;&nbsp;
 				
 				</th>
@@ -348,7 +352,7 @@
 				<br><br></td>
 				<td colspan="4" id="update_cmt_td_${cmt.c_num}" class="update_cmt"> 
 					<form id="update_cmt_form_${cmt.c_num}" action="/user/posts/comment_update" method="post">
-						<textarea name="content" class="update_comment_textarea">${cmt.content}</textarea>
+						<textarea id="comment_textarea_${cmt.c_num}" name="content" class="update_comment_textarea"></textarea>
 						<input type="hidden" name="b_num" value="${cmt.b_num}">
 						<input type="hidden" name="c_num" value="${cmt.c_num}">
 						<input type="hidden" name="is_exist" value="${cmt.is_exist}">
@@ -381,7 +385,7 @@
 		
 		<script type="text/javascript">	// HTML5에서는 디폴트 값인 text/javascript를 따로 선언할 필요는 없지만
 										// 이번 경우에는 혹시 모를 호환성을 위해 적었다.
-			function update_cmt(num) {
+			function update_cmt(num, content) {
 				var showed_updateCommentID = 'comment_td_'+num;
 				var updating_commentID = 'update_cmt_td_'+num;
 			
@@ -390,6 +394,13 @@
 								
 				showed_updateComment.style.display = "none";	// 수정 할 댓글 뷰 숨기기
 				updating_comment.style.display = "block";		// 댓글 수정 폼 보이기
+				
+				
+				// 수정 할 댓글의 내용에서 <br>을 \n으로 바꾸기
+				var updating_textareaID = 'comment_textarea_'+num;
+				var updating_textarea = document.getElementById(updating_textareaID);				
+				content = content.replace(/<br>/ig, '\r\n');
+				updating_textarea.innerHTML = content;
 			}
 		
 			function submit_update_cmt(num){		
@@ -486,9 +497,6 @@
 				<table border="1" class="comment_table">			
 					<tr>
 						<td colspan="4"><a href="/LoginPage"><textarea name="content">로그인이 필요한 서비스입니다.</textarea></a></td>
-					</tr>
-					<tr>
-						<td colspan="4"><a href="/LoginPage"><input type="file" name="file"></a></td>
 					</tr>		
 				</table>
 				<br>
@@ -505,9 +513,6 @@
 					<table border="1" class="comment_table">		
 						<tr>
 							<td colspan="4"><textarea id="comment_id" name="content"></textarea></td>
-						</tr>
-						<tr>
-							<td colspan="4"><input type="file" name="uploadfile"></td>
 						</tr>		
 					</table>
 					<br>
@@ -622,6 +627,12 @@
 				alert("검색어를 입력해주세요!");
 			}
 		}
+		
+		// 이미지파일 원본크기로 보기
+		var img = document.getElementsByClassName("upload_imgs");
+		for (var i = 0; i < img.length; i++) {
+			img.item(i).onclick=function() {window.open(this.src)}; 
+		}
 	</script>
 	
 	
@@ -710,6 +721,18 @@
 	                    </div>
 	                    <div class="bundle">
 	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="열린 자물쇠 아이콘">열린 자물쇠 아이콘  제작자: Freepik - Flaticon</a></span>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="사진술 아이콘">사진술 아이콘  제작자: Good Ware - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="비디오 아이콘">비디오 아이콘  제작자: Iconjam - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="폴더 아이콘">폴더 아이콘  제작자: Freepik - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="파일 아이콘">파일 아이콘  제작자: DinosoftLabs - Flaticon</a>
 	                    </div>
 	                </div>
 				</address>

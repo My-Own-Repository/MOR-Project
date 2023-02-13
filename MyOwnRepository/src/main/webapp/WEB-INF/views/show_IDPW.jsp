@@ -107,7 +107,7 @@
 	<div class="total_div">
 		<c:choose>
 			<c:when test="${which == 'id'}">
-				<p>* 아이디 목록</p>
+				<p>* 고객님의 정보와 일치하는 아이디 목록입니다</p>
 				<div class="content_div">
 					<c:forEach items="${userInfo}" var="user">
 						<table class="content_table">
@@ -120,7 +120,7 @@
 				</div>			
 			</c:when>
 			<c:when test="${which == 'pw'}">
-				<p>* 비밀번호</p>
+				<p>* 비밀번호 확인 후 변경하시기 바랍니다.</p>
 				<div class="content_div">
 					<c:forEach items="${userInfo}" var="user">
 						<table class="content_table">

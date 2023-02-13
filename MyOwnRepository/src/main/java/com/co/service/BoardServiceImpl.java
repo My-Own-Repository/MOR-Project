@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.co.dao.boardDAO;
 import com.co.dto.FileDTO;
+import com.co.dto.MemberVO;
 import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
 import com.co.dto.searchVO;
@@ -315,6 +316,21 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	
+	/* 내가 쓴 글/댓글 리스트 */
+	@Override
+	public List<boardDTO> myPost(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.myPost(id);
+	}
+	@Override
+	public List<commentDTO> myComment(String nickname) throws Exception {
+		// TODO Auto-generated method stub
+		return dao.myComment(nickname);
+	}
+
+	
+	
+
 	
    
 }
