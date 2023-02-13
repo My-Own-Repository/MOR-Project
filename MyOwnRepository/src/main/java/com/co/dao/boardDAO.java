@@ -26,6 +26,7 @@ public interface boardDAO {
 	
 	public void writeComment(commentDTO letter) throws Exception;	// 댓글 작성
 	public List<commentDTO> printComment(int b_num) throws Exception;		// 댓글 목록
+
 	
 	public void upComment(int num) throws Exception;		// 댓글 수 증가
 	public void downComment(int num) throws Exception;		// 댓글 수 감소
@@ -90,4 +91,8 @@ public interface boardDAO {
 	public int selectMinNum() throws Exception;	
 	public int selectMaxNum() throws Exception;
 	
+	
+	/* 내가 쓴 글/댓글 리스트 */
+	public List<boardDTO> myPost(String id) throws Exception;	// 내가 쓴 글
+	public List<commentDTO> myComment(String nickname) throws Exception;	// 내가 쓴 댓글
 }

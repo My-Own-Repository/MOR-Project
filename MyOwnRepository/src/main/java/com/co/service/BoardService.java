@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.co.dto.FileDTO;
+import com.co.dto.MemberVO;
 import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
 import com.co.dto.searchVO;
@@ -84,8 +85,14 @@ public interface BoardService {
 	public List<boardDTO> pageTitleContentSearch(searchVO vo) throws Exception;		// 페이지내 제목+내용 검색 
 	
 	
-	/* 전체 검색 */
-	
+	/* 전체 검색 */	
 	public List<boardDTO> TotalSearch(searchVO vo) throws Exception;		// 전체 검색
 	public List<boardDTO> foldTotalSearch(searchVO vo) throws Exception;	// 전체 검색 5개 접기
+	
+	
+	/* 내가 쓴 글/댓글 리스트 */
+	public List<boardDTO> myPost(String id) throws Exception;	// 내가 쓴 글
+	public List<commentDTO> myComment(String nickname) throws Exception;	// 내가 쓴 댓글
+	
+	
 }

@@ -60,11 +60,28 @@
 			</ul>
 		</li>
 		<li>
-			<a href="/user/mypage">${member.nickname}</a>
+			<a href="#">${member.nickname}</a>
+			<ul class="submenu">
+				<li><a href="/user/mypage">마이페이지</a></li>
+				<li><a href="/logout">로그아웃</a></li>
+			</ul>
 		</li>
 	</ul>
 		
-	<br><br><p>자유게시판 - 글수정</p><br>
+	<c:choose>
+		<c:when test="${what == 's0r0'}">
+			<br><br><p>자유게시판 - 글수정</p><br>
+		</c:when>
+		<c:when test="${what == 's1r0'}">
+			<br><br><p>비밀게시판 - 글수정</p><br>
+		</c:when>
+		<c:when test="${what == 's0r1'}">
+			<br><br><p>공유저장소 - 글수정</p><br>
+		</c:when>
+		<c:when test="${what == 's1r1'}">
+			<br><br><p>비밀저장소 - 글수정</p><br>
+		</c:when>
+	</c:choose>
 	
 	
 		<form id="update_form" action="/user/update_board" method="post" enctype="multipart/form-data">
@@ -156,9 +173,11 @@
 							<br>
 							<br>
 					<input type="hidden" name="id" value="<%=post_id%>">
+					
 					<div contenteditable="true" id="update_content_div" class="update_content_div">${SelectPost.content}</div>
 					<textarea id="update_content_textarea" name="content" style=display:none></textarea>
-					  
+					
+					
 					<div id="existing_file_delete_div">
 						<input type="hidden" name="existing_Delete_fileNum" value="-1">
 					</div>
@@ -175,7 +194,71 @@
 					</div>							
 				</td>
 			</tr>
-		</table>	
+		</table>
+		
+		<c:choose>
+			<c:when test="${what == 's0r0'}">
+				<input type="hidden" name="secret_num" value="-1">
+			</c:when>
+			<c:when test="${what == 's0r1'}">
+				<input type="hidden" name="secret_num" value="-1">
+			</c:when>
+			<c:when test="${what == 's1r0'}">
+				<br>
+				<div class="secret_input_img_div">
+					<img src="../../../resources/img/lock.png" alt="" class="lock_img">
+				</div>
+				&nbsp;
+				<table border="1" class="secret_input_table">	
+					<tr>
+						<th class="secret_input_th">
+							<span class="secretNum_input_span">비밀번호</span>
+						</th>
+						<td class="secret_input_td">
+							<input type="password" id="pw1" name="secret_num" maxlength='4' class="secretNum_input">						
+						</td>
+					</tr>
+					<tr>
+						<th class="secret_input_th">
+							<span class="secretNum_input_span">비밀번호 확인</span>
+						</th>
+						<td class="secret_input_td">						
+							<input type="password" id="pw2" maxlength='4' class="secretNum_input">				
+						</td>
+					</tr>
+				</table>
+				
+				<br><br><br><br>
+			</c:when>
+			<c:when test="${what == 's1r1'}">
+				<br>
+				<div class="secret_input_img_div">
+					<img src="../../../resources/img/lock.png" alt="" class="lock_img">
+				</div>
+				&nbsp;
+				<table border="1" class="secret_input_table">	
+					<tr>
+						<th class="secret_input_th">
+							<span class="secretNum_input_span">비밀번호</span>
+						</th>
+						<td class="secret_input_td">
+							<input type="password" id="pw1" name="secret_num" maxlength='4' class="secretNum_input">						
+						</td>
+					</tr>
+					<tr>
+						<th class="secret_input_th">
+							<span class="secretNum_input_span">비밀번호 확인</span>
+						</th>
+						<td class="secret_input_td">						
+							<input type="password" id="pw2" maxlength='4' class="secretNum_input">				
+						</td>
+					</tr>
+				</table>
+				
+				<br><br><br><br>
+			</c:when>
+		</c:choose>
+		
 	</form>
 	 
 	
@@ -224,6 +307,7 @@
 	</div>
 	
 	<script>
+	var confirm_secretNum = false;
 	var add_num = 0;
 	// 파일을 업로드 할 수 있는 file 타입의 input을 하나 추가한다.
 	function add_inputfile(){	
@@ -261,6 +345,8 @@
 		var preview_remove_file = document.getElementById(delete_file_view);	
 		preview_remove_file.remove();
 		
+		
+		$("#input_file_divs").focus();
 
 	}
 	
@@ -322,7 +408,7 @@
 	function is_img_video(f) {
 		//var is_preview = true;		// 게시판에서는 파일이 이미지나, 동영상이 아닐 경우 미리보기를 지원하지 않는다.(다운로드도 지원x) 이를 위한 boolean
 									// 저장소에서는 모든 유형의 파일업로드, 다운로드 지원.
-		
+		var input_fileID = document.getElementById(f.id);
 		// 파일업로드 박스 생성버튼 비활성화
 		var addFile_disa = document.getElementById('add_file_btn');		
 		addFile_disa.value = "Add Lock";
@@ -366,9 +452,20 @@
 			
             
             reader.onload = function (e) {
-    	
+            	// 파일이 이미지나 영상/오디오가 아닐때 수행
+            	if("jpg" != fileType && "jpeg" != fileType && "gif" != fileType && "png" != fileType && "bmp" != fileType &&
+            			"mpg" != fileType && "mpeg" != fileType && "mp4" != fileType && "ogg" != fileType && "webm" != fileType && "avi" != fileType && 
+            			"wmv" != fileType && "mov" != fileType && "rm" != fileType && "ram" != fileType && 
+						"swf" != fileType && "flv" != fileType && "wav" != fileType && "mp3" != fileType){
+					// 게시판 형식의 글쓰기 일때는 이미지와 영상 파일만 올릴수있도록 제한
+            		if(${what == 's0r0'} || ${what == 's1r0'}){
+            			input_fileID.value = null;
+            			alert("ERROR\n이미지/영상 외의 다른 파일형식은 저장소를 이용해주세요!");        				
+					}
+            	}
+            	
             	// 파일이 이미지일때 수행
-            	if("jpg" == fileType || "jpeg" == fileType || "gif" == fileType || "png" == fileType || "bmp" == fileType){
+            	else if("jpg" == fileType || "jpeg" == fileType || "gif" == fileType || "png" == fileType || "bmp" == fileType){
 					
 					// 3) 업로드 된 파일이 이미지 혹은 영상태그일 경우 새로운 div안에 img,video태그로 넣음
 					divAry.innerHTML += '<img src="' + e.target.result + '"><br>';
@@ -404,6 +501,33 @@
 		
 		//alert("받은 넘버 >> " + f.id);
 		if(files.length != 0){
+			if(${what == 's0r0'} || ${what == 's1r0'}){		// 자유/비밀게시판 일 경우 이미지/영상만 보여줌
+				var fileList;
+				var fileName;
+				var fileLength;
+				var fileDot;
+				var fileType;
+				
+				var reader;
+				
+				for(var i=0; i<files.length; i++) {
+					fileList = f.files;		// 파일 받아와서 스크립트 내부 변수에 저장.
+					fileName = fileList[i].name;		// 파일 이름 추출
+					
+					fileLength = fileName.length;		// 파일명 길이 추출		
+					fileDot = fileName.lastIndexOf(".");	// 파일의 확장자 추출		
+					fileType = fileName.substr(fileDot+1, fileLength).toLowerCase();	// 추출한 확장자를 소문자로 변경한다.
+					
+					// 파일이 이미지나 영상/오디오가 아닐때 수행
+		        	if("jpg" != fileType && "jpeg" != fileType && "gif" != fileType && "png" != fileType && "bmp" != fileType &&
+		        			"mpg" != fileType && "mpeg" != fileType && "mp4" != fileType && "ogg" != fileType && "webm" != fileType && "avi" != fileType && 
+		        			"wmv" != fileType && "mov" != fileType && "rm" != fileType && "ram" != fileType && 
+							"swf" != fileType && "flv" != fileType && "wav" != fileType && "mp3" != fileType){
+		        		return 0;
+		        	}
+				}
+			}
+			
 			var content = '';
 			
 			var fileName = new Array();		// 파일 이름(+확장자)
@@ -447,6 +571,8 @@
 		var preview_divID = 'divID_'+n;
 		var preview_hidden_div = document.getElementById(preview_divID);
 		preview_hidden_div.remove();
+		
+		$("#uploadFiles").focus();
 		
 	}
 	
@@ -494,6 +620,37 @@
 		}
 	}
 	
+	function secret_password(){
+	    var pw1 = document.getElementById("pw1").value;
+	    var pw2 = document.getElementById("pw2").value;	    
+	    
+	    var numPattern = /([^0-9])/;
+	    numPattern = pw1.match(numPattern);
+	    
+		if(pw1.length == 0 || pw1.length < 4 || numPattern != null){
+			confirm_secretNum = false;
+	        alert("ERROR\n숫자로 구성된 4자리 비밀번호를 입력해주세요."); 
+	        $("#pw1").focus();
+	        return false;
+	    }
+		else if(pw2.length == 0 || pw2.length < 4){  
+			confirm_secretNum = false;
+    	    alert("ERROR\n비밀번호를 재확인해주세요."); 
+    	    $("#pw2").focus();
+    		return false;           	
+		}
+	    else if(pw2 != pw1){
+	    	confirm_secretNum = false;
+	        alert("ERROR\n비밀번호가 서로 다릅니다. 비밀번호를 확인해주세요."); 
+	        $("#pw2").focus();
+	        return false; 
+	    }
+	    else {
+	    	confirm_secretNum = true;
+	    	pw1 = Number(pw1);
+	    }
+	}
+	
 	function submit_btn(){	// existing_file_num_
 		if(confirm('수정사항을 저장 하시겠습니까?')){
 			var title = document.getElementById('update_title').value;		// 사용자가 입력한 제목의 값 가져오기
@@ -509,11 +666,20 @@
 			content = content.replace(/&nbsp;/ig, '');
 			content = content.replace(/\s/ig, '');
 			
+			var is_secret = '${what}';
 			var TitleByteLength = title.replace(/[\0-\x7f]|([0-\u07ff]|(.))/g,"$&$1$2").length;
 			
 			if(title.length > 0 && title.length <= 35 && TitleByteLength <= 90 && content.length > 0 && content.length <= 1000){
-				//document.getElementById('delete_file_form').submit();
-				document.getElementById('update_form').submit();		
+				if(is_secret == 's1r0' || is_secret == 's1r1'){
+					secret_password();
+					if(confirm_secretNum == true){
+						document.getElementById('update_form').submit();
+					}
+				}
+				else {
+					document.getElementById('update_form').submit();
+				}
+	
 			}
 			else if(title.length == 0){
 				alert('ERROR\n제목을 입력해주세요.');
@@ -642,6 +808,18 @@
 	                    </div>
 	                    <div class="bundle">
 	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="열린 자물쇠 아이콘">열린 자물쇠 아이콘  제작자: Freepik - Flaticon</a></span>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="사진술 아이콘">사진술 아이콘  제작자: Good Ware - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="비디오 아이콘">비디오 아이콘  제작자: Iconjam - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="폴더 아이콘">폴더 아이콘  제작자: Freepik - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="파일 아이콘">파일 아이콘  제작자: DinosoftLabs - Flaticon</a>
 	                    </div>
 	                </div>
 				</address>

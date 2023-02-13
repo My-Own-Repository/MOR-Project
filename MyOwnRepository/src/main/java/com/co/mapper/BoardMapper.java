@@ -213,4 +213,17 @@ public class BoardMapper {
 	public List<boardDTO> foldTotalSearch(searchVO vo) throws Exception {
 		return boardmapper.foldTotalSearch(vo);
 	}
+	
+	
+	/* 내가 쓴 글/댓글 리스트 */
+	public List<boardDTO> myPost(String id) throws Exception {
+		return boardmapper.myPost(id);
+	}
+	public List<commentDTO> myComment(String nickname) throws Exception {
+		return boardmapper.myComment(nickname);
+	}
+	
+	
+	
 }
+

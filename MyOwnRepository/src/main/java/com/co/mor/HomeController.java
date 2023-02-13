@@ -3,6 +3,8 @@ package com.co.mor;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
@@ -17,6 +19,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.annotation.Resource;
 import javax.inject.Inject;
@@ -311,8 +316,7 @@ public class HomeController {
 			e.printStackTrace();
 			return -1;
 		}
-    	
-		
+    			
     }
     
     @RequestMapping(value = "/join", method = RequestMethod.GET)
@@ -342,6 +346,96 @@ public class HomeController {
     	return "join";
     }
 
+    // 회원정보 수정
+    @RequestMapping(value = "/user/edit_myinfo")
+    public String editMyInfo(HttpServletRequest request, Model model) throws Exception{
+    	HttpSession session = request.getSession(false);
+    	
+    	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
+    		return "redirect:/LoginPage";
+    	}
+    	else if(session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {		
+        	session.invalidate();
+        	return "redirect:/LoginPage";
+    	}
+    	
+    	LoginDTO member =  (LoginDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
+    	model.addAttribute("member", member);
+    	
+
+    	
+    	return "user/edit_myinfo";
+    }
+    
+    // 회원정보 수정 - 이메일 인증
+    @ResponseBody
+    @RequestMapping(value="/editCheckEmail.do",method=RequestMethod.GET)
+    public int editEmailCheck(HttpSession session, @RequestParam("userEmail") String userEmail) throws Exception {
+    	System.out.println("이메일 >>>>>>> " + userEmail);
+		
+    	// 인증번호 만들기
+    	int confirmNum = makeRandomNum();
+    	
+    	// 이메일로 보낼 양식
+    	String sender = "ajkl12345@naver.com";
+    	String receiver = userEmail;
+    	String title = "MOR 회원정보 수정 인증번호 입니다.";
+    	String content = "홈페이지를 방문 해주셔서 감사합니다."+"<br><br>"+"인증 번호는 " + confirmNum + "입니다.";
+    	
+    	MimeMessage message = mailSender.createMimeMessage();
+		try {
+			MimeMessageHelper helper = new MimeMessageHelper(message,true,"utf-8");
+			helper.setFrom(sender);
+			helper.setTo(receiver);
+			helper.setSubject(title);
+			// true 전달 > html 형식으로 전송 , 작성하지 않으면 단순 텍스트로 전달.
+			helper.setText(content,true);
+			mailSender.send(message);
+			return confirmNum;
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			return -1;
+		}
+    			
+    }
+    
+    // 회원정보 수정 - ajax 통신
+    @ResponseBody
+    @RequestMapping(value="/user/saveUserInfo.do", method = RequestMethod.POST)
+    public Object saveUserInfo(HttpServletRequest request, MemberVO vo) throws Exception{
+    	HttpSession session = request.getSession(false);
+    	
+    	Map<String, Object> result = new HashMap<String, Object>();		// ajax로 보낼 데이터 저장할 map
+    	result.put("check", "NO");
+    	
+    	
+    	System.out.println("전달 받은 vo정보 - pw >>>>>>>>>>>>> " + vo.pw);
+    	System.out.println("전달 받은 vo정보 - email >>>>>>>>>>>>> " + vo.email);
+    	System.out.println("전달 받은 vo정보 - phone >>>>>>>>>>>>> " + vo.phone_number);
+    	
+    	if(vo.pw != null && vo.pw != "") {
+    		service.editInfoPw(vo);
+    		result.put("check", "OK");
+    		session.invalidate();		// 재로그인 유도
+    	}
+    	else if(vo.email != null && vo.email != "") {
+    		service.editInfoEmail(vo);
+    		result.put("check", "OK");
+    		session.invalidate();		// 재로그인 유도
+    	}
+    	else if(vo.phone_number != null && vo.phone_number != "") {
+    		service.editInfoPhone(vo);
+    		result.put("check", "OK");
+    		session.invalidate();		// 재로그인 유도
+    	}
+    	else {
+    		result.put("check", "OK");
+    	}
+    	
+    	
+    	return result;
+    }
+    
     // 아이디/비밀번호 찾기 view
     @RequestMapping(value = "/find_Info")
     public String viewFindIDPW(HttpServletRequest request) throws Exception{
@@ -641,8 +735,9 @@ public class HomeController {
 	
     }
     
-    @RequestMapping(value = "/user/mypage", method = RequestMethod.GET)
-    public String mypage(HttpServletRequest request, Model model) {
+    @SuppressWarnings("null")
+	@RequestMapping(value = "/user/mypage", method = RequestMethod.GET)
+    public String mypage(HttpServletRequest request, Model model) throws Exception {
     	HttpSession session = request.getSession(false);
     	
     	if(session == null || !request.isRequestedSessionIdValid()) {							// 세션이 만료된 상태로 페이지 이동을 시도할경우 로그인 페이지로 이동하게 된다.
@@ -654,6 +749,89 @@ public class HomeController {
         	session.invalidate();
         	return "redirect:/LoginPage";
     	}
+    	
+    	LoginDTO member =  (LoginDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
+    	model.addAttribute("member", member);
+    	
+    	List<boardDTO> myPosts = b_service.myPost(member.id);
+    	model.addAttribute("myPosts", myPosts);
+    	
+    	List<commentDTO> myComments = b_service.myComment(member.nickname);
+    	model.addAttribute("myComments", myComments);
+    	
+    	
+    	// 파일 리스트
+    	List<FileDTO> fileList = service.myFile(member.id);
+    	
+    	/*
+		List<FileDTO> myImage = null;
+		List<FileDTO> myVideo = null;
+		List<FileDTO> myExcept = null;
+    	*/
+    	
+    	// 내가 저장한 파일이 있을 경우 실행
+    	if(fileList.size() != 0) {
+    		// 각 파일들 개수를 저장하기 위한 변수 - image,video,그외파일
+        	int myImageCount = 0;
+        	int myVideoCount = 0;   	
+        	int myExceptCount = 0;
+        	
+        	// 각 리스트에 저장할때 각 리스트의 인덱스를 지정해주기 위한 변수
+        	int image_i = 0;
+        	int video_i = 0;
+        	int except_i = 0;
+        	  	 	
+        	// 각 파일들 사이즈를 지정한다.
+    		for(int i=0; i<fileList.size(); i++) {
+    			if(fileList.get(i).type.contains("image") == true) {
+    				myImageCount++;
+    			}
+    			else if(fileList.get(i).type.contains("video") == true) {
+    				myVideoCount++;
+    			}
+    			else {
+    				myExceptCount++;
+    			}
+    		}
+    		List<FileDTO> myImage = new ArrayList<FileDTO>(myImageCount);
+    		List<FileDTO> myVideo = new ArrayList<FileDTO>(myVideoCount);
+    		List<FileDTO> myExcept = new ArrayList<FileDTO>(myExceptCount);
+    		
+        	// fileList의 각 파일들을 타입에 맞는 리스트에 저장한다
+    		for(int i=0; i<fileList.size(); i++) {
+    			if(fileList.get(i).type.contains("image") == true) {
+    				myImage.add(image_i, fileList.get(i));
+    				image_i++;
+    			}
+    			else if(fileList.get(i).type.contains("video") == true) {
+    				myVideo.add(video_i, fileList.get(i));
+    				video_i++;
+    			}
+    			else {
+    				myExcept.add(except_i, fileList.get(i));
+    				except_i++;
+    			}
+    		}
+    		
+    		model.addAttribute("myImage", myImage);
+    		model.addAttribute("myVideo", myVideo);
+    		model.addAttribute("myExcept", myExcept);
+    	}
+    	
+	/*	
+	 * 
+	 *  이미지/영상/그외파일들 각각 개수를 알아내서 List<FileDTO> 타입으로 선언 및 초기화 진행,
+	 *  그 후 fileList에서 각 타입에 맞는 파일들을 적합한 리스트에 저장하고 이를 model로 JSP에 보내야함!! 
+	 * 
+		// 내 이미지/동영상/그외파일 개별적으로 저장하고 model을 이용해 JSP로 보낸다
+		List<FileDTO> myImage = new ArrayList<FileDTO>();
+		for(int i=0; i<myImageCount; i++) {
+			myImage.set(i, fileList.get(i));
+		}
+
+		
+
+    */
 		return "user/mypage";	
     }
     
@@ -857,6 +1035,7 @@ public class HomeController {
     	    	   	    	
         					// jsp에서 가져온 파일의 이름을 가져와 용도에 맞게 처리한다.
                 	    	String originalFileName = files[i].getOriginalFilename();
+                	    	originalFileName = originalFileName.replace("_", "-");		// css에서 언더바(_)를 인식하지 못하기때문에 파일 오리지널이름을 - 로 수정
                 	    	String ext = FilenameUtils.getExtension(originalFileName);
                 	    	UUID uuid = UUID.randomUUID();
                 	    	fileName = uuid + "." + ext;
@@ -964,11 +1143,26 @@ public class HomeController {
     	model.addAttribute("post_title", before_post.title);
     	model.addAttribute("post_content", before_post.content);
     	
+    	// 어떤 게시판/저장소 인지 JSP로 보냄
+    	String what = "";
+    	if(before_post.is_secret == 0 && before_post.is_repo == 0) {
+    		what = "s0r0";
+    	}
+    	else if(before_post.is_secret == 1 && before_post.is_repo == 0) {
+    		what = "s1r0";
+    	}
+    	else if(before_post.is_secret == 0 && before_post.is_repo == 1) {
+    		what = "s0r1";
+    	}
+    	else if(before_post.is_secret == 1 && before_post.is_repo == 1) {
+    		what = "s1r1";
+    	}
+    	model.addAttribute("what", what);
     	
     	int b_num = urlnum;
     	
     	List<FileDTO> fileList = b_service.fileViewer(b_num);
-			
+    		
 		
 		// 이미지와 동영상 파일만 가져오는 쿼리문을 통해 가져와서 JSP로 보낸다.
 		List<FileDTO> fileViewer = b_service.viewFile(b_num);
@@ -1045,6 +1239,7 @@ public class HomeController {
     	    	   	    	
         					// jsp에서 가져온 파일의 이름을 가져와 용도에 맞게 처리한다.
                 	    	String originalFileName = files[i].getOriginalFilename();
+                	    	originalFileName = originalFileName.replace("_", "-");		// css에서 언더바(_)를 인식하지 못하기때문에 파일 오리지널이름을 - 로 수정
                 	    	String ext = FilenameUtils.getExtension(originalFileName);
                 	    	UUID uuid = UUID.randomUUID();
                 	    	fileName = uuid + "." + ext;
@@ -1616,8 +1811,7 @@ public class HomeController {
 
     }
     
-    // 게시글의 첨부 파일을 다운로드 할 수 있도록 한다.
-    
+    // 게시글의 첨부 파일을 다운로드 할 수 있도록 한다. 
     @RequestMapping(value = "/downfiles.do/{files_num}")
     public void downloadFile(HttpServletResponse response, @PathVariable("files_num") int files_num) throws Exception {
     	FileDTO fileOne = b_service.fileView(files_num);
@@ -1638,6 +1832,169 @@ public class HomeController {
     	
     	InputStream inputStream = new BufferedInputStream(new FileInputStream(file));	// 파일에 대한 inputstream 객체를 생성한다.
     	FileCopyUtils.copy(inputStream, response.getOutputStream());	// 다운로드 할 파일을 복사해서 보내준다.
+    }
+    
+    // 마이페이지에서 내 모든 첨부 파일을 일괄 다운로드 할 수 있도록 한다. 
+    @SuppressWarnings("unlikely-arg-type")
+	@RequestMapping(value = "/downAllfiles.do/{user_id}/{type}")
+    public void downloadAllFile(HttpServletResponse response, @PathVariable("user_id") String user_id, @PathVariable("type") String type) throws Exception {
+    	
+    	/*
+    	// 사용자가 저장한 모든 파일을 가져온다
+    	List<FileDTO> myFiles = service.myFile(user_id);
+    	
+    	// 사용자가 저장한 파일들중 클라이언트가 원하는 타입의 파일들만 가져온다. 이를 위한 변수 선언 
+    	//List<FileDTO> myTypeFiles = new ArrayList<FileDTO>();
+    	List<File> files = new ArrayList<>();
+    	File keepFile;
+    	*/
+    	
+    	
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/zip");
+        response.addHeader("Content-Disposition", "attachment; filename=\"allToOne.zip\"");
+
+       // List<FileDTO> myTypeFiles = new ArrayList<FileDTO>();
+        FileOutputStream fos = null;
+        ZipOutputStream zipOut = null;
+        FileInputStream fis = null;
+
+        try {
+        	String folder_path = "D:\\MyOwnRepository_DATA\\upload";
+        	
+        	//File zipFolder = new File(folder_path, "MOR-downloadZip.zip");
+            zipOut = new ZipOutputStream(response.getOutputStream());
+
+        	List<File> files = new ArrayList<>();
+        	File keepFile;
+        	// 사용자가 저장한 모든 파일을 가져온다
+        	List<FileDTO> myFiles = service.myFile(user_id);
+
+        	for(int i=0; i<myFiles.size(); i++) {
+        		if(type.equals("img") == true) {
+        			if(myFiles.get(i).type.contains("image") == true) {
+        				System.out.println("왜 안되냐고!!!!!!!!!!!!!!!!!!!!!!!");
+        				keepFile = new File(myFiles.get(i).stored_path);
+        				System.out.println("왜 안되냐고@@@@@@@@@@@@@@@@@@@@@@@");
+        				files.add(keepFile);
+        				System.out.println("왜 안되냐고########################");
+        				//System.out.println("폴더에 넣을 파일들 잘들어가고있음!!!!"+ files.get(i).getName());
+        			}
+        			else {
+        				System.out.println("파일에 image인게 없음 >>>>>>>>> ");
+        			}
+        		}
+        		else if(type.equals("video") == true) {
+        			if(myFiles.get(i).type.equals("video") == true) {
+        				keepFile = new File(myFiles.get(i).stored_path);
+        				files.add(keepFile);
+        			}
+        		}
+        		else if(type.equals("except") == true) {
+        			if(myFiles.get(i).type.equals("application") == true) {
+        				keepFile = new File(myFiles.get(i).stored_path);
+        				files.add(keepFile);  				
+        			}
+        		}
+        	}
+
+        	System.out.println("압축파일에 넣는 파일 이름 >>>>>>>>>>>>>>>>> "+ files.size());
+    		// 압축파일에 파일들을 넣는다.
+        	/*
+            for(File file : files) {
+            	System.out.println("압축파일에 넣는 파일 이름 >>>>>>>>>>>>>>>>> "+ file.getName());
+                zipOut.putNextEntry(new ZipEntry(file.getName()));
+                fis = new FileInputStream(file);
+                
+                FileCopyUtils.copy(fis, zipOut);
+
+                fis.close();
+                zipOut.closeEntry();
+            }
+        	 */
+        	for(int i=0; i<files.size(); i++) {
+                zipOut.putNextEntry(new ZipEntry(files.get(i).getName()));
+                fis = new FileInputStream(files.get(i));
+                
+                //StreamUtils.copy(fis, zipOut);
+
+                fis.close();
+                zipOut.closeEntry();
+        	}
+            zipOut.close();
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());             
+            try { if(fis != null)fis.close(); } catch (IOException e1) {System.out.println(e1.getMessage());}
+            try { if(zipOut != null)zipOut.closeEntry();} catch (IOException e2) {System.out.println(e2.getMessage());}
+            try { if(zipOut != null)zipOut.close();} catch (IOException e3) {System.out.println(e3.getMessage());}        	
+        }
+        
+    	
+    	/*
+    	// (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFolder)))
+    	String folder_path = "D:\\MyOwnRepository_DATA\\upload";
+    	
+    	File zipFolder = new File(folder_path, "MOR-downloadZip.zip");
+    	byte[] buf = new byte[4096];
+    	try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFolder))){		
+        	for(int i=0; i<myFiles.size(); i++) {
+        		if(type.equals("img") == true) {
+        			if(myFiles.get(i).type.contains("image") == true) {
+        				//myTypeFiles.add(myFiles.get(i));
+        				keepFile = new File(myFiles.get(i).stored_path);
+        				files.add(keepFile);
+        			}
+        		}
+        		else if(type.equals("video") == true) {
+        			if(myFiles.get(i).type.equals("video") == true) {
+        				//myTypeFiles.add(myFiles.get(i));
+        				keepFile = new File(myFiles.get(i).stored_path);
+        				files.add(keepFile);
+        			}
+        		}
+        		else if(type.equals("except") == true) {
+        			if(myFiles.get(i).type.equals("application") == true) {
+        				//myTypeFiles.add(myFiles.get(i));
+        				keepFile = new File(myFiles.get(i).stored_path);
+        				files.add(keepFile);    				
+        			}
+        		}
+        	}
+        	
+        	
+    		 
+            for (File file : files) {
+                try (FileInputStream in = new FileInputStream(file)) {
+                    ZipEntry ze = new ZipEntry(file.getName());
+                    out.putNextEntry(ze);
+ 
+                    int len;
+                    while ((len = in.read(buf)) > 0) {
+                        out.write(buf, 0, len);
+                    }
+ 
+                    out.closeEntry();
+                }
+ 
+            }
+        	String encodeType = "utf-8";
+       	 
+        	response.setContentType("application/zip");		// 파일 type 설정
+        	response.setHeader("Content-Disposition", "attachment; filename=\""+ URLEncoder.encode("MOR-downloadZip.zip", encodeType).replaceAll("\\+", "%20"));	// 브라우저에 다운로드 할 파일임을 알림.
+        	response.setContentLength((int)zipFolder.length());		// 파일 사이즈 설정
+        														
+        	
+        	InputStream inputStream = new BufferedInputStream(new FileInputStream(zipFolder));	// 파일에 대한 inputstream 객체를 생성한다.
+        	FileCopyUtils.copy(inputStream, response.getOutputStream());	// 다운로드 할 파일을 복사해서 보내준다.
+        	
+        	if(zipFolder.exists()) {
+        		zipFolder.delete();		// 압축한 폴더는 서버에서 삭제
+        		System.out.println("서버에서 폴더 삭제!!!!");
+        	}
+        }
+    	*/
+    
     }
     
     // 게시글 수정시 기존 파일삭제
@@ -2454,6 +2811,23 @@ public class HomeController {
         model.addAttribute("adminFoldList", admin_board_foldList);
     	
     	return "user/totalpost";
+    }
+       
+    
+    @RequestMapping(value="/unregister.do/{id}")
+    public String unregister(HttpServletRequest request, @PathVariable("id") String id) throws Exception{
+    	HttpSession session = request.getSession(false);
+
+    	if(session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
+    		session.invalidate();
+    		return "redirect:/";
+    	}
+    	else {
+    		service.unRegister(id);
+    		return "redirect:/";
+    	}
+    	
+    	
     }
     
     @RequestMapping(value="/user/ERROR_PAGE")

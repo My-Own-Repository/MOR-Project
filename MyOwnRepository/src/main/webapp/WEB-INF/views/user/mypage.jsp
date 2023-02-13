@@ -1,30 +1,267 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>³» Á¤º¸</title>
+    <title>ë§ˆì´í˜ì´ì§€</title>
     <!-- autocomplete from jQuery Ui -->
     <script src='{% static "js/jquery-1.11.3.min.js" %}'></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../../resources/css/mypage.css">
     <link rel="icon" type="image/jpg" href="../../../resources/img/MORicon.jpg">
     
-	<script>
+    <!-- JQueryì—ì„œ ì œê³µí•˜ëŠ” ì´ë¯¸ì§€ í´ë¦­ì‹œ í¬ê²Œë³´ê¸° 
+    <link rel="stylesheet" href="/styles/vendor/jquery.fancybox.min.css">
+	<script src="/scripts/vendor/jquery.fancybox.min.js"></script>
+    -->
+    
+	<script
  		src="https://code.jquery.com/jquery-3.4.1.js"
  		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
  		crossorigin="anonymous"></script>
 </head>
 <body>
-	<a href="/logout">·Î±×¾Æ¿ô</a>
+	<div class="total_div">
+		<div class="mypage_top">
+			<a href="/user/userMain/1">
+				<span class="go_main_MOR">
+					MOR
+				</span>
+			</a>
+			<a href="/user/userMain/1">
+				<span class="go_board_OR_repo">
+					ììœ ê²Œì‹œíŒ
+				</span>
+			</a>
+			<a href="/user/secretBoard/1">
+				<span class="go_board_OR_repo">
+					ë¹„ë°€ê²Œì‹œíŒ
+				</span>
+			</a>
+			<a href="/user/sharingRepo/1">
+				<span class="go_board_OR_repo">
+					ê³µìœ ì €ì¥ì†Œ
+				</span>
+			</a>
+			<a href="/user/myRepo/1">
+				<span class="go_board_OR_repo">
+					ë¹„ë°€ì €ì¥ì†Œ
+				</span>
+			</a>
+		</div>
+		<br><br><br><br>
+		<div id="info_total_content_div" class="total_content_div">
+			<div class="mypage_middle">
+				<div class="mypage_title">
+					<b class="mypage_title_b">ë§ˆì´í˜ì´ì§€</b>
+				</div>
+				<div class="mypage_select">
+					<span id="my_info_span" class="my_info_AND_file_span">
+						<input type="button" id="my_info_span_btn" class="clicked_btn" value="ë‚´ì •ë³´" onClick="mypage_infoMode();">
+					</span>
+					<span id="my_file_span" class="my_info_AND_file_span">
+						<input type="button" id="my_file_span_btn" class="noneClicked_btn" value="ë‚´íŒŒì¼" onClick="mypage_fileMode();">
+					</span>
+				</div>
+			</div>
+			<br><br>
+			<div class="mypage_bottom">
+				<br><br>
+				<div class="mypage_bottom_div">
+					<div class="my_info_div">
+						<div class="my_info_div_top">
+							<img src="../../../resources/img/MOR_symbol_logo.svg" class="MOR_logo">
+							<h4>${member.nickname}ë‹˜, ë‚˜ë§Œì˜ ì €ì¥ì†Œ morì„ ì´ìš©í•´ì£¼ì…”ì„œ ê°ì‚¬í•©ë‹ˆë‹¤.</h4>
+						</div>
+						<div class="my_info_div_bottom">
+							<table>
+								<tr>
+									<th>ì•„ì´ë””</th>
+									<td>&emsp;&emsp;${member.id}</td>
+								</tr>
+								<tr>
+									<th>ì´ë¦„&emsp;</th>
+									<td>&emsp;&emsp;${member.name}</td>
+								</tr>
+								<tr>
+									<th>ì´ë©”ì¼</th>
+									<td>&emsp;&emsp;${member.email}</td>
+								</tr>
+							</table>
+							<input type="button" class="my_info_edit_btn" value="ì •ë³´ìˆ˜ì •" onClick="edit_myInfo();">
+						</div>
+						<input type="button" class="my_info_unregister_btn" value="íšŒì›íƒˆí‡´" onClick="unregister();">
+					</div>
+					<br><br>
+					<div class="my_post_div">
+						<p class="my_post_AND_comment_title_p">
+							ë‚´ê°€ ì“´ ê¸€
+						</p>
+						<hr class="my_post_AND_comment_hr">
+						<div class="my_post_AND_comment_div_content">
+							<div class="my_posts_AND_comments_List_div">
+								<c:forEach items="${myPosts}" var="p">
+									<p class="my_posts_AND_comments_p">${p.num}&emsp;&emsp;
+									<a href="/user/posts?urlnum=${p.num}">${p.title}</a>
+									<font color="red" size="1px">&ensp;[${p.comment}]</font></p>
+									<hr class="my_posts_AND_comments_List_div_hr">
+								</c:forEach>
+							</div>
+						</div>
+					</div>
+					<div class="my_comment_div">
+						<p class="my_post_AND_comment_title_p">
+							ë‚´ê°€ ì“´ ëŒ“ê¸€
+						</p>
+						<hr class="my_post_AND_comment_hr">
+						<div class="my_post_AND_comment_div_content">
+							<div class="my_posts_AND_comments_List_div">
+								<c:forEach items="${myComments}" var="c">
+									<p class="my_posts_AND_comments_p">${c.b_num}&emsp;&emsp;
+									<a href="/user/posts?urlnum=${c.b_num}">${c.content}</a></p>
+									<hr class="my_posts_AND_comments_List_div_hr">
+								</c:forEach>
+							</div>
+						</div>
+					</div>	
+				</div>		
+			</div>
+		</div>
+		
+		<div id="file_total_content_div" class="total_content_div">
+			<div class="mypage_middle">
+				<div class="mypage_title">
+					<b class="mypage_title_b">ë§ˆì´í˜ì´ì§€</b>
+				</div>
+				<div class="mypage_select">
+					<span id="my_info_span" class="my_info_AND_file_span">
+						<input type="button" id="my_info_span_btn" class="noneClicked_btn" value="ë‚´ì •ë³´" onClick="mypage_infoMode();">
+					</span>
+					<span id="my_file_span" class="my_info_AND_file_span">
+						<input type="button" id="my_file_span_btn" class="clicked_btn" value="ë‚´íŒŒì¼" onClick="mypage_fileMode();">
+					</span>
+				</div>
+			</div>
+			<br><br>
+			<div class="mypage_bottom">
+				<br><br>
+				<div class="mypage_file_bottom_div">
+					<div class="myfile_img_video_file_div">
+						<img src="../../../resources/img/camera.png" class="myfile_img">
+						
+						<div class="myfile_content">
+							<c:forEach items="${myImage}" var="imgs">
+								<div class="files_view_div">
+									<img src="/loadfiles.do/${imgs.file_num}" class="myfile_imgs" alt="">
+									<br>
+									<a href="/downfiles.do/${imgs.file_num}" class="files_view_div_download">${imgs.original_file_name}</a>
+								</div>
+							</c:forEach>
+						</div>
+						
+					</div>
+					<br><br>
+					<div class="myfile_img_video_file_div">
+						<img src="../../../resources/img/video.png" class="myfile_video">
+						
+						<div class="myfile_content">
+							<c:forEach items="${myVideo}" var="videos">
+								<div class="files_view_div">
+									<video src="/loadfiles.do/${videos.file_num}" class="myfile_videos" controls></video>
+									<br>
+									<a href="/downfiles.do/${videos.file_num}" class="files_view_div_download">${videos.original_file_name}</a>
+								</div>								
+							</c:forEach>
+						</div>
+						
+					</div>
+					<br><br>
+					<div class="myfile_img_video_file_div">
+						<img src="../../../resources/img/file.png" class="myfile_file">
+						
+						<div class="myfile_content">
+							<c:forEach items="${myExcept}" var="excepts">
+								<div class="files_view_div">
+									<img src="../../../resources/img/fileImg.png" class="myfile_excepts" alt="">
+									<br>
+									<a href="/downfiles.do/${excepts.file_num}" class="files_view_div_download">${excepts.original_file_name}</a>
+								</div>
+							</c:forEach>
+						</div>
+			
+					</div>
+					<br><br>
+				</div>
+			</div>
+		</div>	
+	</div>
 	
-	
-	
-	
-	
+	<script>
+		// ë§ˆì´í˜ì´ì§€ - ë‚´ì •ë³´
+		function mypage_infoMode(){	
+			window.location.reload();
+		}
+		
+		// ë§ˆì´í˜ì´ì§€ - ë‚´íŒŒì¼
+		function mypage_fileMode(){			
+			var info_btn_span = document.getElementById("my_info_span");
+			var file_btn_span = document.getElementById("my_file_span");
+			
+			var info_btn = document.getElementById("my_info_span_btn");
+			var file_btn = document.getElementById("my_file_span_btn");
+			
+			var create_info_btn = document.createElement("input");
+			create_info_btn.type = "button";
+			create_info_btn.id = "my_info_span_btn";
+			create_info_btn.value = "ë‚´ì •ë³´";
+			create_info_btn.className = "noneClicked_btn";
+			
+			var create_file_btn = document.createElement("input");
+			create_file_btn.type = "button";
+			create_file_btn.id = "my_file_span_btn";
+			create_file_btn.value = "ë‚´íŒŒì¼";
+			create_file_btn.className = "clicked_btn";
+			
+			info_btn.remove();
+			file_btn.remove();
+			
+			info_btn_span.appendChild(create_info_btn);
+			file_btn_span.appendChild(create_file_btn);
+					
+			$("#info_total_content_div").css({
+				"display":"none"
+			})
+			$("#file_total_content_div").css({
+				"display":"block"
+			})
+			
+		}
+		
+		// ë§ˆì´í˜ì´ì§€ - ë‚´ì •ë³´ ìˆ˜ì •
+		function edit_myInfo(){
+			window.open("<%= request.getContextPath()%>/user/edit_myinfo", "", "width=600, height=600, resizable=no, fullscreen=no scrollbars=no, status=yes, left=600, top=100");
+		}
+		
+		// ë§ˆì´í˜ì´ì§€ - ë‚´íŒŒì¼ ì´ë¯¸ì§€ ì›ë³¸í¬ê¸°ë¡œ ë³´ê¸°
+		var img = document.getElementsByClassName("myfile_imgs");
+		for (var i = 0; i < img.length; i++) {
+			img.item(i).onclick=function() {window.open(this.src)}; 
+		}
+		
+		
+		// íšŒì›íƒˆí‡´
+		function unregister(){
+			if(confirm("ì •ë§ë¡œ íšŒì›íƒˆí‡´ë¥¼ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?")){
+				alert("íšŒì›íƒˆí‡´ê°€ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
+				var unregister_ID = '${member.id}';
+				window.location.href = '../unregister.do/'+unregister_ID;
+			}
+		}
+	</script>
 	
 		<br><br><br><br><br><br><br><br>
         <footer>
@@ -33,9 +270,9 @@
                 <nav class="footerinfo-division-top">
                     <div class="inner">
                         <div class="link-about">
-                            <a href="#">ÀÌ¿ë¾à°ü</a>
-                            <a href="#"><b>°³ÀÎÁ¤º¸Ã³¸®¹æÄ§</b></a>
-                            <a href="#">»ç¾÷ÀÚÁ¤º¸È®ÀÎ</a>
+                            <a href="#">ì´ìš©ì•½ê´€</a>
+                            <a href="#"><b>ê°œì¸ì •ë³´ì²˜ë¦¬ë°©ì¹¨</b></a>
+                            <a href="#">ì‚¬ì—…ìì •ë³´í™•ì¸</a>
 
                         </div>
                         <div class="link-social">
@@ -46,15 +283,15 @@
                                 </a>
                                 <a href="#">
                                     <img src="../../../resources/img/ic-facebook-rogo-32.svg" alt="facebook-rogo">
-                                    <span>ÆäÀÌ½ººÏ</span>
+                                    <span>í˜ì´ìŠ¤ë¶</span>
                                 </a>
                                 <a href="#">
                                     <img src="../../../resources/img/ic-kakaoplus-rogo-32.svg" alt="kakaoplus-rogo">
-                                    <span>Ä«Ä«¿ÀÇÃ·¯½º</span>
+                                    <span>ì¹´ì¹´ì˜¤í”ŒëŸ¬ìŠ¤</span>
                                 </a>
                                 <a href="#">
                                     <img src="../../../resources/img/ic-insta-rogo-32.svg" alt="insta-rogo">
-                                    <span>ÀÎ½ºÅ¸±×·¥</span>
+                                    <span>ì¸ìŠ¤íƒ€ê·¸ë¨</span>
                                 </a>
                             </div>
                         </div>
@@ -64,33 +301,33 @@
                 <address class = "footerinfo-division-bottom">
                 
                 <div class="company-info">
-                    <div class="company-name">(ÁÖ)MOR</div>
+                    <div class="company-name">(ì£¼)MOR</div>
                     <div class="bundle">
-                        <span>´ëÇ¥ÀÌ»ç : ÁÖÀº»ó</span>
-                        <span>»ç¾÷ÀÚµî·Ï¹øÈ£ : 000-00-00000</span>
+                        <span>ëŒ€í‘œì´ì‚¬ : ì£¼ì€ìƒ</span>
+                        <span>ì‚¬ì—…ìë“±ë¡ë²ˆí˜¸ : 000-00-00000</span>
                     </div>
                     <div class="bundle">
-                        <span>È£½ºÆÃ»ç¾÷ÀÚ : (ÁÖ)MOR</span>
-                        <span>ÁÖ¼Ò : ¾È»ê½Ã ´Ü¿ø±¸ MOR (È£¼öµ¿)</span>
+                        <span>í˜¸ìŠ¤íŒ…ì‚¬ì—…ì : (ì£¼)MOR</span>
+                        <span>ì£¼ì†Œ : ì•ˆì‚°ì‹œ ë‹¨ì›êµ¬ MOR (í˜¸ìˆ˜ë™)</span>
                     </div>
                     <div class="bundle">
-                        <span>°³ÀÎÁ¤º¸°ü¸®Ã¥ÀÓÀÚ : È«±æµ¿</span>
+                        <span>ê°œì¸ì •ë³´ê´€ë¦¬ì±…ì„ì : í™ê¸¸ë™</span>
                     </div>
                 </div>
                 
                 <div class="servicecenter">
                     <div class="center-phonenumber">
-                        <b>°í°´¼¾ÅÍ 0000-0000</b>
+                        <b>ê³ ê°ì„¼í„° 0000-0000</b>
                     </div>
                     <div class="center-info">
-                        <span>¿µ¾÷½Ã°£</span>
+                        <span>ì˜ì—…ì‹œê°„</span>
                         <time>AM 00:00</time>
                         ~
                         <time>PM 11:59</time>
-                        (ÁÖ¸» ¹× °øÈŞÀÏ ÈŞ¹«)
+                        (ì£¼ë§ ë° ê³µíœ´ì¼ íœ´ë¬´)
                     </div>
                     <div class="center-info">
-                        <span>Á¡½É½Ã°£</span>
+                        <span>ì ì‹¬ì‹œê°„</span>
                         <time>AM 11:00</time>
                         ~
                         <time>PM 01:00</time>
@@ -102,15 +339,27 @@
                 
                 <address class = "footerinfo-division-bottom">
 					<div class="company-info">               
-	                    <div class="company-name">ÀúÀÛ±Ç</div>
+	                    <div class="company-name">ì €ì‘ê¶Œ</div>
 	                    <div class="bundle">
-	                        <span><a href="https://www.flaticon.com/kr/free-icons/" title="Æó¹° ¾ÆÀÌÄÜ">Æó¹° ¾ÆÀÌÄÜ  Á¦ÀÛÀÚ: Pavel Kozlov - Flaticon</a></span>
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/" title="íë¬¼ ì•„ì´ì½˜">íë¬¼ ì•„ì´ì½˜  ì œì‘ì: Pavel Kozlov - Flaticon</a></span>
 	                    </div>
 						<div class="bundle">
-	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="¸Í²ÇÀÌ ÀÚ¹°¼è ¾ÆÀÌÄÜ">¸Í²ÇÀÌ ÀÚ¹°¼è ¾ÆÀÌÄÜ  Á¦ÀÛÀÚ: DinosoftLabs - Flaticon</a></span>
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="ë§¹ê½ì´ ìë¬¼ì‡  ì•„ì´ì½˜">ë§¹ê½ì´ ìë¬¼ì‡  ì•„ì´ì½˜  ì œì‘ì: DinosoftLabs - Flaticon</a></span>
 	                    </div>
 	                    <div class="bundle">
-	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="¿­¸° ÀÚ¹°¼è ¾ÆÀÌÄÜ">¿­¸° ÀÚ¹°¼è ¾ÆÀÌÄÜ  Á¦ÀÛÀÚ: Freepik - Flaticon</a></span>
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="ì—´ë¦° ìë¬¼ì‡  ì•„ì´ì½˜">ì—´ë¦° ìë¬¼ì‡  ì•„ì´ì½˜  ì œì‘ì: Freepik - Flaticon</a></span>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="ì‚¬ì§„ìˆ  ì•„ì´ì½˜">ì‚¬ì§„ìˆ  ì•„ì´ì½˜  ì œì‘ì: Good Ware - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="ë¹„ë””ì˜¤ ì•„ì´ì½˜">ë¹„ë””ì˜¤ ì•„ì´ì½˜  ì œì‘ì: Iconjam - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="í´ë” ì•„ì´ì½˜">í´ë” ì•„ì´ì½˜  ì œì‘ì: Freepik - Flaticon</a>
+	                    </div>
+	                    <div class="bundle">
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="íŒŒì¼ ì•„ì´ì½˜">íŒŒì¼ ì•„ì´ì½˜  ì œì‘ì: DinosoftLabs - Flaticon</a>
 	                    </div>
 	                </div>
 				</address>
@@ -122,13 +371,13 @@
 	
 	<c:if test="${logout_msg == true}">
 		<script>
-			alert('Á¤»óÀûÀ¸·Î ·Î±×¾Æ¿ô µÇ¾ú½À´Ï´Ù!');
+			alert('ì •ìƒì ìœ¼ë¡œ ë¡œê·¸ì•„ì›ƒ ë˜ì—ˆìŠµë‹ˆë‹¤!');
 		</script>
 	</c:if>
 	
 	<c:if test="${session_msg == false}">
 		<script>
-			alert('ERROR\n¼¼¼ÇÀÌ ¸¸·áµÇ¾ú½À´Ï´Ù.\n´Ù½Ã ·Î±×ÀÎ ÇØÁÖ¼¼¿ä!!');
+			alert('ERROR\nì„¸ì…˜ì´ ë§Œë£Œë˜ì—ˆìŠµë‹ˆë‹¤.\në‹¤ì‹œ ë¡œê·¸ì¸ í•´ì£¼ì„¸ìš”!!');
 		</script>
 	</c:if>
 </body>

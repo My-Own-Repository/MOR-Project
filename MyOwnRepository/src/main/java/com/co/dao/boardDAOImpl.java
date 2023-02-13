@@ -316,6 +316,22 @@ public class boardDAOImpl implements boardDAO{
 		return sqlSession.selectList(Namespace+".foldTotalSearch", vo);
 	}
 
+	
+	/* 내가 쓴 글/댓글 리스트 */
+	
+	@Override
+	public List<boardDTO> myPost(String id) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".myPost", id);
+	}
+	@Override
+	public List<commentDTO> myComment(String nickname) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".myComment", nickname);
+	}
+
+	
+	
 
 	
 	

@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.co.dto.FileDTO;
 import com.co.dto.FindIDPWDTO;
 import com.co.dto.LoginDTO;
 import com.co.dto.MemberVO;
@@ -65,4 +66,41 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlSession.selectOne(Namespace+".findPW", vo);
 	}
 */
+
+	
+	/* 회원정보 수정 */
+	
+	// 비밀번호 변경
+	@Override
+	public void editInfoPw(MemberVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(Namespace+".editInfoPw", vo);
+	}
+	// 이메일 변경
+	@Override
+	public void editInfoEmail(MemberVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(Namespace+".editInfoEmail", vo);
+	}
+	// 전화번호 변경
+	@Override
+	public void editInfoPhone(MemberVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(Namespace+".editInfoPhone", vo);
+	}
+
+	
+	// 마이페이지 - 내 파일 리스트
+	@Override
+	public List<FileDTO> myFile(String user_id) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(Namespace+".myFile", user_id);
+	}
+
+	// 마이페이지 - 회원탈퇴
+	@Override
+	public void unRegister(String id) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.update(Namespace+".unRegister", id);
+	}
 }
