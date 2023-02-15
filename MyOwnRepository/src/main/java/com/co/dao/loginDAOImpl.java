@@ -16,9 +16,18 @@ public class loginDAOImpl implements loginDAO{
     private SqlSession sqlSession;
 	
 	private static final String Namespace = "com.co.mapper.memberMapper";
+	
+	// 로그인
 	@Override
 	public LoginDTO loginMember(LoginDTO vo) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(Namespace+".loginMember", vo);
+	}
+	
+	// 카카오 로그인
+	@Override
+	public LoginDTO kakaoLogin(String snsid) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".kakaoLogin", snsid);
 	}
 } 

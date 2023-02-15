@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="EUC-KR">
+	<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
  	<link rel="icon" type="image/jpg" href="../../resources/img/MORicon.jpg">
@@ -96,10 +96,10 @@
  	
 <c:choose>
 	<c:when test="${which == 'id'}">
-		<title>�� ���̵� ã��</title>
+		<title>내 아이디 찾기</title>
 	</c:when>
 	<c:when test="${which == 'pw'}">
-		<title>��й�ȣ ã��</title>
+		<title>비밀번호 찾기</title>
 	</c:when>
 </c:choose>
 </head>
@@ -107,7 +107,7 @@
 	<div class="total_div">
 		<c:choose>
 			<c:when test="${which == 'id'}">
-				<p>* �������� ������ ��ġ�ϴ� ���̵� ����Դϴ�</p>
+				<p>* 고객님의 정보와 일치하는 아이디 목록입니다</p>
 				<div class="content_div">
 					<c:forEach items="${userInfo}" var="user">
 						<table class="content_table">
@@ -120,7 +120,7 @@
 				</div>			
 			</c:when>
 			<c:when test="${which == 'pw'}">
-				<p>* ��й�ȣ Ȯ�� �� �����Ͻñ� �ٶ��ϴ�.</p>
+				<p>* 비밀번호 확인 후 변경하시기 바랍니다.</p>
 				<div class="content_div">
 					<c:forEach items="${userInfo}" var="user">
 						<table class="content_table">

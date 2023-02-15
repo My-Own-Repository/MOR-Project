@@ -216,6 +216,9 @@
    </select>
    
    
-   
+   <!-- 마지막 게시글 번호 추출 - 파일 게시글번호 설정용 -->
+   <select id="totalMaxNum" resultType="int">
+   		SELECT MAX(num) FROM board
+   </select>
    
 </mapper>

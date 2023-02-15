@@ -8,11 +8,12 @@ public class LoginDTO {
     public String nickname;
     public String phone_number;
     public String email;
+    public String SNSid;
     public int is_admin;
     
 
   	public LoginDTO() {}
-  	public LoginDTO(String id, String pw, String name, String nickname, String phone_number, String email, int is_admin) {
+  	public LoginDTO(String id, String pw, String name, String nickname, String phone_number, String email, String SNSid, int is_admin) {
   		super();
   		this.id = id;
   		this.pw = pw;
@@ -20,6 +21,7 @@ public class LoginDTO {
   		this.nickname = nickname;
   		this.phone_number = phone_number;
   		this.email = email;
+  		this.SNSid = SNSid;
   		this.is_admin = is_admin;
   	}
     
@@ -69,6 +71,14 @@ public class LoginDTO {
     public void setemail(String email) {
         this.email = email;
     }
+    
+    public String SNSid() {
+    	return SNSid;
+    }
+    public void setSNSid(String SNSid) {
+    	this.SNSid = SNSid;
+    }
+    
     public int getis_admin() {
         return is_admin;
     }

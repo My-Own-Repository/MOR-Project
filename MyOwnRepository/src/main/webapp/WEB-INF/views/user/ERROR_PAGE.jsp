@@ -1,24 +1,24 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
-	<meta charset="EUC-KR">
+<meta charset="UTF-8">
+	<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../../../resources/css/error.css">
     <link rel="icon" type="image/jpg" href="../../../resources/img/MORicon.jpg">
     
-<title>Á¢±Ù ºÒ°¡</title>
+<title>ì ‘ê·¼ ë¶ˆê°€</title>
 </head>
 <body>
 	<div class="error_page_div">
 		<a href="userMain/1"><img class="error_logo" src="../../../resources/img/MOR_symbol_logo.svg" /></a>
 		<div class="error_text_div">
-			<span class="error_text_span_1">Á¢±ÙÇÒ ¼ö ¾ø´Â ÆäÀÌÁöÀÔ´Ï´Ù.</span>
+			<span class="error_text_span_1">ì ‘ê·¼í•  ìˆ˜ ì—†ëŠ” íŽ˜ì´ì§€ìž…ë‹ˆë‹¤.</span>
 			<br>
-			<span class="error_text_span_2">Á¢±Ù ±ÇÇÑÀÌ ¾ø½À´Ï´Ù.</span>
+			<span class="error_text_span_2">ì ‘ê·¼ ê¶Œí•œì´ ì—†ìŠµë‹ˆë‹¤.</span>
 		</div>
 	</div>
 </body>

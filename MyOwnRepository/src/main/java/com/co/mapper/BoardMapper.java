@@ -223,7 +223,10 @@ public class BoardMapper {
 		return boardmapper.myComment(nickname);
 	}
 	
-	
+	// 전체 게시글 마지막 번호 - 파일의 게시글번호 설정용
+	public int totalMaxNum() throws Exception{
+		return boardmapper.totalMaxNum();
+	}
 	
 }
 

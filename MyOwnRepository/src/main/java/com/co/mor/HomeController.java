@@ -1,13 +1,19 @@
 package com.co.mor;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -68,8 +74,13 @@ import com.co.dto.boardDTO;
 import com.co.dto.commentDTO;
 import com.co.dto.deleteFileDTO;
 import com.co.dto.searchVO;
+import com.co.mor.HomeController.SessionConst;
 import com.co.service.BoardService;
+
 import com.co.service.MemberService;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -156,7 +167,126 @@ public class HomeController {
     
     @Inject
     private BoardService b_service;
-   
+    
+	@Autowired(required=true)
+	private HttpServletRequest request;
+	
+	@Inject
+    private MemberService memberService;
+
+	/*
+	public String getReturnAccessToken(String code) {
+   	 System.out.println("서비스단 code >>>>>>>>>>>>>>> "+ code);
+        String access_token = "";
+        String refresh_token = "";
+        String reqURL = "https://kauth.kakao.com/oauth/token";
+                 
+        StringBuffer myTotalURL = request.getRequestURL();		// 사이트의 전체 경로를 myURL 변수에 저장  
+        													// (http://localhost:9000/~~~~) , (http://mors.myvnc.com:9000/~~~) 등
+        String myURL = "";
+        
+        if(myTotalURL.indexOf("http://localhost") == -1) {
+       	 myURL = "&redirect_uri=http://mors.myvnc.com:9000/login/kakao";
+        }
+        else {
+       	 myURL = "&redirect_uri=http://localhost:9000/login/kakao";
+        }
+        
+        System.out.println("myURL >>>>>>>>>>>>>>> "+ myURL);
+        
+        
+       try {
+           URL url = new URL(reqURL);
+           HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            //HttpURLConnection 설정 값 셋팅
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+
+            // buffer 스트림 객체 값 셋팅 후 요청
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+            StringBuilder sb = new StringBuilder();
+            sb.append("grant_type=authorization_code");
+            sb.append("&client_id=68e5fcd4712a35905ac2280d35e61313");  //앱 KEY VALUE
+            sb.append(myURL); 	// 앱 경로
+            sb.append("&code=" + code);
+            bw.write(sb.toString());
+            bw.flush();
+
+            //  RETURN 값 result 변수에 저장
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String br_line = "";
+            String result = "";
+
+            while ((br_line = br.readLine()) != null) {
+                result += br_line;
+            }
+
+            JsonParser parser = new JsonParser();
+            JsonElement element = parser.parse(result);
+
+
+            // 토큰 값 저장 및 리턴
+            access_token = element.getAsJsonObject().get("access_token").getAsString();
+            refresh_token = element.getAsJsonObject().get("refresh_token").getAsString();
+
+            br.close();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return access_token;
+    }
+
+    public Map<String,Object> getUserInfo(String access_token) {
+           Map<String,Object> resultMap =new HashMap<>();
+           String reqURL = "https://kapi.kakao.com/v2/user/me";
+            try {
+                URL url = new URL(reqURL);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+
+               //요청에 필요한 Header에 포함될 내용
+                conn.setRequestProperty("Authorization", "Bearer " + access_token);
+
+                int responseCode = conn.getResponseCode();
+                System.out.println("responseCode : " + responseCode);
+
+                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                String br_line = "";
+                String result = "";
+
+                while ((br_line = br.readLine()) != null) {
+                    result += br_line;
+                }
+               System.out.println("response:" + result);
+
+
+               JsonParser parser = new JsonParser();
+               JsonElement element = parser.parse(result);
+               System.out.println("element:: " + element);
+               JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+               JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+               System.out.println("id:: "+element.getAsJsonObject().get("id").getAsString());
+               String id = element.getAsJsonObject().get("id").getAsString();
+               String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+               //String email = kakao_account.getAsJsonObject().get("email").getAsString();
+               //System.out.println("email:: " + email);
+               resultMap.put("nickname", nickname);
+               resultMap.put("id", id);
+               //resultMap.put("email", email);          
+
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return resultMap;
+        }
+    */
+
     // {page}는 사용자가 선택한 게시판의 페이지 번호
     @RequestMapping(value = "/{page}", method = RequestMethod.GET)
     public String main(Locale locale, Model model, HttpServletRequest request, @PathVariable("page") int page) throws Exception{ 
@@ -750,7 +880,7 @@ public class HomeController {
         	return "redirect:/LoginPage";
     	}
     	
-    	LoginDTO member =  (LoginDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
+    	LoginDTO member = (LoginDTO) session.getAttribute(SessionConst.LOGIN_MEMBER);
     	model.addAttribute("member", member);
     	
     	List<boardDTO> myPosts = b_service.myPost(member.id);
@@ -1024,10 +1154,8 @@ public class HomeController {
     			
     			if(!files[0].isEmpty() || files.length != 0) {		// 첫 번째 인덱스가 비었을 경우 실행이 되지않음(첫 번째 인덱스가 비었다 = 파일이 등록된게 하나도 없다)
     				
-    				int b_num = b_service.maxNum()+1;		// 파일의 정보에 게시글 고유번호를 넣어야한다.
-															// 게시글이 먼저 올라오고 파일이 올라가므로 마지막 게시글의 고유번호를 가져오는 방법을 썼다.
-															// 그다지 좋은 방법은 아니니 대안책을 고려해야할듯.
-															// (다른 사용자의 게시글이 거의 동시에 올라올경우 정보가 꼬일 가능성이 있어서 파일을 먼저 db에 등록하는 방법을 사용)
+    				int b_num = b_service.totalMaxNum()+1;		// 전체 게시글 마지막 번호 - 파일의 게시글번호 설정용
+  				
     				
     				for(int i=0; i<files.length; i++) {
     					if(!files[i].isEmpty()) {			// 비어있는 것은 생략
@@ -2829,6 +2957,9 @@ public class HomeController {
     	
     	
     }
+    
+   
+    
     
     @RequestMapping(value="/user/ERROR_PAGE")
     public String errorPage(HttpServletRequest request, Model model, Locale locale) throws Exception{

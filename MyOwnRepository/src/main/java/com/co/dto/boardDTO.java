@@ -5,7 +5,7 @@ public class boardDTO {
 	public int num;
 	public String title;
 	public String content;
-	//public String view_content;
+	public String view_content;
     public String id;
     public String nickname;
     public int comment;
@@ -17,11 +17,12 @@ public class boardDTO {
     public int is_exist;	// 게시글 삭제 여부
 
   	public boardDTO() {}
-  	public boardDTO(int num, String title, String content, String id, String nickname, int comment, String date, int view, int is_secret, int secret_num, int is_repo, int is_exist) {
+  	public boardDTO(int num, String title, String content, String view_content, String id, String nickname, int comment, String date, int view, int is_secret, int secret_num, int is_repo, int is_exist) {
   		super();
   		this.num = num;
   		this.title = title;
   		this.content = content;
+  		this.view_content = view_content;
   		this.id = id;
   		this.nickname = nickname;
   		this.comment = comment;
@@ -56,7 +57,7 @@ public class boardDTO {
     public void setcontent(String content) {
         this.content = content;
     }
-    /*
+    
     public String getview_content() {
         return view_content;
     }
@@ -64,7 +65,7 @@ public class boardDTO {
     public void setview_content(String view_content) {
         this.view_content = view_content;
     }
-    */
+    
     public String getid() {
         return id;
     }

@@ -113,5 +113,22 @@ public class MemberServiceImpl implements MemberService {
 		dao.unRegister(id);
 	}
 
+	
+	// 카카오 로그인
+	@Override
+	public LoginDTO kakaoLogin(String snsid) throws Exception {
+		// TODO Auto-generated method stub
+		return ldao.kakaoLogin(snsid);
+	}
 
+	// 카카오 회원가입
+	@Override
+	public void kakaoJoin(MemberVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		dao.kakaoJoin(vo);
+	}
+
+	
+	
+	
 }
