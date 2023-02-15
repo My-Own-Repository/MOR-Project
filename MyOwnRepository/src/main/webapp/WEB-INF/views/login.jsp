@@ -46,7 +46,7 @@
                 </h2>
 
                 <div class="social_btn_area">
-                    <a href="#" role="button" class="btn_kakao">
+                    <a href="javascript:loginWithKakao()" role="button" class="btn_kakao">
                         <img src="././resources/img/icon-kakao-login-26-pt.svg" alt="카카오로그인버튼">
                         카카오로 10초만에 시작하기
                     </a>
@@ -64,10 +64,38 @@
         
     </div>
 	</form>
-
+	<!-- 카카오 로그인 -->
+	<script type="text/javascript" src="https://developers.kakao.com/sdk/js/kakao.min.js" charset="utf-8"></script>
+	
 	<script type="text/javascript">
+	    $(document).ready(function(){
+	        Kakao.init('c42f0d88037c6f506de825d7045d01a6');
+	        Kakao.isInitialized();
+	    });
+	    
+	    function loginWithKakao() {
+	    	var what_domain = '<%= request.getRequestURL()%>';
+	
+	    	if(what_domain.includes('http://localhost') == true){
+		        Kakao.Auth.authorize({ 
+			        redirectUri: 'http://localhost:9000/login/kakao'
+			    });
+	    	}
+	    	else {
+	    		Kakao.Auth.authorize({ 
+			        redirectUri: 'http://mors.myvnc.com:9000/login/kakao'
+			    });
+	    	}
+ 
+	    }
+	    
+	    /*
+	    function kakaoLoginSuccess(){
+	    	location.replace('/user/userMain');
+	    }
+	    */
 		function join_window(){
-			// resizable은 더이상 지원을 안하네요...
+			// resizable은 더이상 지원을 안하네...
 			window.open("<%= request.getContextPath()%>/join", "", "width=640, height=800, resizable=no, fullscreen=no scrollbars=no, status=yes, left=600, top=100");
 		}
 		function idpw_window(){

@@ -103,4 +103,11 @@ public class MemberDAOImpl implements MemberDAO {
 		// TODO Auto-generated method stub
 		sqlSession.update(Namespace+".unRegister", id);
 	}
+
+	// 카카오 회원가입
+	@Override
+	public void kakaoJoin(MemberVO vo) throws Exception {
+		// TODO Auto-generated method stub
+		sqlSession.insert(Namespace+".kakaoJoin", vo);
+	}
 }

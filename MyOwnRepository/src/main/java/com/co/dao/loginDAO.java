@@ -12,6 +12,9 @@ import com.co.dto.LoginDTO;
 @Repository
 public interface loginDAO {
 	
+	// 로그인
 	public LoginDTO loginMember(LoginDTO vo) throws Exception;
 	 
+	// 카카오 로그인
+	public LoginDTO kakaoLogin(String snsid) throws Exception;
 }

@@ -330,6 +330,13 @@ public class boardDAOImpl implements boardDAO{
 		return sqlSession.selectList(Namespace+".myComment", nickname);
 	}
 
+	// 전체 게시글 마지막 번호 - 파일의 게시글번호 설정용
+	@Override
+	public int totalMaxNum() throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(Namespace+".totalMaxNum");
+	}
+
 	
 	
 

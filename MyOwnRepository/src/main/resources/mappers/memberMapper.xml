@@ -67,5 +67,15 @@
    	<update id="unRegister">
    		UPDATE users SET is_exist=0 WHERE is_exist=1 AND id=#{id}
    	</update>
+   	
+   	<!-- 카카오 로그인 -->
+   	<select id="kakaoLogin" resultType="LoginDTO">
+   		SELECT * FROM users WHERE SNSid=#{SNSid} AND is_exist=1;
+   	</select>
+   	<!-- 카카오 회원가입 -->
+   	<insert id="kakaoJoin">
+   		INSERT INTO users (id, pw, name, nickname, email, SNSid) VALUES (#{id}, #{pw}, #{name}, #{name}, #{email}, #{SNSid})
+   	</insert>
+   	
 </mapper>
 

@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="EUC-KR">
+	<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +33,7 @@
 		}
 		
 		input, button{
-			/* ios ±âº» ½ºÅ¸ÀÏ Á¦°Å */
+			/* ios ê¸°ë³¸ ìŠ¤íƒ€ì¼ ì œê±° */
 			appearance: none;
 		    -moz-appearance: none;
 		    -webkit-appearance: none;
@@ -68,7 +68,7 @@
 			padding-bottom: 10%;
 		}
 		
-		/* ¼±ÅÃ½Ã #64AAFF, ºñ¼±ÅÃ½Ã #BEEFFF */
+		/* ì„ íƒì‹œ #64AAFF, ë¹„ì„ íƒì‹œ #BEEFFF */
 		.find_ID_btn_span{
 			display: flex;
 			width: 40%;
@@ -170,7 +170,7 @@
 		}
 		
 		
-		/* ¿©±âºÎÅÏ Ã£Àº id/pw¸¦ º¸¿©ÁÖ´Â ºÎºĞ */		
+		/* ì—¬ê¸°ë¶€í„´ ì°¾ì€ id/pwë¥¼ ë³´ì—¬ì£¼ëŠ” ë¶€ë¶„ */		
 		.view_myID_div{
 			display: none;
 		}
@@ -188,7 +188,7 @@
 	}
 	</style>
 
-<title>MOR - ¾ÆÀÌµğ/ºñ¹Ğ¹øÈ£ Ã£±â</title>
+<title>MOR - ì•„ì´ë””/ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°</title>
 </head>
 <body>
 </head>	
@@ -199,37 +199,37 @@
 		</a>
 		<div class="find_IDPW_btn_div">
 			<span id="find_ID_btn_span" class="find_ID_btn_span">
-				<input type="button" id="find_ID_btn" class="find_ID_btn" value="¾ÆÀÌµğ Ã£±â" onClick="find_ID_JS();">
+				<input type="button" id="find_ID_btn" class="find_ID_btn" value="ì•„ì´ë”” ì°¾ê¸°" onClick="find_ID_JS();">
 			</span>
 			<span id="find_PW_btn_span" class="find_PW_btn_span">
-				<input type="button" id="find_PW_btn" class="find_PW_btn" value="ºñ¹Ğ¹øÈ£ Ã£±â" onClick="find_PW_JS();">
+				<input type="button" id="find_PW_btn" class="find_PW_btn" value="ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°" onClick="find_PW_JS();">
 			</span>
 		</div>
 
 		<div class="find_IDPW_div">
 			<div id="find_ID_div" class="find_ID_div">
-				<h3>º»ÀÎÈ®ÀÎ ÀÌ¸ŞÀÏ·Î ÀÎÁõ - ID</h3><br><br><br>
-				<b>º»ÀÎÀÎÁõ ÀÌ¸ŞÀÏ ÁÖ¼Ò¿Í µ¿ÀÏÇÑ ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇØ¾ß,</b><br>			 
-				<b>ÀÎÁõ¹øÈ£¸¦ ¹ŞÀ» ¼ö ÀÖ½À´Ï´Ù.</b><br><br><br>
+				<h3>ë³¸ì¸í™•ì¸ ì´ë©”ì¼ë¡œ ì¸ì¦ - ID</h3><br><br><br>
+				<b>ë³¸ì¸ì¸ì¦ ì´ë©”ì¼ ì£¼ì†Œì™€ ë™ì¼í•œ ì´ë©”ì¼ì„ ì…ë ¥í•´ì•¼,</b><br>			 
+				<b>ì¸ì¦ë²ˆí˜¸ë¥¼ ë°›ì„ ìˆ˜ ìˆìŠµë‹ˆë‹¤.</b><br><br><br>
 				<form id="find_ID_form">
 					<table class="find_table">
 						<tr>
-							<th>ÀÌ¸§</th>
+							<th>ì´ë¦„</th>
 							<td>
 								<input type="text" id="name" name="name" class="input_info">
 							</td>
 						<tr>
 						<tr>
-							<th>ÀÌ¸ŞÀÏ ÁÖ¼Ò</th>
+							<th>ì´ë©”ì¼ ì£¼ì†Œ</th>
 							<td>
 								<input type="text" id="email_id" name="email" class="input_info">
-								<input type="button" class="input_info_btn" value="ÀÎÁõ¹øÈ£ ¹Ş±â" onClick="checkEmail();">
+								<input type="button" class="input_info_btn" value="ì¸ì¦ë²ˆí˜¸ ë°›ê¸°" onClick="checkEmail();">
 							</td>
 						</tr>
 						<tr>
 							<th></th>
 							<td>
-								<input type="text" id="id_input_confirmNum" class="input_confirmNum" maxLength="6" placeholder="ÀÎÁõ¹øÈ£ 6ÀÚ¸® ¼ıÀÚ ÀÔ·Â" disabled="disabled" onChange="view_ID(this.value)">
+								<input type="text" id="id_input_confirmNum" class="input_confirmNum" maxLength="6" placeholder="ì¸ì¦ë²ˆí˜¸ 6ìë¦¬ ìˆ«ì ì…ë ¥" disabled="disabled" onChange="view_ID(this.value)">
 								<div id="id_confirm_msg"></div>
 							</td>
 						</tr>
@@ -239,29 +239,29 @@
 				</form>
 			</div>
 			<div id="find_PW_div" class="find_PW_div">
-				<h3>º»ÀÎÈ®ÀÎ ÀÌ¸ŞÀÏ·Î ÀÎÁõ - PW</h3><br><br><br>
-				<b>º»ÀÎÀÎÁõ ÀÌ¸ŞÀÏ ÁÖ¼Ò¿Í µ¿ÀÏÇÑ ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇØ¾ß,</b><br>			 
-				<b>ÀÎÁõ¹øÈ£¸¦ ¹ŞÀ» ¼ö ÀÖ½À´Ï´Ù.</b><br><br><br>
+				<h3>ë³¸ì¸í™•ì¸ ì´ë©”ì¼ë¡œ ì¸ì¦ - PW</h3><br><br><br>
+				<b>ë³¸ì¸ì¸ì¦ ì´ë©”ì¼ ì£¼ì†Œì™€ ë™ì¼í•œ ì´ë©”ì¼ì„ ì…ë ¥í•´ì•¼,</b><br>			 
+				<b>ì¸ì¦ë²ˆí˜¸ë¥¼ ë°›ì„ ìˆ˜ ìˆìŠµë‹ˆë‹¤.</b><br><br><br>
 				<form id="find_PW_form">
 					<table class="find_table">
 						<tr>
-							<th>¾ÆÀÌµğ</th>
+							<th>ì•„ì´ë””</th>
 							<td>
 								<input type="text" id="id" name="id" class="input_info">
 								
 							</td>
 						<tr>				
 						<tr>
-							<th>ÀÌ¸ŞÀÏ ÁÖ¼Ò</th>
+							<th>ì´ë©”ì¼ ì£¼ì†Œ</th>
 							<td>
 								<input type="text" id="email_pw" name="email" class="input_info">
-								<input type="button" class="input_info_btn" value="ÀÎÁõ¹øÈ£ ¹Ş±â" onClick="checkEmail();">
+								<input type="button" class="input_info_btn" value="ì¸ì¦ë²ˆí˜¸ ë°›ê¸°" onClick="checkEmail();">
 							</td>
 						</tr>
 						<tr>
 							<th></th>
 							<td>
-								<input type="text" id="pw_input_confirmNum" class="input_confirmNum" maxLength="6" placeholder="ÀÎÁõ¹øÈ£ 6ÀÚ¸® ¼ıÀÚ ÀÔ·Â" disabled="disabled" onChange="view_PW(this.value)">
+								<input type="text" id="pw_input_confirmNum" class="input_confirmNum" maxLength="6" placeholder="ì¸ì¦ë²ˆí˜¸ 6ìë¦¬ ìˆ«ì ì…ë ¥" disabled="disabled" onChange="view_PW(this.value)">
 								<div id="pw_confirm_msg"></div>
 							</td>
 						</tr>
@@ -271,15 +271,15 @@
 				</form>
 			</div>
 			<div id="view_myID_div" class="view_myID_div">
-				<h3>¾ÆÀÌµğ Ã£±â</h3><br>
-				<b>°í°´´ÔÀÇ Á¤º¸¿Í ÀÏÄ¡ÇÏ´Â ¾ÆÀÌµğ ¸ñ·ÏÀÔ´Ï´Ù.</b><br><br>
+				<h3>ì•„ì´ë”” ì°¾ê¸°</h3><br>
+				<b>ê³ ê°ë‹˜ì˜ ì •ë³´ì™€ ì¼ì¹˜í•˜ëŠ” ì•„ì´ë”” ëª©ë¡ì…ë‹ˆë‹¤.</b><br><br>
 				<div class="info_list_div">
 					
 				</div>
 			</div>
 			<div id="view_myPW_div" class="view_myPW_div">
-				<h3>ºñ¹Ğ¹øÈ£ Ã£±â</h3>
-				<b>ºñ¹Ğ¹øÈ£ È®ÀÎ ÈÄ º¯°æÇÏ½Ã±â ¹Ù¶ø´Ï´Ù.</b><br><br>
+				<h3>ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°</h3>
+				<b>ë¹„ë°€ë²ˆí˜¸ í™•ì¸ í›„ ë³€ê²½í•˜ì‹œê¸° ë°”ëë‹ˆë‹¤.</b><br><br>
 				<div class="info_list_div">
 				
 				</div>
@@ -287,13 +287,13 @@
 		</div>
 	</div>
 	<script>
-	// ½ºÅ¸ÀÏÀÌ Á¦´ë·Î Àû¿ëÀÌ µÇÁö¾Ê¾Æ¼­ ÃÊ±â°ªÀ» js·Î ¼³Á¤.
+	// ìŠ¤íƒ€ì¼ì´ ì œëŒ€ë¡œ ì ìš©ì´ ë˜ì§€ì•Šì•„ì„œ ì´ˆê¸°ê°’ì„ jsë¡œ ì„¤ì •.
 		function start_find(){
-			// ¾ÆÀÌµğ/ºñ¹ø Ã£±â div °¡Á®¿À±â
+			// ì•„ì´ë””/ë¹„ë²ˆ ì°¾ê¸° div ê°€ì ¸ì˜¤ê¸°
 			document.getElementById("find_ID_div").style.display = "block";
 			document.getElementById("find_PW_div").style.display = "none";
 				
-			// Ã£Àº ¾ÆÀÌµğ/ºñ¹ø º¸¿©ÁÖ´Â div °¡Á®¿À±â
+			// ì°¾ì€ ì•„ì´ë””/ë¹„ë²ˆ ë³´ì—¬ì£¼ëŠ” div ê°€ì ¸ì˜¤ê¸°
 			document.getElementById("view_myID_div").style.display = "none";
 			document.getElementById("view_myPW_div").style.display = "none";
 		}
@@ -301,25 +301,25 @@
 	</script>
 	
 	<script>
-		var email_confirm_num = -1;		// »ı¼ºµÈ ÀÌ¸ŞÀÏ ÀÎÁõ¹øÈ£¸¦ ÀúÀåÇÏ´Â Àü¿ªº¯¼ö
+		var email_confirm_num = -1;		// ìƒì„±ëœ ì´ë©”ì¼ ì¸ì¦ë²ˆí˜¸ë¥¼ ì €ì¥í•˜ëŠ” ì „ì—­ë³€ìˆ˜
 		var get_id = '';
 		var get_pw = '';
 		var get_signDay = '';
 		
-		function find_ID_JS(){		// ¾ÆÀÌµğ Ã£±â view
-			// ¾ÆÀÌµğ/ºñ¹ø Ã£±â ¹öÆ°ÀÌ ÀÖ´Â ½ºÆÇ °¡Á®¿À±â
+		function find_ID_JS(){		// ì•„ì´ë”” ì°¾ê¸° view
+			// ì•„ì´ë””/ë¹„ë²ˆ ì°¾ê¸° ë²„íŠ¼ì´ ìˆëŠ” ìŠ¤íŒ ê°€ì ¸ì˜¤ê¸°
 			var find_ID_span = document.getElementById("find_ID_btn_span");
 			var find_PW_span = document.getElementById("find_PW_btn_span");
 			
-			// ¾ÆÀÌµğ/ºñ¹ø Ã£±â ¹öÆ° °¡Á®¿À±â
+			// ì•„ì´ë””/ë¹„ë²ˆ ì°¾ê¸° ë²„íŠ¼ ê°€ì ¸ì˜¤ê¸°
 			var find_ID_btn = document.getElementById("find_ID_btn");
 			var find_PW_btn = document.getElementById("find_PW_btn");
 			
-			// ¾ÆÀÌµğ/ºñ¹ø Ã£±â div °¡Á®¿À±â
+			// ì•„ì´ë””/ë¹„ë²ˆ ì°¾ê¸° div ê°€ì ¸ì˜¤ê¸°
 			var viewDiv = document.getElementById("find_ID_div");
 			var hiddenDiv = document.getElementById("find_PW_div");
 			
-			// Ã£Àº ¾ÆÀÌµğ/ºñ¹ø º¸¿©ÁÖ´Â div °¡Á®¿À±â
+			// ì°¾ì€ ì•„ì´ë””/ë¹„ë²ˆ ë³´ì—¬ì£¼ëŠ” div ê°€ì ¸ì˜¤ê¸°
 			var myID_div = document.getElementById("view_myID_div");
 			var myPW_div = document.getElementById("view_myPW_div");
 			
@@ -339,20 +339,20 @@
 			
 		}
 		
-		function find_PW_JS(){		// ºñ¹Ğ¹øÈ£ Ã£±â view
-			// ¾ÆÀÌµğ/ºñ¹ø Ã£±â ¹öÆ°ÀÌ ÀÖ´Â ½ºÆÇ °¡Á®¿À±â
+		function find_PW_JS(){		// ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸° view
+			// ì•„ì´ë””/ë¹„ë²ˆ ì°¾ê¸° ë²„íŠ¼ì´ ìˆëŠ” ìŠ¤íŒ ê°€ì ¸ì˜¤ê¸°
 			var find_ID_span = document.getElementById("find_ID_btn_span");
 			var find_PW_span = document.getElementById("find_PW_btn_span");
 			
-			// ¾ÆÀÌµğ/ºñ¹ø Ã£±â ¹öÆ° °¡Á®¿À±â
+			// ì•„ì´ë””/ë¹„ë²ˆ ì°¾ê¸° ë²„íŠ¼ ê°€ì ¸ì˜¤ê¸°
 			var find_ID_btn = document.getElementById("find_ID_btn");
 			var find_PW_btn = document.getElementById("find_PW_btn");
 			
-			// ¾ÆÀÌµğ/ºñ¹ø Ã£±â div °¡Á®¿À±â
+			// ì•„ì´ë””/ë¹„ë²ˆ ì°¾ê¸° div ê°€ì ¸ì˜¤ê¸°
 			var viewDiv = document.getElementById("find_PW_div");
 			var hiddenDiv = document.getElementById("find_ID_div");
 			
-			// Ã£Àº ¾ÆÀÌµğ/ºñ¹ø º¸¿©ÁÖ´Â div °¡Á®¿À±â
+			// ì°¾ì€ ì•„ì´ë””/ë¹„ë²ˆ ë³´ì—¬ì£¼ëŠ” div ê°€ì ¸ì˜¤ê¸°
 			var myID_div = document.getElementById("view_myID_div");
 			var myPW_div = document.getElementById("view_myPW_div");
 			
@@ -373,16 +373,16 @@
 		}
 
 		function checkEmail(){
-			// ¾ÆÀÌµğ Ã£±â ÀÎÁõ¸ŞÀÏ
+			// ì•„ì´ë”” ì°¾ê¸° ì¸ì¦ë©”ì¼
 			if(document.getElementById("find_ID_div").style.display == "block"){
 				var userName = document.getElementById("name").value;
 				var userEmail = document.getElementById("email_id").value;			
 				
 				if(userName.length == 0){
-					alert("ERROR\nÀÌ¸§À» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+					alert("ERROR\nì´ë¦„ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 				}
 				else if(userEmail.length == 0){
-					alert("ERROR\nÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+					alert("ERROR\nì´ë©”ì¼ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 				}
 				else{
 					var checkNum = document.getElementById("id_input_confirmNum");				
@@ -395,29 +395,29 @@
 							if(result.check == "OK"){
 								checkNum.disabled = false;
 								email_confirm_num = result.confirmNum;
-								alert("ÀÎÁõ¹øÈ£°¡ Àü¼ÛµÇ¾ú½À´Ï´Ù.");
+								alert("ì¸ì¦ë²ˆí˜¸ê°€ ì „ì†¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 							}
 							else if(result.check == "NO"){
 								checkNum.disabled = true;
-								alert("FAIL\nÀÔ·ÂÇÏ½Å ÀÌ¸§°ú ÀÌ¸ŞÀÏ¿¡ ÀÏÄ¡ÇÏ´Â ¾ÆÀÌµğ°¡ ¾ø½À´Ï´Ù.");
+								alert("FAIL\nì…ë ¥í•˜ì‹  ì´ë¦„ê³¼ ì´ë©”ì¼ì— ì¼ì¹˜í•˜ëŠ” ì•„ì´ë””ê°€ ì—†ìŠµë‹ˆë‹¤.");
 							}
 						},
 						error:function(){	
-							alert("ÀÌ¸ŞÀÏ ÀÎÁõ ¿¡·¯ÀÔ´Ï´Ù.");
+							alert("ì´ë©”ì¼ ì¸ì¦ ì—ëŸ¬ì…ë‹ˆë‹¤.");
 						}
 					});
 				}
 			}
-			// ºñ¹Ğ¹øÈ£ Ã£±â ÀÎÁõ¸ŞÀÏ
+			// ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸° ì¸ì¦ë©”ì¼
 			else if(document.getElementById("find_PW_div").style.display == "block"){
 				var userId = document.getElementById("id").value;
 				var userEmail = document.getElementById("email_pw").value;	
 				
 				if(userId.length == 0){
-					alert("ERROR\nÃ£À¸·Á´Â ¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+					alert("ERROR\nì°¾ìœ¼ë ¤ëŠ” ì•„ì´ë””ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 				}
 				else if(userEmail.length == 0){
-					alert("ERROR\nÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.");
+					alert("ERROR\nì´ë©”ì¼ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.");
 				}
 				else{
 					var checkNum = document.getElementById("pw_input_confirmNum");				
@@ -430,15 +430,15 @@
 							if(result.check == "OK"){
 								checkNum.disabled = false;
 								email_confirm_num = result.confirmNum;
-								alert("ÀÎÁõ¹øÈ£°¡ Àü¼ÛµÇ¾ú½À´Ï´Ù.");
+								alert("ì¸ì¦ë²ˆí˜¸ê°€ ì „ì†¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 							}
 							if(result.check == "NO"){
 								checkNum.disabled = true;
-								alert("FAIL\nÀÔ·ÂÇÏ½Å ÀÌ¸ŞÀÏ°ú ÀÏÄ¡ÇÏ´Â ¾ÆÀÌµğ°¡ ¾ø½À´Ï´Ù.");
+								alert("FAIL\nì…ë ¥í•˜ì‹  ì´ë©”ì¼ê³¼ ì¼ì¹˜í•˜ëŠ” ì•„ì´ë””ê°€ ì—†ìŠµë‹ˆë‹¤.");
 							}
 						},
 						error:function(){	
-							alert("ÀÌ¸ŞÀÏ ÀÎÁõ ¿¡·¯ÀÔ´Ï´Ù.");
+							alert("ì´ë©”ì¼ ì¸ì¦ ì—ëŸ¬ì…ë‹ˆë‹¤.");
 						}
 					});
 				}
@@ -446,16 +446,16 @@
 			
 
 		}
-		// Ã£Àº ¾ÆÀÌµğ/ºñ¹Ğ¹øÈ£ º¸¿©ÁÜ
+		// ì°¾ì€ ì•„ì´ë””/ë¹„ë°€ë²ˆí˜¸ ë³´ì—¬ì¤Œ
 		function view_ID(input_num){
 			if(input_num == email_confirm_num){
-				// ÀÔ·ÂÄ­ ¸ğµÎ Àá±İ - ÀÎÁõ¹øÈ£Ä­Àº ÄÁÆ®·Ñ·¯·Î ³Ñ±æ ÇÊ¿ä°¡ ¾ø±â¶§¹®¿¡ disabled »ç¿ë
+				// ì…ë ¥ì¹¸ ëª¨ë‘ ì ê¸ˆ - ì¸ì¦ë²ˆí˜¸ì¹¸ì€ ì»¨íŠ¸ë¡¤ëŸ¬ë¡œ ë„˜ê¸¸ í•„ìš”ê°€ ì—†ê¸°ë•Œë¬¸ì— disabled ì‚¬ìš©
 				$("#name").attr("readonly",true);
 				$("#email_id").attr("readonly",true);
 				document.getElementById("id_input_confirmNum").disabled = true;
 				
 				var view_msg = document.getElementById("id_confirm_msg");
-				var content = '<b style="color:green">&nbsp;ÀÎÁõ ¼º°ø!</b>';
+				var content = '<b style="color:green">&nbsp;ì¸ì¦ ì„±ê³µ!</b>';
 				view_msg.innerHTML = content;
 				
 				var which = 'id';
@@ -470,19 +470,19 @@
 			}
 			else{
 				var view_msg = document.getElementById("id_confirm_msg");
-				var content = '<b style="color:red">&nbsp;ÀÎÁõ¹øÈ£ ºÒÀÏÄ¡</b>';
+				var content = '<b style="color:red">&nbsp;ì¸ì¦ë²ˆí˜¸ ë¶ˆì¼ì¹˜</b>';
 				view_msg.innerHTML = content;
 			}
 		}
 		function view_PW(input_num){
 			if(input_num == email_confirm_num){
-				// ÀÔ·ÂÄ­ ¸ğµÎ Àá±İ - ÀÎÁõ¹øÈ£Ä­Àº ÄÁÆ®·Ñ·¯·Î ³Ñ±æ ÇÊ¿ä°¡ ¾ø±â¶§¹®¿¡ disabled »ç¿ë
+				// ì…ë ¥ì¹¸ ëª¨ë‘ ì ê¸ˆ - ì¸ì¦ë²ˆí˜¸ì¹¸ì€ ì»¨íŠ¸ë¡¤ëŸ¬ë¡œ ë„˜ê¸¸ í•„ìš”ê°€ ì—†ê¸°ë•Œë¬¸ì— disabled ì‚¬ìš©
 				$("#id").attr("readonly",true);
 				$("#email_pw").attr("readonly",true);
 				document.getElementById("pw_input_confirmNum").disabled = true;
 				
 				var view_msg = document.getElementById("pw_confirm_msg");
-				var content = '<b style="color:green">&nbsp;ÀÎÁõ ¼º°ø!</b>';
+				var content = '<b style="color:green">&nbsp;ì¸ì¦ ì„±ê³µ!</b>';
 				view_msg.innerHTML = content;
 				
 				var which = 'pw';
@@ -497,7 +497,7 @@
 			}
 			else{
 				var view_msg = document.getElementById("pw_confirm_msg");
-				var content = '<b style="color:red">&nbsp;ÀÎÁõ¹øÈ£ ºÒÀÏÄ¡</b>';
+				var content = '<b style="color:red">&nbsp;ì¸ì¦ë²ˆí˜¸ ë¶ˆì¼ì¹˜</b>';
 				view_msg.innerHTML = content;
 			}
 		}

@@ -1,10 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="EUC-KR">
+	<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,10 +17,10 @@
 
 <%
 	//String userNickname = (String) session.getAttribute("userNickname");  
-	int select_page = (int) request.getAttribute("select_page");		// ÇöÀç ¼±ÅÃÇÑ ÆäÀÌÁö
-	int first_page = (int) request.getAttribute("first_page");			// ÇöÀç ¼±ÅÃÇÑ ÆäÀÌÁö ±âÁØ¿¡¼­ Ã¹ ¹øÂ° ÆäÀÌÁö
-	int last_page = (int) request.getAttribute("last_page");			// ÇöÀç ¼±ÅÃÇÑ ÆäÀÌÁö ±âÁØ¿¡¼­ ¸¶Áö¸· ÆäÀÌÁö
-	int page_count = (int) request.getAttribute("page_count");			// ÃÑ ÆäÀÌÁö °³¼ö
+	int select_page = (int) request.getAttribute("select_page");		// í˜„ìž¬ ì„ íƒí•œ íŽ˜ì´ì§€
+	int first_page = (int) request.getAttribute("first_page");			// í˜„ìž¬ ì„ íƒí•œ íŽ˜ì´ì§€ ê¸°ì¤€ì—ì„œ ì²« ë²ˆì§¸ íŽ˜ì´ì§€
+	int last_page = (int) request.getAttribute("last_page");			// í˜„ìž¬ ì„ íƒí•œ íŽ˜ì´ì§€ ê¸°ì¤€ì—ì„œ ë§ˆì§€ë§‰ íŽ˜ì´ì§€
+	int page_count = (int) request.getAttribute("page_count");			// ì´ íŽ˜ì´ì§€ ê°œìˆ˜
 %> 
 
 	<script
@@ -29,7 +29,7 @@
  		crossorigin="anonymous"></script>
  		<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-<title>³ª¸¸ÀÇ ÀúÀå¼Ò - MOR !</title>
+<title>ë‚˜ë§Œì˜ ì €ìž¥ì†Œ - MOR !</title>
 </head>
 <body>
 	<div class="empty_main_div">
@@ -39,44 +39,44 @@
 		<img class="main-logo" src="../../../resources/img/MOR_symbol_logo.svg" />
 	</a>
 	<div class="search_div">
-		<input type="text" id="total_search_input" class="search_input" placeholder="°Ë»ö¾î ÀÔ·Â">
-		<input type="button" value="°Ë»ö" class="search" onClick="total_search();">
+		<input type="text" id="total_search_input" class="search_input" placeholder="ê²€ìƒ‰ì–´ ìž…ë ¥">
+		<input type="button" value="ê²€ìƒ‰" class="search" onClick="total_search();">
 	</div>
 	
 	<ul class="menu">
 		<li>
-			<a href="#">°Ô½ÃÆÇ</a>
+			<a href="#">ê²Œì‹œíŒ</a>
 			<ul class="submenu">
-				<li><a href="/user/userMain/1">ÀÚÀ¯°Ô½ÃÆÇ</a></li>
-				<li><a href="/user/secretBoard/1">ºñ¹Ð°Ô½ÃÆÇ</a></li>
+				<li><a href="/user/userMain/1">ìžìœ ê²Œì‹œíŒ</a></li>
+				<li><a href="/user/secretBoard/1">ë¹„ë°€ê²Œì‹œíŒ</a></li>
 			</ul>
 		</li>
 		<li>
-			<a href="#">ÀúÀå¼Ò</a>
+			<a href="#">ì €ìž¥ì†Œ</a>
 			<ul class="submenu">
-				<li><a href="/user/sharingRepo/1">°øÀ¯ ÀúÀå¼Ò</a></li>
-				<li><a href="/user/myRepo/1">³ª¸¸ÀÇ ÀúÀå¼Ò</a></li>
+				<li><a href="/user/sharingRepo/1">ê³µìœ  ì €ìž¥ì†Œ</a></li>
+				<li><a href="/user/myRepo/1">ë‚˜ë§Œì˜ ì €ìž¥ì†Œ</a></li>
 			</ul>
 		</li>
 		<li>
 			<a href="#">${member.nickname}</a>
 			<ul class="submenu">
-				<li><a href="/user/mypage">¸¶ÀÌÆäÀÌÁö</a></li>
-				<li><a href="/logout">·Î±×¾Æ¿ô</a></li>
+				<li><a href="/user/mypage">ë§ˆì´íŽ˜ì´ì§€</a></li>
+				<li><a href="/logout">ë¡œê·¸ì•„ì›ƒ</a></li>
 			</ul>
 		</li>
 	</ul>
 	
 	<br><br>
 	<div id="fold_div" class="admin_div">
-	<p class="admin_p">°øÁö»çÇ×</p><br>
+	<p class="admin_p">ê³µì§€ì‚¬í•­</p><br>
 	<table border="1" class="admin_table">
 		<thead class="admin_head">
 			<tr>
 				<td>No</td>
-				<td>Á¦¸ñ</td>
-				<td>ÀÛ¼ºÀÚ</td>
-				<td>Á¶È¸</td>
+				<td>ì œëª©</td>
+				<td>ìž‘ì„±ìž</td>
+				<td>ì¡°íšŒ</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -90,18 +90,18 @@
             </c:forEach>
 		</tbody>
 	</table>
-	<input type="button" value="v ÆîÄ¡±â" id="spread_btn" class="spread_btn" onClick="admin_spreading();">
+	<input type="button" value="v íŽ¼ì¹˜ê¸°" id="spread_btn" class="spread_btn" onClick="admin_spreading();">
 	</div>
 	
 	<div id="spread_div" class="admin_div">
-	<p class="admin_p">°øÁö»çÇ×</p><br>
+	<p class="admin_p">ê³µì§€ì‚¬í•­</p><br>
 	<table border="1" class="admin_table">
 		<thead class="admin_head">
 			<tr>
 				<td>No</td>
-				<td>Á¦¸ñ</td>
-				<td>ÀÛ¼ºÀÚ</td>
-				<td>Á¶È¸</td>
+				<td>ì œëª©</td>
+				<td>ìž‘ì„±ìž</td>
+				<td>ì¡°íšŒ</td>
 			</tr>
 		</thead>
 		<tbody>
@@ -115,20 +115,20 @@
             </c:forEach>
 		</tbody>
 	</table>
-	<input type="button" value="^ Á¢±â" id="fold_btn" class="fold_btn" onClick="admin_folding();">
+	<input type="button" value="^ ì ‘ê¸°" id="fold_btn" class="fold_btn" onClick="admin_folding();">
 	</div>
 	
 	<br><br><br><br><br>
-	<p>ÀÚÀ¯°Ô½ÃÆÇ</p><br>
+	<p>ìžìœ ê²Œì‹œíŒ</p><br>
 	<div class="main_div">
 	<table border="1" class="board_table">
 		<thead class="board_head">
 			<tr>
 				<td class="No_headTd">No</td>
-				<td class="title_headTd">Á¦¸ñ</td>
-				<td class="nickname_headTd">ÀÛ¼ºÀÚ</td>
-				<td class="date_headTd">µî·ÏÀÏ</td>
-				<td class="view_headTd">Á¶È¸</td>
+				<td class="title_headTd">ì œëª©</td>
+				<td class="nickname_headTd">ìž‘ì„±ìž</td>
+				<td class="date_headTd">ë“±ë¡ì¼</td>
+				<td class="view_headTd">ì¡°íšŒ</td>
 			</tr>
 		</thead>
 		
@@ -146,12 +146,12 @@
 	
 	</table>
 	
-	<br><br><input type="button" onclick="location.href='/user/write_board/s0r0'" class="write_button" value="±Û¾²±â">
+	<br><br><input type="button" onclick="location.href='/user/write_board/s0r0'" class="write_button" value="ê¸€ì“°ê¸°">
 	<br><br><br><br>
 	<div class="bottom_div">
 		<div id="bottom_paging_div">
 		<c:if test="${first_page > 5}">
-			<a href="/user/userMain/${first_page-5}"><b>&lt;&nbsp;ÀÌÀü</b></a>&emsp;
+			<a href="/user/userMain/${first_page-5}"><b>&lt;&nbsp;ì´ì „</b></a>&emsp;
 		</c:if>
 		<div class="paging_div">
 			<div class="paging_div2">
@@ -170,19 +170,19 @@
 		</div>
 		<c:if test="${last_page != page_count}">
 			&emsp;
-			<a href="/user/userMain/${last_page+1}"><b>´ÙÀ½&nbsp;&lt;</b></a>
+			<a href="/user/userMain/${last_page+1}"><b>ë‹¤ìŒ&nbsp;&lt;</b></a>
 		</c:if>
 		<hr class="hr_sty">
 		<form id="page_search_form" name="vo">
 			<div class="board_search_div">		
 					<select name="search_filter" class="in_board_search_menu">
-						<option value="search_title">Á¦¸ñ</option>
-						<option value="search_content">³»¿ë</option>
-						<option value="search_tit_cot">Á¦¸ñ + ³»¿ë</option>
-						<option value="search_writer">ÀÛ¼ºÀÚ</option>
+						<option value="search_title">ì œëª©</option>
+						<option value="search_content">ë‚´ìš©</option>
+						<option value="search_tit_cot">ì œëª© + ë‚´ìš©</option>
+						<option value="search_writer">ìž‘ì„±ìž</option>
 					</select>								
-				<input type="button" class="in_board_search_btn" value="°Ë»ö" onClick="page_search();">
-				<input type="text" name="content" class="in_board_search_text" placeholder="°Ë»ö¾î¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.">	
+				<input type="button" class="in_board_search_btn" value="ê²€ìƒ‰" onClick="page_search();">
+				<input type="text" name="content" class="in_board_search_text" placeholder="ê²€ìƒ‰ì–´ë¥¼ ìž…ë ¥í•´ì£¼ì„¸ìš”.">	
 			</div>
 			<input type="hidden" name="is_secret" value="0">
 			<input type="hidden" name="is_repo" value="0">
@@ -193,7 +193,7 @@
 
 	<c:if test="${session_msg == false}">
 		<script>
-			alert('ERROR\n¼¼¼ÇÀÌ ¸¸·áµÇ¾ú½À´Ï´Ù.\n´Ù½Ã ·Î±×ÀÎ ÇØÁÖ¼¼¿ä!!');
+			alert('ERROR\nì„¸ì…˜ì´ ë§Œë£Œë˜ì—ˆìŠµë‹ˆë‹¤.\në‹¤ì‹œ ë¡œê·¸ì¸ í•´ì£¼ì„¸ìš”!!');
 		</script>
 	</c:if>
 	</div>
@@ -217,9 +217,9 @@
 		}
 		
 		function page_search(){
-			var searchForm = document.getElementById("page_search_form");		// °Ë»ö form °¡Á®¿À±â
-			var Tbody = document.getElementById("boardList_tbody");		// °Ô½Ã±Û tbody °¡Á®¿À±â
-			var pagingDiv = document.getElementById("bottom_paging_div");		// ÆäÀÌÂ¡ div °¡Á®¿À±â
+			var searchForm = document.getElementById("page_search_form");		// ê²€ìƒ‰ form ê°€ì ¸ì˜¤ê¸°
+			var Tbody = document.getElementById("boardList_tbody");		// ê²Œì‹œê¸€ tbody ê°€ì ¸ì˜¤ê¸°
+			var pagingDiv = document.getElementById("bottom_paging_div");		// íŽ˜ì´ì§• div ê°€ì ¸ì˜¤ê¸°
 			
 			var searchTbody_content = '';
 			
@@ -250,7 +250,7 @@
 					}
 					else if(result.check == "NO"){		
 						Tbody.innerHTML = searchTbody_content;
-						alert("FAIL\n°Ë»ö °á°ú°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+						alert("FAIL\nê²€ìƒ‰ ê²°ê³¼ê°€ ì¡´ìž¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 					}
 					else{
 						searchTbody_content += '<c:forEach items="${BoardList}" var="letter"><tr><td>${letter.num}</td>';
@@ -263,7 +263,7 @@
 					}
 				},
 				error:function(){
-					alert("ERROR\nÆäÀÌÁö °Ë»ö ¿¡·¯ÀÔ´Ï´Ù.");
+					alert("ERROR\níŽ˜ì´ì§€ ê²€ìƒ‰ ì—ëŸ¬ìž…ë‹ˆë‹¤.");
 				}
 			}); 
 		}
@@ -276,7 +276,7 @@
 				window.location.href = path;
 			}
 			else{
-				alert("°Ë»ö¾î¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä!");
+				alert("ê²€ìƒ‰ì–´ë¥¼ ìž…ë ¥í•´ì£¼ì„¸ìš”!");
 			}
 		}
 	</script>
@@ -288,9 +288,9 @@
                 <nav class="footerinfo-division-top">
                     <div class="inner">
                         <div class="link-about">
-                            <a href="#">ÀÌ¿ë¾à°ü</a>
-                            <a href="#"><b>°³ÀÎÁ¤º¸Ã³¸®¹æÄ§</b></a>
-                            <a href="#">»ç¾÷ÀÚÁ¤º¸È®ÀÎ</a>
+                            <a href="#">ì´ìš©ì•½ê´€</a>
+                            <a href="#"><b>ê°œì¸ì •ë³´ì²˜ë¦¬ë°©ì¹¨</b></a>
+                            <a href="#">ì‚¬ì—…ìžì •ë³´í™•ì¸</a>
 
                         </div>
                         <div class="link-social">
@@ -301,15 +301,15 @@
                                 </a>
                                 <a href="#">
                                     <img src="../../../resources/img/ic-facebook-rogo-32.svg" alt="facebook-rogo">
-                                    <span>ÆäÀÌ½ººÏ</span>
+                                    <span>íŽ˜ì´ìŠ¤ë¶</span>
                                 </a>
                                 <a href="#">
                                     <img src="../../../resources/img/ic-kakaoplus-rogo-32.svg" alt="kakaoplus-rogo">
-                                    <span>Ä«Ä«¿ÀÇÃ·¯½º</span>
+                                    <span>ì¹´ì¹´ì˜¤í”ŒëŸ¬ìŠ¤</span>
                                 </a>
                                 <a href="#">
                                     <img src="../../../resources/img/ic-insta-rogo-32.svg" alt="insta-rogo">
-                                    <span>ÀÎ½ºÅ¸±×·¥</span>
+                                    <span>ì¸ìŠ¤íƒ€ê·¸ëž¨</span>
                                 </a>
                             </div>
                         </div>
@@ -319,33 +319,33 @@
                 <address class = "footerinfo-division-bottom">
                 
                 <div class="company-info">
-                    <div class="company-name">(ÁÖ)MOR</div>
+                    <div class="company-name">(ì£¼)MOR</div>
                     <div class="bundle">
-                        <span>´ëÇ¥ÀÌ»ç : ÁÖÀº»ó</span>
-                        <span>»ç¾÷ÀÚµî·Ï¹øÈ£ : 000-00-00000</span>
+                        <span>ëŒ€í‘œì´ì‚¬ : ì£¼ì€ìƒ</span>
+                        <span>ì‚¬ì—…ìžë“±ë¡ë²ˆí˜¸ : 000-00-00000</span>
                     </div>
                     <div class="bundle">
-                        <span>È£½ºÆÃ»ç¾÷ÀÚ : (ÁÖ)MOR</span>
-                        <span>ÁÖ¼Ò : ¾È»ê½Ã ´Ü¿ø±¸ MOR (È£¼öµ¿)</span>
+                        <span>í˜¸ìŠ¤íŒ…ì‚¬ì—…ìž : (ì£¼)MOR</span>
+                        <span>ì£¼ì†Œ : ì•ˆì‚°ì‹œ ë‹¨ì›êµ¬ MOR (í˜¸ìˆ˜ë™)</span>
                     </div>
                     <div class="bundle">
-                        <span>°³ÀÎÁ¤º¸°ü¸®Ã¥ÀÓÀÚ : È«±æµ¿</span>
+                        <span>ê°œì¸ì •ë³´ê´€ë¦¬ì±…ìž„ìž : í™ê¸¸ë™</span>
                     </div>
                 </div>
                 
                 <div class="servicecenter">
                     <div class="center-phonenumber">
-                        <b>°í°´¼¾ÅÍ 0000-0000</b>
+                        <b>ê³ ê°ì„¼í„° 0000-0000</b>
                     </div>
                     <div class="center-info">
-                        <span>¿µ¾÷½Ã°£</span>
+                        <span>ì˜ì—…ì‹œê°„</span>
                         <time>AM 00:00</time>
                         ~
                         <time>PM 11:59</time>
-                        (ÁÖ¸» ¹× °øÈÞÀÏ ÈÞ¹«)
+                        (ì£¼ë§ ë° ê³µíœ´ì¼ íœ´ë¬´)
                     </div>
                     <div class="center-info">
-                        <span>Á¡½É½Ã°£</span>
+                        <span>ì ì‹¬ì‹œê°„</span>
                         <time>AM 11:00</time>
                         ~
                         <time>PM 01:00</time>
@@ -357,27 +357,27 @@
                 
                 <address class = "footerinfo-division-bottom">
 					<div class="company-info">               
-	                    <div class="company-name">ÀúÀÛ±Ç</div>
+	                    <div class="company-name">ì €ìž‘ê¶Œ</div>
 	                    <div class="bundle">
-	                        <span><a href="https://www.flaticon.com/kr/free-icons/" title="Æó¹° ¾ÆÀÌÄÜ">Æó¹° ¾ÆÀÌÄÜ  Á¦ÀÛÀÚ: Pavel Kozlov - Flaticon</a></span>
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/" title="íë¬¼ ì•„ì´ì½˜">íë¬¼ ì•„ì´ì½˜  ì œìž‘ìž: Pavel Kozlov - Flaticon</a></span>
 	                    </div>
 						<div class="bundle">
-	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="¸Í²ÇÀÌ ÀÚ¹°¼è ¾ÆÀÌÄÜ">¸Í²ÇÀÌ ÀÚ¹°¼è ¾ÆÀÌÄÜ  Á¦ÀÛÀÚ: DinosoftLabs - Flaticon</a></span>
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="ë§¹ê½ì´ ìžë¬¼ì‡  ì•„ì´ì½˜">ë§¹ê½ì´ ìžë¬¼ì‡  ì•„ì´ì½˜  ì œìž‘ìž: DinosoftLabs - Flaticon</a></span>
 	                    </div>
 	                    <div class="bundle">
-	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="¿­¸° ÀÚ¹°¼è ¾ÆÀÌÄÜ">¿­¸° ÀÚ¹°¼è ¾ÆÀÌÄÜ  Á¦ÀÛÀÚ: Freepik - Flaticon</a></span>
+	                        <span><a href="https://www.flaticon.com/kr/free-icons/-" title="ì—´ë¦° ìžë¬¼ì‡  ì•„ì´ì½˜">ì—´ë¦° ìžë¬¼ì‡  ì•„ì´ì½˜  ì œìž‘ìž: Freepik - Flaticon</a></span>
 	                    </div>
 	                    <div class="bundle">
-	                        <a href="https://www.flaticon.com/kr/free-icons/" title="»çÁø¼ú ¾ÆÀÌÄÜ">»çÁø¼ú ¾ÆÀÌÄÜ  Á¦ÀÛÀÚ: Good Ware - Flaticon</a>
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="ì‚¬ì§„ìˆ  ì•„ì´ì½˜">ì‚¬ì§„ìˆ  ì•„ì´ì½˜  ì œìž‘ìž: Good Ware - Flaticon</a>
 	                    </div>
 	                    <div class="bundle">
-	                        <a href="https://www.flaticon.com/kr/free-icons/" title="ºñµð¿À ¾ÆÀÌÄÜ">ºñµð¿À ¾ÆÀÌÄÜ  Á¦ÀÛÀÚ: Iconjam - Flaticon</a>
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="ë¹„ë””ì˜¤ ì•„ì´ì½˜">ë¹„ë””ì˜¤ ì•„ì´ì½˜  ì œìž‘ìž: Iconjam - Flaticon</a>
 	                    </div>
 	                    <div class="bundle">
-	                        <a href="https://www.flaticon.com/kr/free-icons/" title="Æú´õ ¾ÆÀÌÄÜ">Æú´õ ¾ÆÀÌÄÜ  Á¦ÀÛÀÚ: Freepik - Flaticon</a>
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="í´ë” ì•„ì´ì½˜">í´ë” ì•„ì´ì½˜  ì œìž‘ìž: Freepik - Flaticon</a>
 	                    </div>
 	                    <div class="bundle">
-	                        <a href="https://www.flaticon.com/kr/free-icons/" title="ÆÄÀÏ ¾ÆÀÌÄÜ">ÆÄÀÏ ¾ÆÀÌÄÜ  Á¦ÀÛÀÚ: DinosoftLabs - Flaticon</a>
+	                        <a href="https://www.flaticon.com/kr/free-icons/" title="íŒŒì¼ ì•„ì´ì½˜">íŒŒì¼ ì•„ì´ì½˜  ì œìž‘ìž: DinosoftLabs - Flaticon</a>
 	                    </div>
 	                </div>
 				</address>

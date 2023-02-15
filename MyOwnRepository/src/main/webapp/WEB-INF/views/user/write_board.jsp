@@ -92,6 +92,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 							<textarea id="write_content_textarea" name="content" style=display:none></textarea>
 							<input type="hidden" name="is_secret" value="0">
 							<input type="hidden" name="is_repo" value="0">
+							
 						</td>
 						
 					</tr>
@@ -107,7 +108,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 					</tr>
 				</table>
 						<input type="button" value="글쓰기" class="small_write_btn" onClick="submit_btn();">
-						<input type="button" value="취소" class="small_write_btn" onClick="location.href='/user/userMain/1'">	
+						<input type="button" value="취소" class="small_write_btn" onClick="location.href='/user/userMain/1'">							
 			</form>
 			</div>
 		</c:when>
@@ -133,6 +134,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 							<textarea id="write_content_textarea" name="content" style=display:none></textarea>
 							<input type="hidden" name="is_secret" value="1">
 							<input type="hidden" name="is_repo" value="0">
+							
 						</td>
 						
 					</tr>
@@ -202,6 +204,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 							<textarea id="write_content_textarea" name="content" style=display:none></textarea>
 							<input type="hidden" name="is_secret" value="0">
 							<input type="hidden" name="is_repo" value="1">
+							
 						</td>
 						
 					</tr>
@@ -248,6 +251,7 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 							<textarea id="write_content_textarea" name="content" style=display:none></textarea>
 							<input type="hidden" name="is_secret" value="1">
 							<input type="hidden" name="is_repo" value="1">
+							
 						</td>
 						
 					</tr>
@@ -619,6 +623,24 @@ cellpadding="0" cellspacing="0"을 쓰기위한 설정
 	}
 	
 	function submit_btn(){
+		/*
+		// 작성자가 쓴 글과 이미지,영상태그를 같이 넣어서 그대로 db에 저장한다.
+		var viewContentDiv = document.getElementById('viewContent_hiddenDiv');
+		var writeTotalContent = document.getElementById('write_content_div').innerHTML;		// 작성한 첨부파일+텍스트 내용
+		var writeTextContent = document.getElementById('write_content_div').innerText;		// 작성한 텍스트 내용
+		var WC_copy = writeTotalContent;
+		if(writeTotalContent.includes('<img src="data:image/"') == true){
+			WC_copy = WC_copy.replace(/\"/ig, '<-morDDA0329>');
+			WC_copy = WC_copy.replace(/\'/ig, "-morDDA0329");
+			var viewContent = '<input type="hidden" name="view_content" value="'+WC_copy+'">';
+		}
+		else{
+			var viewContent = WC_copy;
+		}
+		//var viewContent = '<input type="hidden" name="view_content" value="'+writeContent+'">';
+		viewContentDiv.innerHTML = viewContent;
+		alert(viewContent);
+		*/
 		var title = document.getElementById('write_title').value;		// 사용자가 입력한 제목의 값 가져오기
 		var content;	// 사용자가 입력한 내용의 값	
 			

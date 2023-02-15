@@ -37,4 +37,7 @@ public interface MemberDAO {
 	// 마이페이지 - 회원탈퇴
 	public void unRegister(String id) throws Exception;
 	
+	// 카카오 회원가입
+	public void kakaoJoin(MemberVO vo) throws Exception;
+
 }

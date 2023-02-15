@@ -95,4 +95,6 @@ public interface BoardService {
 	public List<commentDTO> myComment(String nickname) throws Exception;	// 내가 쓴 댓글
 	
 	
+	// 전체 게시글 마지막 번호 - 파일의 게시글번호 설정용
+	public int totalMaxNum() throws Exception;
 }
